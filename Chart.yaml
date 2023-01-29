@@ -1,0 +1,9 @@
+apiVersion: v2
+name: replicated-library-chart
+description: Replicated library chart
+type: library
+version: 0.1.0
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - replicated-library
+home: https://github.com/replicatedhq/replicated-library-chart/tree/main
