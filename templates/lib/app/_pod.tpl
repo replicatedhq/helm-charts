@@ -1,58 +1,68 @@
 {{- /*
 The pod definition included in the main.
 */ -}}
-{{- define "common.main.pod" -}}
-  {{- with .Values.imagePullSecrets }}
+{{- define "replicated-library.pod" -}}
+  {{- if hasKey . "AppName" -}}
+    {{- $name = .AppName -}}
+  {{ end -}}
+
+  {{- if hasKey . "AppValues" -}}
+    {{- with .AppValues.app -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{ end -}}
+
+  {{- with $values.imagePullSecrets }}
 imagePullSecrets:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-serviceAccountName: {{ include "common.names.serviceAccountName" . }}
-automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
-  {{- with .Values.podSecurityContext }}
+serviceAccountName: {{ include "replicated-library.names.serviceAccountName" . }}
+automountServiceAccountToken: {{ $values.automountServiceAccountToken }}
+  {{- with $values.podSecurityContext }}
 securityContext:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-  {{- with .Values.priorityClassName }}
+  {{- with $values.priorityClassName }}
 priorityClassName: {{ . }}
   {{- end }}
-  {{- with .Values.runtimeClassName }}
+  {{- with $values.runtimeClassName }}
 runtimeClassName: {{ . }}
   {{- end }}
-  {{- with .Values.schedulerName }}
+  {{- with $values.schedulerName }}
 schedulerName: {{ . }}
   {{- end }}
-  {{- with .Values.hostNetwork }}
+  {{- with $values.hostNetwork }}
 hostNetwork: {{ . }}
   {{- end }}
-  {{- with .Values.hostname }}
+  {{- with $values.hostname }}
 hostname: {{ . }}
   {{- end }}
-  {{- if .Values.dnsPolicy }}
-dnsPolicy: {{ .Values.dnsPolicy }}
-  {{- else if .Values.hostNetwork }}
+  {{- if $values.dnsPolicy }}
+dnsPolicy: {{ $values.dnsPolicy }}
+  {{- else if $values.hostNetwork }}
 dnsPolicy: ClusterFirstWithHostNet
   {{- else }}
 dnsPolicy: ClusterFirst
   {{- end }}
-  {{- with .Values.dnsConfig }}
+  {{- with $values.dnsConfig }}
 dnsConfig:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-enableServiceLinks: {{ .Values.enableServiceLinks }}
-  {{- with .Values.termination.gracePeriodSeconds }}
+enableServiceLinks: {{ $values.enableServiceLinks }}
+  {{- with $values.termination.gracePeriodSeconds }}
 terminationGracePeriodSeconds: {{ . }}
   {{- end }}
-  {{- if .Values.initContainers }}
+  {{- if $values.initContainers }}
 initContainers:
     {{- $initContainers := list }}
-    {{- range $index, $key := (keys .Values.initContainers | uniq | sortAlpha) }}
+    {{- range $index, $key := (keys $values.initContainers | uniq | sortAlpha) }}
       {{- $container := get $.Values.initContainers $key }}
       {{- if not $container.name -}}
         {{- $_ := set $container "name" $key }}
       {{- end }}
       {{- if $container.env -}}
         {{- $_ := set $ "ObjectValues" (dict "env" $container.env) -}}
-        {{- $newEnv := fromYaml (include "common.main.env_vars" $) -}}
+        {{- $newEnv := fromYaml (include "replicated-library.env_vars" $) -}}
         {{- $_ := unset $.ObjectValues "env" -}}
         {{- $_ := set $container "env" $newEnv.env }}
       {{- end }}
@@ -61,8 +71,8 @@ initContainers:
     {{- tpl (toYaml $initContainers) $ | nindent 2 }}
   {{- end }}
 containers:
-  {{- include "common.main.mainContainer" . | nindent 2 }}
-  {{- with .Values.additionalContainers }}
+  {{- include "replicated-library.mainContainer" . | nindent 2 }}
+  {{- with .additionalContainers }}
     {{- $additionalContainers := list }}
     {{- range $name, $container := . }}
       {{- if not $container.name -}}
@@ -70,7 +80,7 @@ containers:
       {{- end }}
       {{- if $container.env -}}
         {{- $_ := set $ "ObjectValues" (dict "env" $container.env) -}}
-        {{- $newEnv := fromYaml (include "common.main.env_vars" $) -}}
+        {{- $newEnv := fromYaml (include "replicated-library.env_vars" $) -}}
         {{- $_ := set $container "env" $newEnv.env }}
         {{- $_ := unset $.ObjectValues "env" -}}
       {{- end }}
@@ -78,27 +88,27 @@ containers:
     {{- end }}
     {{- tpl (toYaml $additionalContainers) $ | nindent 2 }}
   {{- end }}
-  {{- with (include "common.main.volumes" . | trim) }}
+  {{- with (include "replicated-library.volumes" . | trim) }}
 volumes:
     {{- nindent 2 . }}
   {{- end }}
-  {{- with .Values.hostAliases }}
+  {{- with $values.hostAliases }}
 hostAliases:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-  {{- with .Values.nodeSelector }}
+  {{- with $values.nodeSelector }}
 nodeSelector:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-  {{- with .Values.affinity }}
+  {{- with $values.affinity }}
 affinity:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-  {{- with .Values.topologySpreadConstraints }}
+  {{- with $values.topologySpreadConstraints }}
 topologySpreadConstraints:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-  {{- with .Values.tolerations }}
+  {{- with $values.tolerations }}
 tolerations:
     {{- toYaml . | nindent 2 }}
   {{- end }}

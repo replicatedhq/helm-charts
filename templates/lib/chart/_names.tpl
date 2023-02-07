@@ -1,5 +1,5 @@
 {{/* Expand the name of the chart */}}
-{{- define "common.names.name" -}}
+{{- define "replicated-library.names.name" -}}
   {{- $globalNameOverride := "" -}}
   {{- if hasKey .Values "global" -}}
     {{- $globalNameOverride = (default $globalNameOverride .Values.global.nameOverride) -}}
@@ -12,8 +12,8 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "common.names.fullname" -}}
-  {{- $name := include "common.names.name" . -}}
+{{- define "replicated-library.names.fullname" -}}
+  {{- $name := include "replicated-library.names.name" . -}}
   {{- $globalFullNameOverride := "" -}}
   {{- if hasKey .Values "global" -}}
     {{- $globalFullNameOverride = (default $globalFullNameOverride .Values.global.fullnameOverride) -}}
@@ -31,28 +31,25 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/* Create chart name and version as used by the chart label */}}
-{{- define "common.names.chart" -}}
+{{- define "replicated-library.names.chart" -}}
   {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/* Create the name of the ServiceAccount to use */}}
-{{- define "common.names.serviceAccountName" -}}
-  {{- if .Values.serviceAccount.create -}}
-    {{- default (include "common.names.fullname" .) .Values.serviceAccount.name -}}
-  {{- else -}}
-    {{- default "default" .Values.serviceAccount.name -}}
-  {{- end -}}
-{{- end -}}
+{{- define "replicated-library.names.serviceAccountName" -}}
+  {{- if hasKey . "AppName" -}}
+    {{- $name = .AppName -}}
+  {{ end -}}
 
-{{/* Return the properly cased version of the main type */}}
-{{- define "common.names.mainType" -}}
-  {{- if eq .Values.main.type "deployment" -}}
-    {{- print "Deployment" -}}
-  {{- else if eq .Values.main.type "daemonset" -}}
-    {{- print "DaemonSet" -}}
-  {{- else if eq .Values.main.type "statefulset"  -}}
-    {{- print "StatefulSet" -}}
+  {{- if hasKey . "AppValues" -}}
+    {{- with .AppValues.app -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{ end -}}
+
+  {{- if $values.serviceAccount.create -}}
+    {{- default (include "replicated-library.names.fullname" .) $values.serviceAccount.name -}}
   {{- else -}}
-    {{- fail (printf "Not a valid main.type (%s)" .Values.main.type) -}}
+    {{- default "default" $values.serviceAccount.name -}}
   {{- end -}}
 {{- end -}}

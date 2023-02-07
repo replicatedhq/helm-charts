@@ -20,15 +20,15 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
     {{- if $app.enabled -}}
       {{- $appValues := $app -}}
 
-      {{- $_ := set $dict "ObjectName" $name -}}
-      {{- $_ := set $dict "ObjectValues" (dict "app" $appValues) -}}
+      {{- $_ := set $ "AppName" $name -}}
+      {{- $_ := set $ "AppValues" (dict "app" $appValues) -}}
 
       {{- if eq .appValues.type "deployment" }}
-        {{- include "replicated-library.deployment" $dict | nindent 0 }}
+        {{- include "replicated-library.deployment" $ | nindent 0 }}
       {{ else if eq $appValues.type "daemonset" }}
-        {{- include "replicated-library.daemonset" $dict | nindent 0 }}
+        {{- include "replicated-library.daemonset" $ | nindent 0 }}
       {{ else if eq $appValues.type "statefulset"  }}
-        {{- include "replicated-library.statefulset" $dict | nindent 0 }}
+        {{- include "replicated-library.statefulset" $ | nindent 0 }}
       {{ else }}
         {{- fail (printf "Type of (%s) for app - (%s) is not valid" $appValues.type $name) }}
       {{- end -}}
@@ -39,7 +39,5 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
 
     {{- end }}
   {{- end }}
-
-  {{ include "replicated-library.classes.hpa" . | nindent 0 }}
 
 {{- end -}}

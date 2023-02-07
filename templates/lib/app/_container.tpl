@@ -1,9 +1,18 @@
 {{- /* The main container included in the main */ -}}
-{{- define "common.main.mainContainer" -}}
-- name: {{ include "common.names.fullname" . }}
-  image: {{ printf "%s:%s" .Values.image.repository (default .Chart.AppVersion .Values.image.tag) | quote }}
-  imagePullPolicy: {{ .Values.image.pullPolicy }}
-  {{- with .Values.command }}
+{{- define "replicated-library.mainContainer" -}}
+  {{- if hasKey . "AppName" -}}
+    {{- $name = .AppName -}}
+  {{ end -}}
+
+  {{- if hasKey . "AppValues" -}}
+    {{- with .AppValues.app -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{ end -}}
+- name: {{ include "replicated-library.names.fullname" . }}
+  image: {{ printf "%s:%s" .$values.image.repository (default .Chart.AppVersion .$values.image.tag) | quote }}
+  imagePullPolicy: {{ $values.image.pullPolicy }}
+  {{- with $values.command }}
   command:
     {{- if kindIs "string" . }}
     - {{ . }}
@@ -11,7 +20,7 @@
       {{ toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
-  {{- with .Values.args }}
+  {{- with $values.args }}
   args:
     {{- if kindIs "string" . }}
     - {{ . }}
@@ -19,43 +28,43 @@
     {{ toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
-  {{- with .Values.securityContext }}
+  {{- with $values.securityContext }}
   securityContext:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.lifecycle }}
+  {{- with $values.lifecycle }}
   lifecycle:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.termination.messagePath }}
+  {{- with $values.termination.messagePath }}
   terminationMessagePath: {{ . }}
   {{- end }}
-  {{- with .Values.termination.messagePolicy }}
+  {{- with $values.termination.messagePolicy }}
   terminationMessagePolicy: {{ . }}
   {{- end }}
 
-  {{- with .Values.env }}
+  {{- with $values.env }}
   env:
-    {{- get (fromYaml (include "common.main.env_vars" $)) "env" | toYaml | nindent 4 -}}
+    {{- get (fromYaml (include "replicated-library.env_vars" $)) "env" | toYaml | nindent 4 -}}
   {{- end }}
-  {{- if or .Values.envFrom .Values.secret }}
+  {{- if or $values.envFrom $values.secret }}
   envFrom:
-    {{- with .Values.envFrom }}
+    {{- with $values.envFrom }}
       {{- toYaml . | nindent 4 }}
     {{- end }}
-    {{- if .Values.secret }}
+    {{- if $values.secret }}
     - secretRef:
-        name: {{ include "common.names.fullname" . }}
+        name: {{ include "replicated-library.names.fullname" . }}
     {{- end }}
   {{- end }}
   ports:
-  {{- include "common.main.ports" . | trim | nindent 4 }}
-  {{- with (include "common.main.volumeMounts" . | trim) }}
+  {{- include "replicated-library.ports" . | trim | nindent 4 }}
+  {{- with (include "replicated-library.volumeMounts" . | trim) }}
   volumeMounts:
     {{- nindent 4 . }}
   {{- end }}
-  {{- include "common.main.probes" . | trim | nindent 2 }}
-  {{- with .Values.resources }}
+  {{- include "replicated-library.probes" . | trim | nindent 2 }}
+  {{- with $values.resources }}
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}

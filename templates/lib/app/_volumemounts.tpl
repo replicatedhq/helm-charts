@@ -1,5 +1,5 @@
 {{/* Volumes included by the main */}}
-{{- define "common.main.volumeMounts" -}}
+{{- define "replicated-library.volumeMounts" -}}
   {{- range $persistenceIndex, $persistenceItem := .Values.persistence }}
     {{- if $persistenceItem.enabled -}}
       {{- if kindIs "slice" $persistenceItem.subPath -}}

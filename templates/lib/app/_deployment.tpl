@@ -1,15 +1,15 @@
 {{/*
 This template serves as the blueprint for the Deployment objects that are created
-within the common library.
+within the replicated-library library.
 */}}
-{{- define "common.deployment" }}
+{{- define "replicated-library.deployment" }}
 
-  {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
+  {{- if hasKey . "AppName" -}}
+    {{- $name = .AppName -}}
   {{ end -}}
 
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.app -}}
+  {{- if hasKey . "AppValues" -}}
+    {{- with .AppValues.app -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
@@ -46,18 +46,18 @@ spec:
     {{- end }}
   selector:
     matchLabels:
-      {{- include "common.labels.selectorLabels" . | nindent 6 }}
+      {{- include "replicated-library.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with include ("common.podAnnotations") . }}
+      {{- with include ("replicated-library.podAnnotations") $values }}
       annotations:
         {{- . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "common.labels.selectorLabels" . | nindent 8 }}
+        {{- include "replicated-library.labels.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "common.main.pod" . | nindent 6 }}
+      {{- include "replicated-library.pod" $values | nindent 6 }}
 {{- end }}

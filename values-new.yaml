@@ -175,11 +175,3 @@ persistence:
     accessMode: ReadWriteOnce
     size: 1Gi
     retain: false
-
-autoscaling:
-  enabled: false
-  target:  # deploymentname
-  minReplicas:  # 1
-  maxReplicas:  # 100
-  targetCPUUtilizationPercentage:  # 80
-  targetMemoryUtilizationPercentage:  # 80
