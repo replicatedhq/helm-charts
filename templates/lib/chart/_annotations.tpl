@@ -1,5 +1,5 @@
-{{/* Common annotations shared across objects */}}
-{{- define "common.annotations" -}}
+{{/* replicated-library annotations shared across objects */}}
+{{- define "replicated-library.annotations" -}}
   {{- with .Values.global.annotations }}
     {{- range $k, $v := . }}
       {{- $name := $k }}
@@ -10,7 +10,7 @@
 {{- end -}}
 
 {{/* Determine the Pod annotations used in the main */}}
-{{- define "common.podAnnotations" -}}
+{{- define "replicated-library.podAnnotations" -}}
   {{- if .Values.podAnnotations -}}
     {{- tpl (toYaml .Values.podAnnotations) . | nindent 0 -}}
   {{- end -}}
@@ -22,6 +22,6 @@
     {{- end -}}
   {{- end -}}
   {{- if $configMapsFound -}}
-    {{- printf "checksum/config: %v" (include ("common.configmap") . | sha256sum) | nindent 0 -}}
+    {{- printf "checksum/config: %v" (include ("replicated-library.configmap") . | sha256sum) | nindent 0 -}}
   {{- end -}}
 {{- end -}}

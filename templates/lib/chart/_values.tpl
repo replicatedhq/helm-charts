@@ -1,8 +1,8 @@
-{{/* Merge the local chart values and the common chart defaults */}}
-{{- define "common.values.setup" -}}
-  {{- if .Values.common -}}
-    {{- $defaultValues := deepCopy .Values.common -}}
-    {{- $userValues := deepCopy (omit .Values "common") -}}
+{{/* Merge the local chart values and the replicated-library chart defaults */}}
+{{- define "replicated-library.values.setup" -}}
+  {{- if .Values.replicated-library -}}
+    {{- $defaultValues := deepCopy .Values.replicated-library -}}
+    {{- $userValues := deepCopy (omit .Values "replicated-library") -}}
     {{- $mergedValues := mustMergeOverwrite $defaultValues $userValues -}}
     {{- $_ := set . "Values" (deepCopy $mergedValues) -}}
   {{- end -}}

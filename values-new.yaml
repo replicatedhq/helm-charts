@@ -1,0 +1,185 @@
+global:
+  labels: {}
+  # -- Set additional global annotations. Helm templates can be used.
+  annotations: {}
+
+defaults:
+  image:
+    pullPolicy: IfNotPresent
+
+apps:
+  example:
+    enabled: false
+    type: deployment
+
+    replicas: 1
+
+    image:
+      repository:
+      tag:
+      pullPolicy:
+    imagePullSecrets: []
+
+    command: []
+    args: []
+
+    env:
+    envFrom: []
+
+    annotations: {}
+    labels: {}
+
+    automountServiceAccountToken: true
+    serviceAccount:
+      create: false
+      annotations: {}
+      name: ""
+
+    initContainers: {}
+    additionalContainers: {}
+    
+    podManagementPolicy:
+    podAnnotations: {}
+    podLabels: {}
+
+    strategy:
+    rollingUpdate:
+      unavailable:
+      surge:
+      partition:
+    revisionHistoryLimit: 3
+
+    priorityClassName:  # system-node-critical
+    runtimeClassName:  # nvidia
+    schedulerName:  # awkward-dangerous-scheduler
+    hostname:
+    hostNetwork: false
+    dnsPolicy:  # ClusterFirst
+    dnsConfig: {}
+    enableServiceLinks: true
+    podSecurityContext: {}
+    securityContext: {}
+    lifecycle: {}
+    initContainers: {}
+    additionalContainers: {}
+    probes:
+      liveness:
+        enabled: false
+        custom: false
+        spec:
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness:
+        enabled: false
+        custom: false
+        spec:
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      startup:
+        enabled: false
+        custom: false
+        spec:
+          initialDelaySeconds: 0
+          timeoutSeconds: 1
+          periodSeconds: 5
+          failureThreshold: 30
+    termination:
+      messagePath:
+      messagePolicy:
+      gracePeriodSeconds:
+    # -- Used in conjunction with `main.type: statefulset` to create individual disks for each instance.
+    volumeClaimTemplates: []
+    
+    nodeSelector: {}
+    affinity: {}
+    topologySpreadConstraints: []
+    tolerations: []
+    hostAliases: []
+    resources: {}
+
+secrets:
+  exampleSecret:
+    # -- Enables or disables the secret
+    enabled: false
+    # -- Labels to add to the secret
+    labels: {}
+    # -- Annotations to add to the secret
+    annotations: {}
+    # -- configMap data content. Helm template enabled.
+    data: {}
+      # foo: bar
+
+configmaps:
+  exampleConfig:
+    # -- Enables or disables the configMap
+    enabled: false
+    # -- Labels to add to the configMap
+    labels: {}
+    # -- Annotations to add to the configMap
+    annotations: {}
+    # -- configMap data content. Helm template enabled.
+    data: {}
+      # foo: bar
+
+services:
+  example:
+    enabled: false
+    name: service-a
+    type: ClusterIP
+    externalTrafficPolicy:
+    ipFamilyPolicy:
+    ipFamilies: []
+    annotations: {}
+    labels: {}
+    ports:
+      http:
+        enabled: true
+        primary: true
+        port:
+        protocol: HTTP
+        targetPort:
+        nodePort:
+
+ingresses:
+  example:
+    enabled: false
+    primary: true
+    nameOverride:
+    annotations: {}
+    labels: {}
+    ingressClassName:  # "nginx"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              name:
+              port:
+    tls: []
+
+persistence:
+  example:
+    enabled: false
+    type: pvc
+    mountPath:  # /config
+    readOnly: false
+    nameOverride:
+    storageClass:  # "-"
+    existingClaim:  # your-claim
+    subPath:  # some-subpath
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    retain: false
+
+autoscaling:
+  enabled: false
+  target:  # deploymentname
+  minReplicas:  # 1
+  maxReplicas:  # 100
+  targetCPUUtilizationPercentage:  # 80
+  targetMemoryUtilizationPercentage:  # 80

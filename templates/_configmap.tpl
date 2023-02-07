@@ -1,7 +1,7 @@
 {{/*
 Renders the configMap objects required by the chart.
 */}}
-{{- define "common.configmap" -}}
+{{- define "replicated-library.configmap" -}}
   {{- /* Generate named configMaps as required */ -}}
   {{- range $name, $configmap := .Values.configmap }}
     {{- if $configmap.enabled -}}
@@ -13,7 +13,7 @@ Renders the configMap objects required by the chart.
       {{ end -}}
 
       {{- $_ := set $ "ObjectValues" (dict "configmap" $configmapValues) -}}
-      {{- include "common.classes.configmap" $ }}
+      {{- include "replicated-library.classes.configmap" $ }}
     {{- end }}
   {{- end }}
 {{- end }}

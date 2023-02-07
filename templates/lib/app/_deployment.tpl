@@ -3,27 +3,37 @@ This template serves as the blueprint for the Deployment objects that are create
 within the common library.
 */}}
 {{- define "common.deployment" }}
+
+  {{- if hasKey . "ObjectName" -}}
+    {{- $name = .ObjectName -}}
+  {{ end -}}
+
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.app -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{ end -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "common.names.fullname" . }}
-  {{- with (merge (.Values.main.labels | default dict) (include "common.labels" $ | fromYaml)) }}
+  name: $name
+  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with (merge (.Values.main.annotations | default dict) (include "common.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  revisionHistoryLimit: {{ .Values.main.revisionHistoryLimit }}
-  replicas: {{ .Values.main.replicas }}
-  {{- $strategy := default "Recreate" .Values.main.strategy }}
+  revisionHistoryLimit: {{ $values.revisionHistoryLimit }}
+  replicas: {{ $values.replicas }}
+  {{- $strategy := default "Recreate" $values.strategy }}
   {{- if and (ne $strategy "Recreate") (ne $strategy "RollingUpdate") }}
     {{- fail (printf "Not a valid strategy type for Deployment (%s)" $strategy) }}
   {{- end }}
   strategy:
     type: {{ $strategy }}
-    {{- with .Values.main.rollingUpdate }}
+    {{- with $values.rollingUpdate }}
       {{- if and (eq $strategy "RollingUpdate") (or .surge .unavailable) }}
     rollingUpdate:
         {{- with .unavailable }}
