@@ -1,67 +1,67 @@
 {{/*
 Volumes included by the main.
 */}}
-{{- define "common.main.volumes" -}}
-{{- range $index, $persistence := .Values.persistence }}
-{{- if $persistence.enabled }}
+{{- define "replicated-library.volumes" -}}
+{{- range $index, $volume := .Values.volumes }}
+{{- if $volume.enabled }}
 - name: {{ $index }}
-  {{- if eq (default "pvc" $persistence.type) "pvc" }}
-    {{- $pvcName := (include "common.names.fullname" $) -}}
-    {{- if $persistence.existingClaim }}
+  {{- if eq (default "pvc" $volume.type) "pvc" }}
+    {{- $pvcName := (include "replicated-library.names.fullname" $) -}}
+    {{- if $volume.existingClaim }}
       {{- /* Always prefer an existingClaim if that is set */}}
-      {{- $pvcName = $persistence.existingClaim -}}
+      {{- $pvcName = $volume.existingClaim -}}
     {{- else -}}
       {{- /* Otherwise refer to the PVC name */}}
-      {{- if $persistence.nameOverride -}}
-        {{- if not (eq $persistence.nameOverride "-") -}}
-          {{- $pvcName = (printf "%s-%s" (include "common.names.fullname" $) $persistence.nameOverride) -}}
+      {{- if $volume.nameOverride -}}
+        {{- if not (eq $volume.nameOverride "-") -}}
+          {{- $pvcName = (printf "%s-%s" (include "replicated-library.names.fullname" $) $volume.nameOverride) -}}
         {{- end -}}
       {{- else -}}
-        {{- $pvcName = (printf "%s-%s" (include "common.names.fullname" $) $index) -}}
+        {{- $pvcName = (printf "%s-%s" (include "replicated-library.names.fullname" $) $index) -}}
       {{- end -}}
     {{- end }}
   persistentVolumeClaim:
     claimName: {{ $pvcName }}
-  {{- else if or (eq $persistence.type "configMap") (eq $persistence.type "secret") }}
-    {{- $objectName := (required (printf "name not set for persistence item %s" $index) $persistence.name) }}
+  {{- else if or (eq $volume.type "configMap") (eq $volume.type "secret") }}
+    {{- $objectName := (required (printf "name not set for volume item %s" $index) $volume.name) }}
     {{- $objectName = tpl $objectName $ }}
-    {{- if eq $persistence.type "configMap" }}
+    {{- if eq $volume.type "configMap" }}
   configMap:
     name: {{ $objectName }}
     {{- else }}
   secret:
     secretName: {{ $objectName }}
     {{- end }}
-    {{- with $persistence.defaultMode }}
+    {{- with $volume.defaultMode }}
     defaultMode: {{ . }}
     {{- end }}
-    {{- with $persistence.items }}
+    {{- with $volume.items }}
     items:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-  {{- else if eq $persistence.type "emptyDir" }}
+  {{- else if eq $volume.type "emptyDir" }}
     {{- $emptyDir := dict -}}
-    {{- with $persistence.medium -}}
+    {{- with $volume.medium -}}
       {{- $_ := set $emptyDir "medium" . -}}
     {{- end -}}
-    {{- with $persistence.sizeLimit -}}
+    {{- with $volume.sizeLimit -}}
       {{- $_ := set $emptyDir "sizeLimit" . -}}
     {{- end }}
   emptyDir: {{- $emptyDir | toYaml | nindent 4 }}
-  {{- else if eq $persistence.type "hostPath" }}
+  {{- else if eq $volume.type "hostPath" }}
   hostPath:
-    path: {{ required "hostPath not set" $persistence.hostPath }}
-    {{- with $persistence.hostPathType }}
+    path: {{ required "hostPath not set" $volume.hostPath }}
+    {{- with $volume.hostPathType }}
     type: {{ . }}
     {{- end }}
-  {{- else if eq $persistence.type "nfs" }}
+  {{- else if eq $volume.type "nfs" }}
   nfs:
-    server: {{ required "server not set" $persistence.server }}
-    path: {{ required "path not set" $persistence.path }}
-  {{- else if eq $persistence.type "custom" }}
-    {{- toYaml $persistence.volumeSpec | nindent 2 }}
+    server: {{ required "server not set" $volume.server }}
+    path: {{ required "path not set" $volume.path }}
+  {{- else if eq $volume.type "custom" }}
+    {{- toYaml $volume.volumeSpec | nindent 2 }}
   {{- else }}
-    {{- fail (printf "Not a valid persistence.type (%s)" .Values.persistence.type) }}
+    {{- fail (printf "Not a valid volume.type (%s)" $volume.type) }}
   {{- end }}
 {{- end }}
 {{- end }}

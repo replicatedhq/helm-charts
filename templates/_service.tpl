@@ -1,9 +1,9 @@
 {{/*
 Renders the Service objects required by the chart.
 */}}
-{{- define "replicated-library.service" -}}
+{{- define "replicated-library.services" -}}
   {{- /* Generate named services as required */ -}}
-  {{- range $name, $service := .Values.service }}
+  {{- range $name, $service := .Values.services }}
     {{- if $service.enabled -}}
       {{- $serviceValues := $service -}}
 

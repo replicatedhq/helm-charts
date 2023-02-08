@@ -1,7 +1,7 @@
 {{/*
 Probes selection logic.
 */}}
-{{- define "common.main.probes" -}}
+{{- define "replicated-library.probes" -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
   {{ end -}}

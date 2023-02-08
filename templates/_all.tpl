@@ -1,38 +1,43 @@
 {{/*
-Main entrypoint for the common library chart. It will render all underlying templates based on the provided values.
+Main entrypoint for the replicated-library chart. It will render all underlying templates based on the provided values.
 */}}
-{{- define "common.all" -}}
-  {{- /* Merge the local chart values and the common chart defaults */ -}}
-  {{- include "common.values.setup" . }}
-
-  {{ include "common.configmap" . | nindent 0 }}
+{{- define "replicated-library-chart.all" -}}
+  {{- /* Merge the local chart values and the replicated-library chart defaults */ -}}
+  {{- include "replicated-library.values.setup" . }}
 
   {{- /* Build the templates */ -}}
-  {{- include "common.pvc" . }}
+  {{ include "replicated-library.service" . | nindent 0 }}
 
-  {{- if .Values.serviceAccount.create -}}
-    {{- include "common.serviceAccount" . }}
-  {{- end -}}
+  {{ include "replicated-library.ingress" .  | nindent 0 }}
 
-  {{- if .Values.main.enabled }}
-    {{- if eq .Values.main.type "deployment" }}
-      {{- include "common.deployment" . | nindent 0 }}
-    {{ else if eq .Values.main.type "daemonset" }}
-      {{- include "common.daemonset" . | nindent 0 }}
-    {{ else if eq .Values.main.type "statefulset"  }}
-      {{- include "common.statefulset" . | nindent 0 }}
-    {{ else }}
-      {{- fail (printf "Not a valid main.type (%s)" .Values.main.type) }}
-    {{- end -}}
-  {{- end -}}
+  {{ include "replicated-library.configmap" . | nindent 0 }}
 
-  {{ include "common.classes.hpa" . | nindent 0 }}
+  {{ include "replicated-library.secret" .  | nindent 0 }}
 
-  {{ include "common.service" . | nindent 0 }}
+  {{- include "replicated-library.pvc" . }}
 
-  {{ include "common.ingress" .  | nindent 0 }}
+  {{- range $name, $app := .Values.app }}
+    {{- if $app.enabled -}}
+      {{- $appValues := $app -}}
 
-  {{- if .Values.secret -}}
-    {{ include "common.secret" .  | nindent 0 }}
-  {{- end -}}
+      {{- $_ := set $ "AppName" $name -}}
+      {{- $_ := set $ "AppValues" (dict "app" $appValues) -}}
+
+      {{- if eq .appValues.type "deployment" }}
+        {{- include "replicated-library.deployment" $ | nindent 0 }}
+      {{ else if eq $appValues.type "daemonset" }}
+        {{- include "replicated-library.daemonset" $ | nindent 0 }}
+      {{ else if eq $appValues.type "statefulset"  }}
+        {{- include "replicated-library.statefulset" $ | nindent 0 }}
+      {{ else }}
+        {{- fail (printf "Type of (%s) for app - (%s) is not valid" $appValues.type $name) }}
+      {{- end -}}
+
+      {{- if $appValues.serviceAccount.create -}}
+        {{- include "replicated-library.serviceAccount" . }}
+      {{- end -}}
+
+    {{- end }}
+  {{- end }}
+
 {{- end -}}
