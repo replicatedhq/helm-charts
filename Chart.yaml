@@ -1,5 +1,5 @@
 apiVersion: v2
-name: replicated-library-chart
+name: replicatedLibrary
 description: Replicated library chart
 type: library
 version: 0.1.0

@@ -1,8 +1,8 @@
 {{/* Determine the Pod annotations used in the main */}}
 {{- define "replicatedLibrary.podAnnotations" -}}
-  {{- $values := .Values.configmap -}}
+  {{- $values := . -}}
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.configmap -}}
+    {{- with .ObjectValues.configmaps -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
@@ -12,7 +12,7 @@
   {{- end }}
 
   {{- $configMapsFound := false -}}
-  {{- range $name, $configmap := .Values.configmap -}}
+  {{- range $name, $configmap := .Values.configmaps -}}
     {{- if $configmap.enabled -}}
       {{- $configMapsFound = true -}}
     {{- end -}}

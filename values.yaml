@@ -3,9 +3,10 @@ global:
   # -- Set additional global annotations. Helm templates can be used.
   annotations: {}
 
-defaults:
-  image:
-    pullPolicy: IfNotPresent
+# Not yet implemented. intended to be best practice defaults across different areas of the chart
+#defaults:
+#  image:
+#    pullPolicy: IfNotPresent
 
 apps:
   example:
@@ -15,8 +16,8 @@ apps:
     replicas: 1
 
     image:
-      repository:
-      tag:
+      repository: nginx
+      tag: latest
       pullPolicy:
     imagePullSecrets: []
 
@@ -130,7 +131,7 @@ configmaps:
 services:
   example:
     enabled: false
-    name: service-a
+    nameOverride:
     type: ClusterIP
     externalTrafficPolicy:
     ipFamilyPolicy:

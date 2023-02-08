@@ -2,6 +2,7 @@
 Ports included by the main.
 */}}
 {{- define "replicatedLibrary.ports" -}}
+  {{- $name := "default-app" }}
   {{- $values := .Values.service -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}

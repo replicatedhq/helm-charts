@@ -3,6 +3,7 @@ This template serves as the blueprint for the Deployment objects that are create
 within the replicatedLibrary library.
 */}}
 {{- define "replicatedLibrary.deployment" }}
+  {{- $name := "default-app" }}
   {{- $values := . -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
@@ -17,7 +18,7 @@ within the replicatedLibrary library.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $name
+  name: {{ include "replicatedLibrary.names.getappname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -49,7 +50,7 @@ spec:
       {{- include "replicatedLibrary.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with include ("replicatedLibrary.podAnnotations") $values }}
+      {{- with include ("replicatedLibrary.podAnnotations") . }}
       annotations:
         {{- . | nindent 8 }}
       {{- end }}
@@ -59,5 +60,5 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "replicatedLibrary.pod" $values | nindent 6 }}
+      {{- include "replicatedLibrary.pod" . | nindent 6 }}
 {{- end }}

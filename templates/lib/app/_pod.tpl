@@ -2,6 +2,7 @@
 The pod definition included in the main.
 */ -}}
 {{- define "replicatedLibrary.pod" -}}
+  {{- $name := "default-app" }}
   {{- $values := . -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}

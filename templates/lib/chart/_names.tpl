@@ -37,6 +37,7 @@ If release name contains chart name it will be used as a full name.
 
 {{/* Create the name of the ServiceAccount to use */}}
 {{- define "replicatedLibrary.names.serviceAccountName" -}}
+  {{- $name := "default" }}
   {{- $values := .Values.serviceAccount -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
@@ -53,4 +54,13 @@ If release name contains chart name it will be used as a full name.
   {{- else -}}
     {{- default "default" $values.serviceAccount.name -}}
   {{- end -}}
+{{- end -}}
+
+{{/* Get name of current app */}}
+{{- define "replicatedLibrary.names.getappname" -}}
+  {{- $name := include "replicatedLibrary.names.name" . -}}
+  {{- if hasKey . "AppName" -}}
+    {{- $name = .AppName -}}
+  {{ end -}}
+  {{- trunc 63 $name | trimSuffix "-" -}}
 {{- end -}}

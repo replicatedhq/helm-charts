@@ -1,5 +1,6 @@
 {{- /* The main container included in the main */ -}}
 {{- define "replicatedLibrary.mainContainer" -}}
+  {{- $name := "default-app" }}
   {{- $values := . -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}

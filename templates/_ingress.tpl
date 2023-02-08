@@ -1,5 +1,5 @@
 {{/* Renders the Ingress objects required by the chart */}}
-{{- define "replicatedLibrary.ingress" -}}
+{{- define "replicatedLibrary.ingresses" -}}
   {{- /* Generate named ingresses as required */ -}}
   {{- range $name, $ingress := .Values.ingresses }}
     {{- if $ingress.enabled -}}
