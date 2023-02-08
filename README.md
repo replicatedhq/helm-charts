@@ -1,1 +1,1 @@
-# replicated-library-chart
+# replicatedLibrary chart

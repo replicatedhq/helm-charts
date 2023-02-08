@@ -1,13 +1,18 @@
 {{/*
 Environment variables used by containers.
 */}}
-{{- define "common.main.env_vars" -}}
-  {{- $values := .Values.env -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.env -}}
-      {{- $values = . -}}
+{{- define "replicatedLibrary.env_vars" -}}
+  {{- $name := "default-app" }}
+  {{- $values := . -}}
+  {{- if hasKey . "AppName" -}}
+    {{- $name = .AppName -}}
+  {{ end -}}
+
+  {{- if hasKey . "AppValues" -}}
+    {{- with .AppValues.app -}}
+      {{- $values = .env -}}
     {{- end -}}
-  {{- end -}}
+  {{ end -}}
 
   {{- with $values -}}
     {{- $result := list -}}

@@ -1,9 +1,21 @@
 {{/*
 Ports included by the main.
 */}}
-{{- define "common.main.ports" -}}
+{{- define "replicatedLibrary.ports" -}}
+  {{- $name := "default-app" }}
+  {{- $values := .Values.service -}}
+  {{- if hasKey . "AppName" -}}
+    {{- $name = .AppName -}}
+  {{ end -}}
+
+  {{- if hasKey . "AppValues" -}}
+    {{- with .AppValues.app -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{ end -}}
+
   {{- $ports := list -}}
-  {{- range .Values.service -}}
+  {{- range $values.service -}}
     {{- if .enabled -}}
       {{- range $name, $port := .ports -}}
         {{- $_ := set $port "name" $name -}}

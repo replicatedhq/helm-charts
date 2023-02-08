@@ -1,33 +1,33 @@
 {{/*
-This template serves as a blueprint for all configMap objects that are created
+This template serves as a blueprint for all secret objects that are created
 within the replicatedLibrary library.
 */}}
-{{- define "replicatedLibrary.classes.configmap" -}}
+{{- define "replicatedLibrary.classes.secret" -}}
   {{- $fullName := include "replicatedLibrary.names.fullname" . -}}
-  {{- $configMapName := $fullName -}}
-  {{- $values := .Values.configmap -}}
+  {{- $secretMapName := $fullName -}}
+  {{- $values := .Values.secret -}}
 
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.configmap -}}
+    {{- with .ObjectValues.secret -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
 
   {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
-    {{- $configMapName = printf "%v-%v" $configMapName $values.nameOverride -}}
+    {{- $secretMapName = printf "%v-%v" $secretMapName $values.nameOverride -}}
   {{- end }}
 ---
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
-  name: {{ $configMapName }}
+  name: {{ $secretMapName }}
   {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
-data:
+stringData:
 {{- with $values.data }}
   {{- tpl (toYaml .) $ | nindent 2 }}
 {{- end }}

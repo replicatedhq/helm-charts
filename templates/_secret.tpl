@@ -1,17 +1,19 @@
 {{/*
-The Secret object to be created.
+Renders the Secret objects required by the chart.
 */}}
-{{- define "common.secret" }}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "common.names.fullname" . }}
-  labels: {{- include "common.labels" $ | nindent 4 }}
-  annotations: {{- include "common.annotations" $ | nindent 4 }}
-type: Opaque
-{{- with .Values.secret }}
-stringData:
-  {{- toYaml . | nindent 2 }}
-{{- end }}
+{{- define "replicatedLibrary.secrets" -}}
+  {{- /* Generate named secrets as required */ -}}
+  {{- range $name, $secret := .Values.secrets }}
+    {{- if $secret.enabled -}}
+      {{- $secretValues := $secret -}}
+
+      {{/* set the default nameOverride to the secret name */}}
+      {{- if not $secretValues.nameOverride -}}
+        {{- $_ := set $secretValues "nameOverride" $name -}}
+      {{ end -}}
+
+      {{- $_ := set $ "ObjectValues" (dict "secret" $secretValues) -}}
+      {{- include "replicatedLibrary.classes.secret" $ }}
+    {{- end }}
+  {{- end }}
 {{- end }}

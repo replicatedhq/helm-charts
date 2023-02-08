@@ -1,8 +1,8 @@
 {{/*
 This template serves as a blueprint for all Service objects that are created
-within the common library.
+within the replicatedLibrary library.
 */}}
-{{- define "common.classes.service" -}}
+{{- define "replicatedLibrary.classes.service" -}}
 {{- $values := .Values.service -}}
 {{- if hasKey . "ObjectValues" -}}
   {{- with .ObjectValues.service -}}
@@ -10,25 +10,21 @@ within the common library.
   {{- end -}}
 {{ end -}}
 
-{{- $serviceName := include "common.names.fullname" . -}}
+{{- $serviceName := include "replicatedLibrary.names.fullname" . -}}
 {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
   {{- $serviceName = printf "%v-%v" $serviceName $values.nameOverride -}}
 {{ end -}}
 {{- $svcType := $values.type | default "" -}}
-{{- $primaryPort := get $values.ports (include "common.classes.service.ports.primary" (dict "values" $values)) }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ $serviceName }}
-  {{- with (merge ($values.labels | default dict) (include "common.labels" $ | fromYaml)) }}
+  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
   annotations:
-  {{- if eq ( $primaryPort.protocol | default "" ) "HTTPS" }}
-    traefik.ingress.kubernetes.io/service.serversscheme: https
-  {{- end }}
-  {{- with (merge ($values.annotations | default dict) (include "common.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
     {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -94,5 +90,5 @@ spec:
   {{- end }}
   {{- end }}
   selector:
-    {{- include "common.labels.selectorLabels" . | nindent 4 }}
+    {{- include "replicatedLibrary.labels.selectorLabels" . | nindent 4 }}
 {{- end }}
