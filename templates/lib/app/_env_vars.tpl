@@ -1,7 +1,8 @@
 {{/*
 Environment variables used by containers.
 */}}
-{{- define "replicated-library.env_vars" -}}
+{{- define "replicatedLibrary.env_vars" -}}
+  {{- $values := . -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
   {{ end -}}

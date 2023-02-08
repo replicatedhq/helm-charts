@@ -1,7 +1,7 @@
 {{/*
 Renders the Persistent Volume Claim objects required by the chart.
 */}}
-{{- define "replicated-library.pvc" -}}
+{{- define "replicatedLibrary.pvc" -}}
   {{- /* Generate pvc as required */ -}}
   {{- range $index, $PVC := .Values.volumes }}
     {{- if and $PVC.enabled (eq (default "pvc" $PVC.type) "pvc") (not $PVC.existingClaim) -}}
@@ -10,7 +10,7 @@ Renders the Persistent Volume Claim objects required by the chart.
         {{- $_ := set $volumeValues "nameOverride" $index -}}
       {{- end -}}
       {{- $_ := set $ "ObjectValues" (dict "volume" $volumeValues) -}}
-      {{- include "replicated-library.classes.pvc" $ | nindent 0 -}}
+      {{- include "replicatedLibrary.classes.pvc" $ | nindent 0 -}}
     {{- end }}
   {{- end }}
 {{- end }}

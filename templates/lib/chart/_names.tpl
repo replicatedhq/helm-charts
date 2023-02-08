@@ -1,5 +1,5 @@
 {{/* Expand the name of the chart */}}
-{{- define "replicated-library.names.name" -}}
+{{- define "replicatedLibrary.names.name" -}}
   {{- $globalNameOverride := "" -}}
   {{- if hasKey .Values "global" -}}
     {{- $globalNameOverride = (default $globalNameOverride .Values.global.nameOverride) -}}
@@ -12,8 +12,8 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "replicated-library.names.fullname" -}}
-  {{- $name := include "replicated-library.names.name" . -}}
+{{- define "replicatedLibrary.names.fullname" -}}
+  {{- $name := include "replicatedLibrary.names.name" . -}}
   {{- $globalFullNameOverride := "" -}}
   {{- if hasKey .Values "global" -}}
     {{- $globalFullNameOverride = (default $globalFullNameOverride .Values.global.fullnameOverride) -}}
@@ -31,12 +31,13 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/* Create chart name and version as used by the chart label */}}
-{{- define "replicated-library.names.chart" -}}
+{{- define "replicatedLibrary.names.chart" -}}
   {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/* Create the name of the ServiceAccount to use */}}
-{{- define "replicated-library.names.serviceAccountName" -}}
+{{- define "replicatedLibrary.names.serviceAccountName" -}}
+  {{- $values := .Values.serviceAccount -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
   {{ end -}}
@@ -48,7 +49,7 @@ If release name contains chart name it will be used as a full name.
   {{ end -}}
 
   {{- if $values.serviceAccount.create -}}
-    {{- default (include "replicated-library.names.fullname" .) $values.serviceAccount.name -}}
+    {{- default (include "replicatedLibrary.names.fullname" .) $values.serviceAccount.name -}}
   {{- else -}}
     {{- default "default" $values.serviceAccount.name -}}
   {{- end -}}

@@ -1,5 +1,6 @@
 {{- /* The main container included in the main */ -}}
-{{- define "replicated-library.mainContainer" -}}
+{{- define "replicatedLibrary.mainContainer" -}}
+  {{- $values := . -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
   {{ end -}}
@@ -9,8 +10,8 @@
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
-- name: {{ include "replicated-library.names.fullname" . }}
-  image: {{ printf "%s:%s" .$values.image.repository (default .Chart.AppVersion .$values.image.tag) | quote }}
+- name: {{ include "replicatedLibrary.names.fullname" . }}
+  image: {{ printf "%s:%s" $values.image.repository (default .Chart.AppVersion $values.image.tag) | quote }}
   imagePullPolicy: {{ $values.image.pullPolicy }}
   {{- with $values.command }}
   command:
@@ -45,7 +46,7 @@
 
   {{- with $values.env }}
   env:
-    {{- get (fromYaml (include "replicated-library.env_vars" $)) "env" | toYaml | nindent 4 -}}
+    {{- get (fromYaml (include "replicatedLibrary.env_vars" $)) "env" | toYaml | nindent 4 -}}
   {{- end }}
   {{- if or $values.envFrom $values.secret }}
   envFrom:
@@ -54,16 +55,16 @@
     {{- end }}
     {{- if $values.secret }}
     - secretRef:
-        name: {{ include "replicated-library.names.fullname" . }}
+        name: {{ include "replicatedLibrary.names.fullname" . }}
     {{- end }}
   {{- end }}
   ports:
-  {{- include "replicated-library.ports" . | trim | nindent 4 }}
+  {{- include "replicatedLibrary.ports" . | trim | nindent 4 }}
   {{- with $values.volumeMounts }}
   volumeMounts:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- include "replicated-library.probes" . | trim | nindent 2 }}
+  {{- include "replicatedLibrary.probes" . | trim | nindent 2 }}
   {{- with $values.resources }}
   resources:
     {{- toYaml . | nindent 4 }}

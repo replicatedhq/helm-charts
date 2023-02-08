@@ -1,10 +1,10 @@
 {{/*
 This template serves as a blueprint for all secret objects that are created
-within the replicated-library library.
+within the replicatedLibrary library.
 */}}
-{{- define "replicated-library.classes.secret" -}}
-  {{- $fullName := include "replicated-library.names.fullname" . -}}
-  {{- $secretName := $fullName -}}
+{{- define "replicatedLibrary.classes.secret" -}}
+  {{- $fullName := include "replicatedLibrary.names.fullname" . -}}
+  {{- $secretMapName := $fullName -}}
   {{- $values := .Values.secret -}}
 
   {{- if hasKey . "ObjectValues" -}}
@@ -21,10 +21,10 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: {{ $secretMapName }}
-  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
+  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 stringData:

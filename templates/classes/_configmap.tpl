@@ -1,9 +1,9 @@
 {{/*
 This template serves as a blueprint for all configMap objects that are created
-within the replicated-library library.
+within the replicatedLibrary library.
 */}}
-{{- define "replicated-library.classes.configmap" -}}
-  {{- $fullName := include "replicated-library.names.fullname" . -}}
+{{- define "replicatedLibrary.classes.configmap" -}}
+  {{- $fullName := include "replicatedLibrary.names.fullname" . -}}
   {{- $configMapName := $fullName -}}
   {{- $values := .Values.configmap -}}
 
@@ -21,10 +21,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $configMapName }}
-  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
+  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 data:

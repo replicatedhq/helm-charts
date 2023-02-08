@@ -1,8 +1,8 @@
 {{/*
 This template serves as a blueprint for all Service objects that are created
-within the replicated-library library.
+within the replicatedLibrary library.
 */}}
-{{- define "replicated-library.classes.service" -}}
+{{- define "replicatedLibrary.classes.service" -}}
 {{- $values := .Values.service -}}
 {{- if hasKey . "ObjectValues" -}}
   {{- with .ObjectValues.service -}}
@@ -10,7 +10,7 @@ within the replicated-library library.
   {{- end -}}
 {{ end -}}
 
-{{- $serviceName := include "replicated-library.names.fullname" . -}}
+{{- $serviceName := include "replicatedLibrary.names.fullname" . -}}
 {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
   {{- $serviceName = printf "%v-%v" $serviceName $values.nameOverride -}}
 {{ end -}}
@@ -20,11 +20,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $serviceName }}
-  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
+  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
   annotations:
-  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
     {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -90,5 +90,5 @@ spec:
   {{- end }}
   {{- end }}
   selector:
-    {{- include "replicated-library.labels.selectorLabels" . | nindent 4 }}
+    {{- include "replicatedLibrary.labels.selectorLabels" . | nindent 4 }}
 {{- end }}

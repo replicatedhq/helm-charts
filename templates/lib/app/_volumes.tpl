@@ -1,12 +1,12 @@
 {{/*
 Volumes included by the main.
 */}}
-{{- define "replicated-library.volumes" -}}
+{{- define "replicatedLibrary.volumes" -}}
 {{- range $index, $volume := .Values.volumes }}
 {{- if $volume.enabled }}
 - name: {{ $index }}
   {{- if eq (default "pvc" $volume.type) "pvc" }}
-    {{- $pvcName := (include "replicated-library.names.fullname" $) -}}
+    {{- $pvcName := (include "replicatedLibrary.names.fullname" $) -}}
     {{- if $volume.existingClaim }}
       {{- /* Always prefer an existingClaim if that is set */}}
       {{- $pvcName = $volume.existingClaim -}}
@@ -14,10 +14,10 @@ Volumes included by the main.
       {{- /* Otherwise refer to the PVC name */}}
       {{- if $volume.nameOverride -}}
         {{- if not (eq $volume.nameOverride "-") -}}
-          {{- $pvcName = (printf "%s-%s" (include "replicated-library.names.fullname" $) $volume.nameOverride) -}}
+          {{- $pvcName = (printf "%s-%s" (include "replicatedLibrary.names.fullname" $) $volume.nameOverride) -}}
         {{- end -}}
       {{- else -}}
-        {{- $pvcName = (printf "%s-%s" (include "replicated-library.names.fullname" $) $index) -}}
+        {{- $pvcName = (printf "%s-%s" (include "replicatedLibrary.names.fullname" $) $index) -}}
       {{- end -}}
     {{- end }}
   persistentVolumeClaim:

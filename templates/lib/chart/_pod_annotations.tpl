@@ -1,14 +1,15 @@
 {{/* Determine the Pod annotations used in the main */}}
-{{- define "replicated-library.podAnnotations" -}}
+{{- define "replicatedLibrary.podAnnotations" -}}
+  {{- $values := .Values.configmap -}}
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.configmap -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
 
-  {{- if $values.podAnnotations -}}
-    {{- tpl (toYaml $values.podAnnotations) . | nindent 0 -}}
-  {{- end -}}
+  {{- if $values.podAnnotations }}
+    {{- tpl (toYaml $values.podAnnotations) . | nindent 0 }}
+  {{- end }}
 
   {{- $configMapsFound := false -}}
   {{- range $name, $configmap := .Values.configmap -}}
@@ -17,6 +18,6 @@
     {{- end -}}
   {{- end -}}
   {{- if $configMapsFound -}}
-    {{- printf "checksum/config: %v" (include ("replicated-library.configmap") . | sha256sum) | nindent 0 -}}
+    {{- printf "checksum/config: %v" (include ("replicatedLibrary.configmap") . | sha256sum) | nindent 0 -}}
   {{- end -}}
 {{- end -}}

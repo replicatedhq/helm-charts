@@ -1,7 +1,8 @@
 {{/*
 Probes selection logic.
 */}}
-{{- define "replicated-library.probes" -}}
+{{- define "replicatedLibrary.probes" -}}
+  {{- $values := .Values.probes -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
   {{ end -}}
@@ -12,12 +13,13 @@ Probes selection logic.
     {{- end -}}
   {{ end -}}
 
-{{- range $probeName, $probe := $values.probes }}
-  {{- if $probe.enabled -}}
-    {{- "" | nindent 0 }}
-    {{- $probeName }}Probe:
-    {{- if $probe.custom -}}
-      {{- $probe.spec | toYaml | nindent 2 }}
+  {{- range $probeName, $probe := $values.probes }}
+    {{- if $probe.enabled -}}
+      {{- "" | nindent 0 }}
+      {{- $probeName }}Probe:
+      {{- if $probe.custom -}}
+        {{- $probe.spec | toYaml | nindent 2 }}
+      {{- end }}
+    {{- end }}
   {{- end }}
-{{- end }}
 {{- end }}

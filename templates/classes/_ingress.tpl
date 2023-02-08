@@ -1,10 +1,12 @@
 {{/*
 This template serves as a blueprint for all Ingress objects that are created
-within the replicated-library library.
+within the replicatedLibrary library.
 */}}
-{{- define "replicated-library.classes.ingress" -}}
-  {{- $fullName := include "replicated-library.names.fullname" . -}}
+{{- define "replicatedLibrary.classes.ingress" -}}
+  {{- $fullName := include "replicatedLibrary.names.fullname" . -}}
   {{- $ingressName := $fullName -}}
+  {{- $defaultServiceName := $fullName -}}
+  {{- $defaultServicePort := "3000" -}}
   {{- $values := .Values.ingress -}}
 
   {{- if hasKey . "ObjectValues" -}}
@@ -17,16 +19,16 @@ within the replicated-library library.
     {{- $ingressName = printf "%v-%v" $ingressName $values.nameOverride -}}
   {{- end -}}
 
-  {{- $isStable := include "replicated-library.capabilities.ingress.isStable" . }}
+  {{- $isStable := include "replicatedLibrary.capabilities.ingress.isStable" . }}
 ---
-apiVersion: {{ include "replicated-library.capabilities.ingress.apiVersion" . }}
+apiVersion: {{ include "replicatedLibrary.capabilities.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
   name: {{ $ingressName }}
-  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
+  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -51,6 +53,8 @@ spec:
       http:
         paths:
           {{- range .paths }}
+          {{- $service := $defaultServiceName -}}
+          {{- $port := $defaultServicePort -}}
           {{- if .service -}}
             {{- $service = default $service .service.name -}}
             {{- $port = default $port .service.port -}}
