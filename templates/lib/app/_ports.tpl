@@ -1,7 +1,7 @@
 {{/*
 Ports included by the main.
 */}}
-{{- define "replicatedLibrary.ports" -}}
+{{- define "replicated-library.ports" -}}
   {{- $values := .Values.service -}}
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}

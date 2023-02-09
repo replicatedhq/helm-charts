@@ -1,5 +1,5 @@
 {{/* Determine the Pod annotations used in the main */}}
-{{- define "replicatedLibrary.podAnnotations" -}}
+{{- define "replicated-library.podAnnotations" -}}
   {{- $values := . -}}
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.configmaps -}}
@@ -18,6 +18,6 @@
     {{- end -}}
   {{- end -}}
   {{- if $configMapsFound -}}
-    {{- printf "checksum/config: %v" (include ("replicatedLibrary.configmap") . | sha256sum) | nindent 0 -}}
+    {{- printf "checksum/config: %v" (include ("replicated-library.configmap") . | sha256sum) | nindent 0 -}}
   {{- end -}}
 {{- end -}}

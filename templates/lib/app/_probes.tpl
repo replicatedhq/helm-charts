@@ -1,7 +1,7 @@
 {{/*
 Probes selection logic.
 */}}
-{{- define "replicatedLibrary.probes" -}}
+{{- define "replicated-library.probes" -}}
   {{- $values := .Values.probes -}}
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}

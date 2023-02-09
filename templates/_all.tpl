@@ -1,20 +1,20 @@
 {{/*
-Main entrypoint for the replicatedLibrary chart. It will render all underlying templates based on the provided values.
+Main entrypoint for the replicated-library chart. It will render all underlying templates based on the provided values.
 */}}
-{{- define "replicatedLibrary.all" -}}
-  {{- /* Merge the local chart values and the replicatedLibrary chart defaults */ -}}
-  {{- include "replicatedLibrary.values.setup" . }}
+{{- define "replicated-library.all" -}}
+  {{- /* Merge the local chart values and the replicated-library chart defaults */ -}}
+  {{- include "replicated-library.values.setup" . }}
 
   {{- /* Build the templates */ -}}
-  {{ include "replicatedLibrary.services" . | nindent 0 }}
+  {{ include "replicated-library.services" . | nindent 0 }}
 
-  {{ include "replicatedLibrary.ingresses" .  | nindent 0 }}
+  {{ include "replicated-library.ingresses" .  | nindent 0 }}
 
-  {{ include "replicatedLibrary.configmaps" . | nindent 0 }}
+  {{ include "replicated-library.configmaps" . | nindent 0 }}
 
-  {{ include "replicatedLibrary.secrets" .  | nindent 0 }}
+  {{ include "replicated-library.secrets" .  | nindent 0 }}
 
-  {{- include "replicatedLibrary.pvc" . }}
+  {{- include "replicated-library.pvc" . }}
 
   {{- range $name, $app := .Values.apps }}
     {{- if $app.enabled -}}
@@ -24,18 +24,18 @@ Main entrypoint for the replicatedLibrary chart. It will render all underlying t
       {{- $_ := set $ "AppValues" (dict "app" $appValues) -}}
 
       {{- if eq $appValues.type "deployment" }}
-        {{- include "replicatedLibrary.deployment" $ | nindent 0 }}
+        {{- include "replicated-library.deployment" $ | nindent 0 }}
       {{ else if eq $appValues.type "daemonset" }}
-        {{- include "replicatedLibrary.daemonset" $ | nindent 0 }}
+        {{- include "replicated-library.daemonset" $ | nindent 0 }}
       {{ else if eq $appValues.type "statefulset"  }}
-        {{- include "replicatedLibrary.statefulset" $ | nindent 0 }}
+        {{- include "replicated-library.statefulset" $ | nindent 0 }}
       {{ else }}
         {{- fail (printf "Type of (%s) for app - (%s) is not valid" $appValues.type $name) }}
       {{- end -}}
 
       {{- if $appValues.serviceAccount -}}
         {{- if $appValues.serviceAccount.create -}}
-          {{- include "replicatedLibrary.serviceAccount" $ }}
+          {{- include "replicated-library.serviceAccount" $ }}
         {{- end -}}
       {{- end -}}
 

@@ -1,7 +1,7 @@
-{{/* replicatedLibrary labels shared across objects */}}
-{{- define "replicatedLibrary.labels" -}}
-helm.sh/chart: {{ include "replicatedLibrary.names.chart" . }}
-app.kubernetes.io/name: {{ include "replicatedLibrary.names.name" . }}
+{{/* replicated-library labels shared across objects */}}
+{{- define "replicated-library.labels" -}}
+helm.sh/chart: {{ include "replicated-library.names.chart" . }}
+app.kubernetes.io/name: {{ include "replicated-library.names.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
   {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -17,11 +17,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/* Selector labels shared across objects */}}
-{{- define "replicatedLibrary.labels.selectorLabels" -}}
-app.kubernetes.io/appname: {{ include "replicatedLibrary.names.appname" . }}
+{{- define "replicated-library.labels.selectorLabels" -}}
+app.kubernetes.io/appname: {{ include "replicated-library.names.appname" . }}
 {{- end -}}
 
-{{- define "replicatedLibrary.labels.serviceSelectorLabels" -}}
+{{- define "replicated-library.labels.serviceSelectorLabels" -}}
   {{- $serviceValues := . -}}
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.service -}}
@@ -32,7 +32,7 @@ app.kubernetes.io/appname: {{ include "replicatedLibrary.names.appname" . }}
   {{- range $appName, $appValues := .Values.apps }}
     {{- if and $appValues.enabled (eq $appName $serviceValues.appName) (ne $matchingAppFound true) -}}
       {{- $matchingAppFound = true -}}
-app.kubernetes.io/appname: {{ include "replicatedLibrary.names.servicename" $ }}
+app.kubernetes.io/appname: {{ include "replicated-library.names.servicename" $ }}
     {{- end }}
   {{- end }}
   {{- if (ne $matchingAppFound true) -}}

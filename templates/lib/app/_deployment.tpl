@@ -1,8 +1,8 @@
 {{/*
 This template serves as the blueprint for the Deployment objects that are created
-within the replicatedLibrary library.
+within the replicated-library library.
 */}}
-{{- define "replicatedLibrary.deployment" }}
+{{- define "replicated-library.deployment" }}
   {{- $values := . -}}
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}
@@ -13,11 +13,11 @@ within the replicatedLibrary library.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "replicatedLibrary.names.appname" . }}
-  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
+  name: {{ include "replicated-library.names.appname" . }}
+  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -42,18 +42,18 @@ spec:
     {{- end }}
   selector:
     matchLabels:
-      {{- include "replicatedLibrary.labels.selectorLabels" . | nindent 6 }}
+      {{- include "replicated-library.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with include ("replicatedLibrary.podAnnotations") . }}
+      {{- with include ("replicated-library.podAnnotations") . }}
       annotations:
         {{- . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "replicatedLibrary.labels.selectorLabels" . | nindent 8 }}
+        {{- include "replicated-library.labels.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "replicatedLibrary.pod" . | nindent 6 }}
+      {{- include "replicated-library.pod" . | nindent 6 }}
 {{- end }}

@@ -1,7 +1,7 @@
 {{/*
 The ServiceAccount object to be created.
 */}}
-{{- define "replicatedLibrary.serviceAccount" }}
+{{- define "replicated-library.serviceAccount" }}
   {{- $values := .Values.serviceAccount -}}
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}
@@ -12,9 +12,9 @@ The ServiceAccount object to be created.
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "replicatedLibrary.names.serviceAccountName" . }}
-  labels: {{- include "replicatedLibrary.labels" $ | nindent 4 }}
-  {{- with (merge ($values.serviceAccount.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
+  name: {{ include "replicated-library.names.serviceAccountName" . }}
+  labels: {{- include "replicated-library.labels" $ | nindent 4 }}
+  {{- with (merge ($values.serviceAccount.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 {{- end }}

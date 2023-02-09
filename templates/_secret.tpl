@@ -1,7 +1,7 @@
 {{/*
 Renders the Secret objects required by the chart.
 */}}
-{{- define "replicatedLibrary.secrets" -}}
+{{- define "replicated-library.secrets" -}}
   {{- /* Generate named secrets as required */ -}}
   {{- range $name, $secret := .Values.secrets }}
     {{- if $secret.enabled -}}
@@ -13,7 +13,7 @@ Renders the Secret objects required by the chart.
       {{ end -}}
 
       {{- $_ := set $ "ObjectValues" (dict "secret" $secretValues) -}}
-      {{- include "replicatedLibrary.classes.secret" $ }}
+      {{- include "replicated-library.classes.secret" $ }}
     {{- end }}
   {{- end }}
 {{- end }}

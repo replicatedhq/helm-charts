@@ -1,5 +1,5 @@
 {{/* Expand the name of the chart */}}
-{{- define "replicatedLibrary.names.name" -}}
+{{- define "replicated-library.names.name" -}}
   {{- $globalNameOverride := "" -}}
   {{- if hasKey .Values "global" -}}
     {{- $globalNameOverride = (default $globalNameOverride .Values.global.nameOverride) -}}
@@ -12,8 +12,8 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "replicatedLibrary.names.fullname" -}}
-  {{- $name := include "replicatedLibrary.names.name" . -}}
+{{- define "replicated-library.names.fullname" -}}
+  {{- $name := include "replicated-library.names.name" . -}}
   {{- $globalFullNameOverride := "" -}}
   {{- if hasKey .Values "global" -}}
     {{- $globalFullNameOverride = (default $globalFullNameOverride .Values.global.fullnameOverride) -}}
@@ -31,12 +31,12 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/* Create chart name and version as used by the chart label */}}
-{{- define "replicatedLibrary.names.chart" -}}
+{{- define "replicated-library.names.chart" -}}
   {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/* Create the name of the ServiceAccount to use */}}
-{{- define "replicatedLibrary.names.serviceAccountName" -}}
+{{- define "replicated-library.names.serviceAccountName" -}}
   {{- $name := "default" }}
   {{- $values := .Values.serviceAccount -}}
   {{- if hasKey . "AppName" -}}
@@ -51,7 +51,7 @@ If release name contains chart name it will be used as a full name.
 
   {{- if $values.serviceAccount -}}
     {{- if $values.serviceAccount.create -}}
-      {{- default (include "replicatedLibrary.names.fullname" .) $values.serviceAccount.name -}}
+      {{- default (include "replicated-library.names.fullname" .) $values.serviceAccount.name -}}
     {{- else -}}
       {{- default "default" $values.serviceAccount.name -}}
     {{- end -}}
@@ -59,8 +59,8 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/* Get name of current app */}}
-{{- define "replicatedLibrary.names.appname" -}}
-  {{- $name := include "replicatedLibrary.names.name" . -}}
+{{- define "replicated-library.names.appname" -}}
+  {{- $name := include "replicated-library.names.name" . -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}
   {{ end -}}
@@ -68,7 +68,7 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/* Get name of current service */}}
-{{- define "replicatedLibrary.names.servicename" -}}
+{{- define "replicated-library.names.servicename" -}}
   {{- $name := "default" -}}
   {{- if hasKey . "ObjectName" -}}
     {{- $name = .ObjectName -}}

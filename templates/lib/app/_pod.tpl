@@ -1,7 +1,7 @@
 {{- /*
 The pod definition included in the main.
 */ -}}
-{{- define "replicatedLibrary.pod" -}}
+{{- define "replicated-library.pod" -}}
   {{- $values := . -}}
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}
@@ -13,7 +13,7 @@ The pod definition included in the main.
 imagePullSecrets:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-serviceAccountName: {{ include "replicatedLibrary.names.serviceAccountName" . }}
+serviceAccountName: {{ include "replicated-library.names.serviceAccountName" . }}
 automountServiceAccountToken: {{ $values.automountServiceAccountToken }}
   {{- with $values.podSecurityContext }}
 securityContext:
@@ -61,7 +61,7 @@ initContainers:
       {{- end }}
       {{- if $container.env -}}
         {{- $_ := set $ "ObjectValues" (dict "env" $container.env) -}}
-        {{- $newEnv := fromYaml (include "replicatedLibrary.env_vars" $) -}}
+        {{- $newEnv := fromYaml (include "replicated-library.env_vars" $) -}}
         {{- $_ := unset $.ObjectValues "env" -}}
         {{- $_ := set $container "env" $newEnv.env }}
       {{- end }}
@@ -70,7 +70,7 @@ initContainers:
     {{- tpl (toYaml $initContainers) $ | nindent 2 }}
   {{- end }}
 containers:
-  {{- include "replicatedLibrary.mainContainer" . | nindent 2 }}
+  {{- include "replicated-library.mainContainer" . | nindent 2 }}
   {{- with .additionalContainers }}
     {{- $additionalContainers := list }}
     {{- range $name, $container := . }}
@@ -79,7 +79,7 @@ containers:
       {{- end }}
       {{- if $container.env -}}
         {{- $_ := set $ "ObjectValues" (dict "env" $container.env) -}}
-        {{- $newEnv := fromYaml (include "replicatedLibrary.env_vars" $) -}}
+        {{- $newEnv := fromYaml (include "replicated-library.env_vars" $) -}}
         {{- $_ := set $container "env" $newEnv.env }}
         {{- $_ := unset $.ObjectValues "env" -}}
       {{- end }}
@@ -87,7 +87,7 @@ containers:
     {{- end }}
     {{- tpl (toYaml $additionalContainers) $ | nindent 2 }}
   {{- end }}
-  {{- with (include "replicatedLibrary.volumes" . | trim) }}
+  {{- with (include "replicated-library.volumes" . | trim) }}
 volumes:
     {{- nindent 2 . }}
   {{- end }}

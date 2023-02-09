@@ -1,9 +1,9 @@
 {{/*
 This template serves as a blueprint for all Ingress objects that are created
-within the replicatedLibrary library.
+within the replicated-library library.
 */}}
-{{- define "replicatedLibrary.classes.ingress" -}}
-  {{- $fullName := include "replicatedLibrary.names.fullname" . -}}
+{{- define "replicated-library.classes.ingress" -}}
+  {{- $fullName := include "replicated-library.names.fullname" . -}}
   {{- $ingressName := $fullName -}}
   {{- $defaultServiceName := $fullName -}}
   {{- $defaultServicePort := "3000" -}}
@@ -19,16 +19,16 @@ within the replicatedLibrary library.
     {{- $ingressName = printf "%v-%v" $ingressName $values.nameOverride -}}
   {{- end -}}
 
-  {{- $isStable := include "replicatedLibrary.capabilities.ingress.isStable" . }}
+  {{- $isStable := include "replicated-library.capabilities.ingress.isStable" . }}
 ---
-apiVersion: {{ include "replicatedLibrary.capabilities.ingress.apiVersion" . }}
+apiVersion: {{ include "replicated-library.capabilities.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
   name: {{ $ingressName }}
-  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
+  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:

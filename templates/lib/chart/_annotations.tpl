@@ -1,5 +1,5 @@
-{{/* replicatedLibrary annotations shared across objects */}}
-{{- define "replicatedLibrary.annotations" -}}
+{{/* replicated-library annotations shared across objects */}}
+{{- define "replicated-library.annotations" -}}
   {{- with .Values.global.annotations }}
     {{- range $k, $v := . }}
       {{- $name := $k }}

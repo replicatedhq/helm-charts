@@ -1,8 +1,8 @@
 {{/*
 This template serves as a blueprint for all Service objects that are created
-within the replicatedLibrary library.
+within the replicated-library library.
 */}}
-{{- define "replicatedLibrary.classes.service" -}}
+{{- define "replicated-library.classes.service" -}}
   {{- $name := "default" }}
   {{- $values := .Values.service -}}
   {{- if hasKey . "ObjectName" -}}
@@ -24,11 +24,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $serviceName }}
-  {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
+  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
   annotations:
-  {{- with (merge ($values.annotations | default dict) (include "replicatedLibrary.annotations" $ | fromYaml)) }}
+  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
     {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -94,5 +94,5 @@ spec:
   {{- end }}
   {{- end }}
   selector:
-    {{- include "replicatedLibrary.labels.serviceSelectorLabels" . | nindent 4 }}
+    {{- include "replicated-library.labels.serviceSelectorLabels" . | nindent 4 }}
 {{- end }}
