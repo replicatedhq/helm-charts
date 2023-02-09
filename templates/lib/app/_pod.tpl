@@ -2,12 +2,7 @@
 The pod definition included in the main.
 */ -}}
 {{- define "replicatedLibrary.pod" -}}
-  {{- $name := "default-app" }}
   {{- $values := . -}}
-  {{- if hasKey . "AppName" -}}
-    {{- $name = .AppName -}}
-  {{ end -}}
-
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}
       {{- $values = . -}}
@@ -51,9 +46,11 @@ dnsConfig:
     {{- toYaml . | nindent 2 }}
   {{- end }}
 enableServiceLinks: {{ $values.enableServiceLinks }}
+{{- if $values.termination }}
   {{- with $values.termination.gracePeriodSeconds }}
 terminationGracePeriodSeconds: {{ . }}
   {{- end }}
+{{- end }}
   {{- if $values.initContainers }}
 initContainers:
     {{- $initContainers := list }}

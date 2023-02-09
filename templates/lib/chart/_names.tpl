@@ -49,15 +49,17 @@ If release name contains chart name it will be used as a full name.
     {{- end -}}
   {{ end -}}
 
-  {{- if $values.serviceAccount.create -}}
-    {{- default (include "replicatedLibrary.names.fullname" .) $values.serviceAccount.name -}}
-  {{- else -}}
-    {{- default "default" $values.serviceAccount.name -}}
+  {{- if $values.serviceAccount -}}
+    {{- if $values.serviceAccount.create -}}
+      {{- default (include "replicatedLibrary.names.fullname" .) $values.serviceAccount.name -}}
+    {{- else -}}
+      {{- default "default" $values.serviceAccount.name -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 
 {{/* Get name of current app */}}
-{{- define "replicatedLibrary.names.getappname" -}}
+{{- define "replicatedLibrary.names.appname" -}}
   {{- $name := include "replicatedLibrary.names.name" . -}}
   {{- if hasKey . "AppName" -}}
     {{- $name = .AppName -}}

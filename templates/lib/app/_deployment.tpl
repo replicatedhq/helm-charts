@@ -3,12 +3,7 @@ This template serves as the blueprint for the Deployment objects that are create
 within the replicatedLibrary library.
 */}}
 {{- define "replicatedLibrary.deployment" }}
-  {{- $name := "default-app" }}
   {{- $values := . -}}
-  {{- if hasKey . "AppName" -}}
-    {{- $name = .AppName -}}
-  {{ end -}}
-
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}
       {{- $values = . -}}
@@ -18,7 +13,7 @@ within the replicatedLibrary library.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "replicatedLibrary.names.getappname" . }}
+  name: {{ include "replicatedLibrary.names.appname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicatedLibrary.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

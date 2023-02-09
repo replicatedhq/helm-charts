@@ -33,8 +33,10 @@ Main entrypoint for the replicatedLibrary chart. It will render all underlying t
         {{- fail (printf "Type of (%s) for app - (%s) is not valid" $appValues.type $name) }}
       {{- end -}}
 
-      {{- if $appValues.serviceAccount.create -}}
-        {{- include "replicatedLibrary.serviceAccount" $ }}
+      {{- if $appValues.serviceAccount -}}
+        {{- if $appValues.serviceAccount.create -}}
+          {{- include "replicatedLibrary.serviceAccount" $ }}
+        {{- end -}}
       {{- end -}}
 
     {{- end }}

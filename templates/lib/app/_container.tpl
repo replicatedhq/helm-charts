@@ -1,17 +1,12 @@
 {{- /* The main container included in the main */ -}}
 {{- define "replicatedLibrary.mainContainer" -}}
-  {{- $name := "default-app" }}
   {{- $values := . -}}
-  {{- if hasKey . "AppName" -}}
-    {{- $name = .AppName -}}
-  {{ end -}}
-
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
-- name: {{ include "replicatedLibrary.names.fullname" . }}
+- name: {{ include "replicatedLibrary.names.appname" . }}
   image: {{ printf "%s:%s" $values.image.repository (default .Chart.AppVersion $values.image.tag) | quote }}
   imagePullPolicy: {{ $values.image.pullPolicy }}
   {{- with $values.command }}
@@ -38,13 +33,14 @@
   lifecycle:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+{{- if $values.termination }}
   {{- with $values.termination.messagePath }}
   terminationMessagePath: {{ . }}
   {{- end }}
   {{- with $values.termination.messagePolicy }}
   terminationMessagePolicy: {{ . }}
   {{- end }}
-
+{{- end }}
   {{- with $values.env }}
   env:
     {{- get (fromYaml (include "replicatedLibrary.env_vars" $)) "env" | toYaml | nindent 4 -}}

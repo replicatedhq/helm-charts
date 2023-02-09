@@ -2,12 +2,7 @@
 Environment variables used by containers.
 */}}
 {{- define "replicatedLibrary.env_vars" -}}
-  {{- $name := "default-app" }}
   {{- $values := . -}}
-  {{- if hasKey . "AppName" -}}
-    {{- $name = .AppName -}}
-  {{ end -}}
-
   {{- if hasKey . "AppValues" -}}
     {{- with .AppValues.app -}}
       {{- $values = .env -}}
