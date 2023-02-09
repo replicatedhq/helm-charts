@@ -150,7 +150,7 @@ services:
 ingresses:
   example:
     enabled: false
-    primary: true
+    appName: example
     nameOverride:
     annotations: {}
     labels: {}

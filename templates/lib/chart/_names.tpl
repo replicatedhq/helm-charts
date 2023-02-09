@@ -66,3 +66,14 @@ If release name contains chart name it will be used as a full name.
   {{ end -}}
   {{- trunc 63 $name | trimSuffix "-" -}}
 {{- end -}}
+
+{{/* Get name of current service */}}
+{{- define "replicatedLibrary.names.servicename" -}}
+  {{- $name := "default" -}}
+  {{- if hasKey . "ObjectName" -}}
+    {{- $name = .ObjectName -}}
+  {{- else -}}
+    {{- fail (printf "not found (%s)" .ObjectName) }}
+  {{ end -}}
+  {{- trunc 63 $name | trimSuffix "-" -}}
+{{- end -}}

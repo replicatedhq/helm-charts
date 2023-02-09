@@ -3,18 +3,22 @@ This template serves as a blueprint for all Service objects that are created
 within the replicatedLibrary library.
 */}}
 {{- define "replicatedLibrary.classes.service" -}}
-{{- $values := .Values.service -}}
-{{- if hasKey . "ObjectValues" -}}
-  {{- with .ObjectValues.service -}}
-    {{- $values = . -}}
-  {{- end -}}
-{{ end -}}
-
-{{- $serviceName := include "replicatedLibrary.names.fullname" . -}}
-{{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
-  {{- $serviceName = printf "%v-%v" $serviceName $values.nameOverride -}}
-{{ end -}}
-{{- $svcType := $values.type | default "" -}}
+  {{- $name := "default" }}
+  {{- $values := .Values.service -}}
+  {{- if hasKey . "ObjectName" -}}
+    {{- $name = .ObjectName -}}
+  {{ end -}}
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.service -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{ end -}}
+  
+  {{- $serviceName := $name -}}
+  {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
+    {{- $serviceName = printf "%v-%v" $serviceName $values.nameOverride -}}
+  {{ end -}}
+  {{- $svcType := $values.type | default "" -}}
 ---
 apiVersion: v1
 kind: Service
@@ -90,5 +94,5 @@ spec:
   {{- end }}
   {{- end }}
   selector:
-    {{- include "replicatedLibrary.labels.selectorLabels" . | nindent 4 }}
+    {{- include "replicatedLibrary.labels.serviceSelectorLabels" . | nindent 4 }}
 {{- end }}
