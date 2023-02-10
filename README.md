@@ -14,9 +14,9 @@ Kubernetes: `>=1.16.0-0`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| apps | object | `{"example":{"additionalContainers":{},"affinity":{},"annotations":{},"args":[],"automountServiceAccountToken":true,"command":[],"dnsConfig":{},"dnsPolicy":null,"enableServiceLinks":true,"enabled":false,"env":null,"envFrom":[],"hostAliases":[],"hostNetwork":false,"hostname":null,"image":{"pullPolicy":null,"repository":"nginx","tag":"latest"},"imagePullSecrets":[],"initContainers":{},"labels":{},"lifecycle":{},"nodeSelector":{},"podAnnotations":{},"podLabels":{},"podManagementPolicy":null,"podSecurityContext":{},"priorityClassName":null,"probes":{"liveness":{"custom":false,"enabled":false,"spec":{"failureThreshold":3,"initialDelaySeconds":0,"periodSeconds":10,"timeoutSeconds":1}},"readiness":{"custom":false,"enabled":false,"spec":{"failureThreshold":3,"initialDelaySeconds":0,"periodSeconds":10,"timeoutSeconds":1}},"startup":{"custom":false,"enabled":false,"spec":{"failureThreshold":30,"initialDelaySeconds":0,"periodSeconds":5,"timeoutSeconds":1}}},"replicas":1,"resources":{},"revisionHistoryLimit":3,"rollingUpdate":{"partition":null,"surge":null,"unavailable":null},"runtimeClassName":null,"schedulerName":null,"securityContext":{},"serviceAccount":{"annotations":{},"create":false,"name":""},"strategy":null,"termination":{"gracePeriodSeconds":null,"messagePath":null,"messagePolicy":null},"tolerations":[],"topologySpreadConstraints":[],"type":"deployment","volumeClaimTemplates":[],"volumeMounts":[]}}` | Specify one or more apps to be deployed. Each app represents a single controller type (deployment, daemonset, statefulset) |
 | apps.example.additionalContainers | object | `{}` | Specify any additional containers here as dictionary items. Each additional container should have its own key. Helm templates can be used. |
 | apps.example.additionalContainers | object | `{}` | Specify any additional containers here as dictionary items. Each additional container should have its own key. Helm templates can be used. |
+| apps.example.affinity | object | `{}` |  |
 | apps.example.annotations | object | `{}` | Set annotations on the deployment/statefulset/daemonset |
 | apps.example.args | list | `[]` | Override the arguments for the primary container |
 | apps.example.automountServiceAccountToken | bool | `true` | Specifies whether a service account token should be automatically mounted. |
@@ -24,9 +24,10 @@ Kubernetes: `>=1.16.0-0`
 | apps.example.dnsConfig | object | `{}` | Optional DNS settings, configuring the ndots option may resolve nslookup issues on some Kubernetes setups. |
 | apps.example.dnsPolicy | string | `nil` | Defaults to "ClusterFirst" if hostNetwork is false and "ClusterFirstWithHostNet" if hostNetwork is true. |
 | apps.example.enableServiceLinks | bool | `true` | Enable/disable the generation of environment variables for services. [[ref]](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#accessing-the-service) |
-| apps.example.enabled | bool | `false` | Enable the app |
+| apps.example.enabled | bool | `false` | Enable the app Each app represents a single controller type (deployment, daemonset, statefulset) |
 | apps.example.env | string | `nil` | Main environment variables. Template enabled. Syntax options: A) TZ: UTC B) PASSWD: '{{ .Release.Name }}' C) PASSWD:      configMapKeyRef:        name: config-map-name        key: key-name D) PASSWD:      valueFrom:        secretKeyRef:          name: secret-name          key: key-name      ... E) - name: TZ      value: UTC F) - name: TZ      value: '{{ .Release.Name }}' |
 | apps.example.envFrom | list | `[]` | Secrets and/or ConfigMaps that will be loaded as environment variables. [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables) |
+| apps.example.hostAliases | list | `[]` |  |
 | apps.example.hostNetwork | bool | `false` | When using hostNetwork make sure you set dnsPolicy to `ClusterFirstWithHostNet` |
 | apps.example.hostname | string | `nil` | Allows specifying explicit hostname setting |
 | apps.example.image.pullPolicy | string | `nil` | Specify the image pull policy for the primary container |
@@ -37,6 +38,7 @@ Kubernetes: `>=1.16.0-0`
 | apps.example.initContainers | object | `{}` | Specify any initContainers here as dictionary items. Each initContainer should have its own key. The dictionary item key will determine the order. Helm templates can be used. |
 | apps.example.labels | object | `{}` | Set labels on the deployment/statefulset/daemonset |
 | apps.example.lifecycle | object | `{}` | Configure the lifecycle for the main container |
+| apps.example.nodeSelector | object | `{}` |  |
 | apps.example.podAnnotations | object | `{}` | Set annotations on the pod |
 | apps.example.podLabels | object | `{}` | Set labels on the pod |
 | apps.example.podManagementPolicy | string | `nil` | Set statefulset podManagementPolicy, valid values are Parallel and OrderedReady (default). |
@@ -55,6 +57,7 @@ Kubernetes: `>=1.16.0-0`
 | apps.example.probes.startup.enabled | bool | `false` | Enable the startup probe |
 | apps.example.probes.startup.spec | object | See below | The spec field contains the values for the default startupProbe. If you selected `custom: true`, this field holds the definition of the startupProbe. |
 | apps.example.replicas | int | `1` | Set the replica count |
+| apps.example.resources | object | `{}` |  |
 | apps.example.revisionHistoryLimit | int | `3` | ReplicaSet revision history limit |
 | apps.example.rollingUpdate.partition | string | `nil` | Set statefulset RollingUpdate partition |
 | apps.example.rollingUpdate.surge | string | `nil` | Set deployment RollingUpdate max surge |
@@ -69,6 +72,8 @@ Kubernetes: `>=1.16.0-0`
 | apps.example.termination.gracePeriodSeconds | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle)] |
 | apps.example.termination.messagePath | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
 | apps.example.termination.messagePolicy | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
+| apps.example.tolerations | list | `[]` |  |
+| apps.example.topologySpreadConstraints | list | `[]` |  |
 | apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset |
 | apps.example.volumeClaimTemplates | list | `[]` | Used in conjunction with `main.type: statefulset` to create individual disks for each instance. |
 | apps.example.volumeMounts | list | `[]` | Specify a list of volumes that get mounted in the promtail container. |
