@@ -10,7 +10,6 @@ defaults:
   image:
     pullPolicy: IfNotPresent
 
-# -- Specify one or more apps to be deployed. Each app represents a single controller type (deployment, daemonset, statefulset)
 apps:
   example:
     # -- Enable the app
