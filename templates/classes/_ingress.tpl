@@ -21,6 +21,8 @@ within the replicated-library library.
   {{- end -}}
 
   {{- $isStable := include "replicated-library.capabilities.ingress.isStable" . }}
+
+  {{- $serviceName := $values.serviceName }}
 ---
 apiVersion: {{ include "replicated-library.capabilities.ingress.apiVersion" . }}
 kind: Ingress
@@ -54,8 +56,8 @@ spec:
       http:
         paths:
           {{- range .paths }}
-          {{- $service := "default" -}}
-          {{- $port := 3000 -}}
+          {{- $service := $serviceName -}}
+          {{- $port := 80 -}}
           {{- if .service -}}
             {{- $service = default $service .service.name -}}
             {{- $port = default $port .service.port -}}

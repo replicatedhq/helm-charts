@@ -8,9 +8,8 @@ Renders the Service objects required by the chart.
       {{- $ingressName := $name -}}
       {{- $ingressValues := $ingress -}}
       {{- $_ := set $ "ObjectName" $name -}}
-      {{- $_ := set $ "ObjectValues" (dict "ingress" $ingressValues) -}}
       {{- $matchingAppFound := false -}}
-      {{- range $serviceName, $serviceValues := .Values.services }}
+      {{- range $serviceName, $serviceValues := $.Values.services }}
         {{- if and $serviceValues.enabled (eq $serviceName $ingressValues.serviceName) (ne $matchingAppFound true) -}}
           {{- $matchingAppFound = true -}}
           {{- $_ := set $ "ObjectValues" (dict "ingress" $ingressValues) -}}
