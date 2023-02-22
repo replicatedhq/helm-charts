@@ -54,8 +54,8 @@ spec:
       http:
         paths:
           {{- range .paths }}
-          {{- $service := $defaultServiceName -}}
-          {{- $port := $defaultServicePort -}}
+          {{- $service := "default" -}}
+          {{- $port := 3000 -}}
           {{- if .service -}}
             {{- $service = default $service .service.name -}}
             {{- $port = default $port .service.port -}}
