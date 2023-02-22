@@ -3,8 +3,9 @@ This template serves as a blueprint for all Service objects that are created
 within the replicated-library library.
 */}}
 {{- define "replicated-library.classes.service" -}}
-  {{- $name := "default" }}
+  {{- $name := include "replicated-library.names.fullname" . -}}
   {{- $values := .Values.service -}}
+
   {{- if hasKey . "ObjectName" -}}
     {{- $name = .ObjectName -}}
   {{ end -}}

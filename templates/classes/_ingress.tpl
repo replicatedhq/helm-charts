@@ -5,10 +5,11 @@ within the replicated-library library.
 {{- define "replicated-library.classes.ingress" -}}
   {{- $fullName := include "replicated-library.names.fullname" . -}}
   {{- $ingressName := $fullName -}}
-  {{- $defaultServiceName := $fullName -}}
-  {{- $defaultServicePort := "3000" -}}
   {{- $values := .Values.ingress -}}
 
+  {{- if hasKey . "ObjectName" -}}
+    {{- $ingressName = .ObjectName -}}
+  {{ end -}}
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.ingress -}}
       {{- $values = . -}}
