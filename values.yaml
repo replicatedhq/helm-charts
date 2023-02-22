@@ -5,7 +5,8 @@ global:
   annotations: {}
 
 # -- Global defaults
-# Not yet implemented. intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key
+# TODO: NOT IMPLEMENTED. 
+# Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key
 defaults:
   image:
     pullPolicy: IfNotPresent
@@ -61,8 +62,9 @@ apps:
     # [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables)
     envFrom: []
 
-    # -- Specify a list of volumes that get mounted in the promtail container.
-    volumeMounts: []
+    # -- Specify a list of additional volumes that get mounted in the primary container.
+    # -- TODO
+    additionalVolumeMounts: []
 
     # -- Set annotations on the deployment/statefulset/daemonset
     annotations: {}
@@ -200,14 +202,39 @@ apps:
       # -- Duration in seconds the pod needs to terminate gracefully
       # -- [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle)]
       gracePeriodSeconds:
-    # -- Used in conjunction with `main.type: statefulset` to create individual disks for each instance.
+
+    # -- Used to create individual disks for each instance when type: StatefulSet
     volumeClaimTemplates: []
-    
+
+    # -- Node selection constraint
+    # [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
     nodeSelector: {}
+
+    # -- Defines affinity constraint rules.
+    # [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
     affinity: {}
+
+    # -- Defines topologySpreadConstraint rules.
+    # [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/)
     topologySpreadConstraints: []
+    # - maxSkew: <integer>
+    #   topologyKey: <string>
+    #   whenUnsatisfiable: <string>
+    #   labelSelector: <object>
+
+    # -- Specify taint tolerations
+    # [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
     tolerations: []
+
+    # -- Use hostAliases to add custom entries to /etc/hosts - mapping IP addresses to hostnames.
+    # [[ref]](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/)
     hostAliases: []
+    # - ip: "192.168.1.100"
+    #   hostnames:
+    #   - "example.com"
+    #   - "www.example.com"
+
+    # -- Set the resource requests / limits for the primary container.
     resources: {}
 
 secrets:
@@ -287,7 +314,7 @@ ingresses:
     # -- Enables or disables the ingress
     enabled: false
     # -- Name of the service to attach this ingress. This corresponds to an service configured un the `services` key
-    # NOT IMPLEMENTED
+    # TODO: NOT IMPLEMENTED
     serviceName: example
     # -- Override the name suffix that is used for this ingress.
     nameOverride:
@@ -310,23 +337,57 @@ ingresses:
     tls: []
 
 # -- Configure volumes for the chart here.
-# Additional items can be added by adding a dictionary key similar to the 'config' key.
-# [[ref]](http://docs.k8s-at-home.com/our-helm-charts/common-library-storage)
+# Additional items can be added by adding a dictionary key similar to the 'example' key.
+# TODO: NOT IMPLEMENTED
 # @default -- See below
 volumes:
   example:
     # -- Enables or disables the volume
     enabled: false
+
     # -- Name of the app to attach this volume. This corresponds to an app configured un the `apps` key
-    # NOT IMPLEMENTED
-    appName: 
-    type: pvc
+    # TODO: NOT IMPLEMENTED
+    appName: example
+
+    # -- Volume type. Available options are ["persistentVolume," "persistentVolumeClaim"]
+    type: persistentVolumeClaim
+
+    # -- Where to mount the volume in the primary container.
+    # Defaults to `/<name_of_the_volume>`,
+    # setting to '-' creates the volume but disables the volumeMount.
     mountPath:  # /config
+
+    # -- Specify if the volume should be mounted read-only.
     readOnly: false
-    nameOverride:
-    storageClass:  # "-"
-    existingClaim:  # your-claim
+
+    # -- Used in conjunction with `existingClaim`. Specifies a sub-path inside the referenced volume instead of its root
     subPath:  # some-subpath
-    accessMode: ReadWriteOnce
-    size: 1Gi
-    retain: false
+
+    # -- Configure a Persistent Volume to be mounted directly to the app's primary container
+    persistentVolume:
+      # -- Reference https://kubernetes.io/docs/concepts/storage/volumes
+      # All available volume types such as configMap, secret, nfs, emptyDir, hostPath, etc are available here
+      spec:
+        hostPath:
+          path: /var/local/aaa
+          type: DirectoryOrCreate
+
+    # -- Configure a Persistent Volume Claim to be mounted to the app's primary container
+    persistentVolumeClaim:
+      # -- Existing Persistnet Volume Claim name. Takes precedence over persistentVolumeClaim.spec 
+      existingClaimName:
+      # -- https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        volumeMode: Filesystem
+        persistentVolumeReclaimPolicy: Retain
+        resources:
+          requests:
+            storage: 8Gi
+        storageClassName: slow
+        selector:
+          matchLabels:
+            release: "stable"
+          matchExpressions:
+            - {key: environment, operator: In, values: [dev]}
