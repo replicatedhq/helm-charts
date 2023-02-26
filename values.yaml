@@ -11,6 +11,12 @@ defaults:
   image:
     pullPolicy: IfNotPresent
 
+# -- Configure the apps for the chart here.
+# Apps can be added by adding a dictionary key similar to the 'example' app.
+# By default the name of the app will be the name of the dictionary key
+# TODO: nameOverride
+# TODO: Ensure sha annotations on app are working
+# @default -- See below
 apps:
   example:
     # -- Enable the app
@@ -243,10 +249,11 @@ apps:
     resources: {}
 
 # -- Configure the secrets for the chart here.
-# Additional secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret.
-# @default -- See below
+# Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret.
+# By default the name of the secret will be the name of the dictionary key
 # TODO: nameOverride
 # TODO: Ensure sha annotations on app are working
+# @default -- See below
 secrets:
   exampleSecret:
     # -- Enables or disables the secret
@@ -258,14 +265,15 @@ secrets:
     # -- configMap data content. Helm template enabled.
     data: {}
       # foo: bar
-    # -- Override the name that is used for this service
+    # -- Override the name suffix that is used for this secret
     nameOverride:
 
 # -- Configure the configmaps for the chart here.
-# Additional configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap.
-# @default -- See below
+# Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap.
+# By default the name of the configmap will be the name of the dictionary key
 # TODO: nameOverride
 # TODO: Ensure sha annotations on app are working
+# @default -- See below
 configmaps:
   exampleConfig:
     # -- Enables or disables the configMap
@@ -277,13 +285,14 @@ configmaps:
     # -- configMap data content. Helm template enabled.
     data: {}
       # foo: bar
-    # -- Override the name that is used for this configmap. By default the name will be the name of the dictionary key
+    # -- Override the name suffix that is used for this configap
     nameOverride:
 
 # -- Configure the services for the chart here.
-# Additional services can be added by adding a dictionary key similar to the 'example' service.
-# @default -- See below
+# Services can be added by adding a dictionary key similar to the 'example' service.
+# By default the name of the service will be the name of the dictionary key
 # TODO: nameOverride
+# @default -- See below
 services:
   example:
     # -- Enables or disables the service
@@ -292,7 +301,7 @@ services:
     # TODO: Accept a list of appnames of which to associate the service
     # TODO: Needs to be optional
     appName: example
-    # -- Override the name that is used for this service. By default the name will be the name of the dictionary key
+        # -- Override the name suffix that is used for this service
     nameOverride:
     # -- Set the service type
     type: ClusterIP
@@ -333,7 +342,8 @@ services:
         nodePort:
 
 # -- Configure the ingresses for the chart here.
-# Additional ingresses can be added by adding a dictionary key similar to the 'example' ingress.
+# Ingresses can be added by adding a dictionary key similar to the 'example' ingress.
+# Name of the ingress object will be the name of the dictionary key unless overwritten with ingresses.*.nameOverride
 # @default -- See below
 ingresses:
   example:
@@ -364,9 +374,10 @@ ingresses:
     tls: []
 
 # -- Configure volumes for the chart here.
-# Additional items can be added by adding a dictionary key similar to the 'example' key. 
+# Persistence items can be added by adding a dictionary key similar to the 'example' key. 
 # Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride
 # TODO: NOT IMPLEMENTED
+# @default -- See below
 persistence:
   example:
     # -- Enables or disables the volume
