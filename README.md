@@ -14,6 +14,7 @@ Kubernetes: `>=1.16.0-0`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| apps | object | See below | Configure the apps for the chart here. Apps can be added by adding a dictionary key similar to the 'example' app. By default the name of the app will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | apps.example.additionalContainers | object | `{}` | Specify any additional containers here as dictionary items. Each additional container should have its own key. Helm templates can be used. |
 | apps.example.additionalContainers | object | `{}` | Specify any additional containers here as dictionary items. Each additional container should have its own key. Helm templates can be used. |
 | apps.example.additionalVolumeMounts | list | `[]` | TODO: Not Implemented |
@@ -78,16 +79,16 @@ Kubernetes: `>=1.16.0-0`
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
 | apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset |
 | apps.example.volumeClaimTemplates | list | `[]` | Used to create individual disks for each instance when type: StatefulSet |
-| configmaps | object | See below | Configure the configmaps for the chart here. Additional configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. TODO: nameOverride TODO: Ensure sha annotations on app are working |
+| configmaps | object | See below | Configure the configmaps for the chart here. Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. By default the name of the configmap will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | configmaps.exampleConfig.annotations | object | `{}` | Annotations to add to the configMap |
 | configmaps.exampleConfig.data | object | `{}` | configMap data content. Helm template enabled. |
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
-| configmaps.exampleConfig.nameOverride | string | `nil` | Override the name that is used for this configmap. By default the name will be the name of the dictionary key |
+| configmaps.exampleConfig.nameOverride | string | `nil` | Override the name suffix that is used for this configap |
 | defaults | object | `{"image":{"pullPolicy":"IfNotPresent"}}` | Global defaults TODO: NOT IMPLEMENTED.  Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key |
 | global.annotations | object | `{}` | Set additional global annotations. |
 | global.labels | object | `{}` | Set additional global labels. |
-| ingresses | object | See below | Configure the ingresses for the chart here. Additional ingresses can be added by adding a dictionary key similar to the 'example' ingress. |
+| ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key unless overwritten with ingresses.*.nameOverride |
 | ingresses.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | ingresses.example.enabled | bool | `false` | Enables or disables the ingress |
 | ingresses.example.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"Prefix","service":{"name":null,"port":null}}]}]` | Configure the hosts for the ingress |
@@ -96,7 +97,7 @@ Kubernetes: `>=1.16.0-0`
 | ingresses.example.labels | object | `{}` | Provide additional labels which may be required. |
 | ingresses.example.nameOverride | string | `nil` | Override the name that is used for this ingress. By default the name will be the name of the dictionary key |
 | ingresses.example.serviceName | string | `"example"` | Name of the service to attach this ingress. This corresponds to an service configured un the `services` key |
-| persistence | object | `{"example":{"appName":"example","enabled":false,"mountPath":null,"nameOverride":null,"persistentVolume":{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}},"persistentVolumeClaim":{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}},"readOnly":false,"subPath":null,"type":"persistentVolumeClaim","volume":{"spec":{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}}}}` | Configure volumes for the chart here. Additional items can be added by adding a dictionary key similar to the 'example' key.  Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride TODO: NOT IMPLEMENTED |
+| persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key.  Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride TODO: NOT IMPLEMENTED |
 | persistence.example.appName | string | `"example"` | Name of the app to attach this persistence eobject. This corresponds to an app configured un the `apps` key TODO: NOT IMPLEMENTED Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something? |
 | persistence.example.enabled | bool | `false` | Enables or disables the volume |
 | persistence.example.mountPath | string | `nil` | Where to mount the volume in the primary container. Defaults to `/<name_of_the_volume>`, setting to '-' creates the volume but disables the volumeMount. |
@@ -111,13 +112,13 @@ Kubernetes: `>=1.16.0-0`
 | persistence.example.type | string | `"persistentVolumeClaim"` | Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"] type.volume is a static volume definition directly on an app type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app |
 | persistence.example.volume | object | `{"spec":{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}}` | Configure a volume to be mounted directly to the app's primary container |
 | persistence.example.volume.spec | object | `{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}` | Reference - https://kubernetes.io/docs/concepts/storage/volumes |
-| secrets | object | See below | Configure the secrets for the chart here. Additional secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. TODO: nameOverride TODO: Ensure sha annotations on app are working |
+| secrets | object | See below | Configure the secrets for the chart here. Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. By default the name of the secret will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
 | secrets.exampleSecret.data | object | `{}` | configMap data content. Helm template enabled. |
 | secrets.exampleSecret.enabled | bool | `false` | Enables or disables the secret |
 | secrets.exampleSecret.labels | object | `{}` | Labels to add to the secret |
-| secrets.exampleSecret.nameOverride | string | `nil` | Override the name that is used for this service |
-| services | object | See below | Configure the services for the chart here. Additional services can be added by adding a dictionary key similar to the 'example' service. TODO: nameOverride |
+| secrets.exampleSecret.nameOverride | string | `nil` | Override the name suffix that is used for this secret |
+| services | object | See below | Configure the services for the chart here. Services can be added by adding a dictionary key similar to the 'example' service. By default the name of the service will be the name of the dictionary key TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | services.example.appName | string | `"example"` | Name of the app to attach this service. This corresponds to an app configured un the `apps` key TODO: Accept a list of appnames of which to associate the service TODO: Needs to be optional |
 | services.example.enabled | bool | `false` | Enables or disables the service |
@@ -125,7 +126,7 @@ Kubernetes: `>=1.16.0-0`
 | services.example.ipFamilies | list | `[]` | The ip families that should be used. Options: IPv4, IPv6 |
 | services.example.ipFamilyPolicy | string | `nil` | Specify the ip policy. Options: SingleStack, PreferDualStack, RequireDualStack |
 | services.example.labels | object | `{}` | Provide additional labels which may be required. |
-| services.example.nameOverride | string | `nil` | Override the name that is used for this service. By default the name will be the name of the dictionary key |
+| services.example.nameOverride | string | `nil` | Override the name suffix that is used for this service |
 | services.example.ports | object | See below | Configure the Service port information here. Additional ports can be added by adding a dictionary key similar to the 'http' service. |
 | services.example.ports.http.enabled | bool | `true` | Enables or disables the port |
 | services.example.ports.http.nodePort | string | `nil` | Specify the nodePort value for the LoadBalancer and NodePort service types. [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) |
