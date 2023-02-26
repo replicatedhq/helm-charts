@@ -290,6 +290,7 @@ services:
     enabled: false
     # -- Name of the app to attach this service. This corresponds to an app configured un the `apps` key
     # TODO: Accept a list of appnames of which to associate the service
+    # TODO: Needs to be optional
     appName: example
     # -- Override the name that is used for this service. By default the name will be the name of the dictionary key
     nameOverride:
@@ -306,6 +307,10 @@ services:
     annotations: {}
     # -- Provide additional labels which may be required.
     labels: {}
+    # -- Reference - https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors
+    # -- Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName
+    # TODO: Not Implemented
+    selector: {}
     # -- Configure the Service port information here.
     # Additional ports can be added by adding a dictionary key similar to the 'http' service.
     # @default -- See below
@@ -391,7 +396,7 @@ persistence:
 
     # -- Configure a volume to be mounted directly to the app's primary container
     volume:
-      # -- Reference https://kubernetes.io/docs/concepts/storage/volumes
+      # -- Reference - https://kubernetes.io/docs/concepts/storage/volumes
       spec:
         hostPath:
           path: /tmp/data1
@@ -399,7 +404,7 @@ persistence:
 
     # -- Configure a persistentVolume and persistentVolumeClaim pair to be mounted directly to the app's primary container
     persistentVolume:
-      # -- Reference https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+      # -- Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/
       spec:
         capacity:
           storage: 1Gi
@@ -414,7 +419,7 @@ persistence:
     persistentVolumeClaim:
       # -- Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec 
       existingClaimName:
-      # -- Reference https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims
+      # -- Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims
       spec:
         accessModes:
           - ReadWriteOnce
