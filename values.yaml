@@ -364,17 +364,17 @@ ingresses:
     tls: []
 
 # -- Configure volumes for the chart here.
-# Additional items can be added by adding a dictionary key similar to the 'example' key.
+# Additional items can be added by adding a dictionary key similar to the 'example' key. 
+# Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride
 # TODO: NOT IMPLEMENTED
-# @default -- See below
 persistence:
   example:
     # -- Enables or disables the volume
     enabled: false
 
-    # -- Name of the app to attach this volume. This corresponds to an app configured un the `apps` key
+    # -- Name of the app to attach this persistence eobject. This corresponds to an app configured un the `apps` key
     # TODO: NOT IMPLEMENTED
-    # Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something? 
+    # Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something?
     appName: example
 
     # -- Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"]
@@ -394,6 +394,9 @@ persistence:
     # -- Used in conjunction with `existingClaim`. Specifies a sub-path inside the referenced volume instead of its root
     subPath:  # some-subpath
 
+    # -- Override the name that is used for this persistence object
+    nameOverride:
+
     # -- Configure a volume to be mounted directly to the app's primary container
     volume:
       # -- Reference - https://kubernetes.io/docs/concepts/storage/volumes
@@ -402,7 +405,7 @@ persistence:
           path: /tmp/data1
           type: DirectoryOrCreate
 
-    # -- Configure a persistentVolume and persistentVolumeClaim pair to be mounted directly to the app's primary container
+    # -- Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container
     persistentVolume:
       # -- Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/
       spec:
