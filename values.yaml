@@ -395,6 +395,7 @@ persistence:
     subPath:  # some-subpath
 
     # -- Override the name that is used for this persistence object
+    # TODO: NOT IMPLEMENTED
     nameOverride:
 
     # -- Configure a volume to be mounted directly to the app's primary container
