@@ -246,6 +246,7 @@ apps:
 # Additional secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret.
 # @default -- See below
 # TODO: nameOverride
+# TODO: Ensure sha annotations on app are working
 secrets:
   exampleSecret:
     # -- Enables or disables the secret
@@ -264,6 +265,7 @@ secrets:
 # Additional configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap.
 # @default -- See below
 # TODO: nameOverride
+# TODO: Ensure sha annotations on app are working
 configmaps:
   exampleConfig:
     # -- Enables or disables the configMap
