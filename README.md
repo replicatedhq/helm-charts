@@ -78,7 +78,7 @@ Kubernetes: `>=1.16.0-0`
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
 | apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset |
 | apps.example.volumeClaimTemplates | list | `[]` | Used to create individual disks for each instance when type: StatefulSet |
-| configmaps | object | See below | Configure the configmaps for the chart here. Additional configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. TODO: nameOverride |
+| configmaps | object | See below | Configure the configmaps for the chart here. Additional configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | configmaps.exampleConfig.annotations | object | `{}` | Annotations to add to the configMap |
 | configmaps.exampleConfig.data | object | `{}` | configMap data content. Helm template enabled. |
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
@@ -96,21 +96,22 @@ Kubernetes: `>=1.16.0-0`
 | ingresses.example.labels | object | `{}` | Provide additional labels which may be required. |
 | ingresses.example.nameOverride | string | `nil` | Override the name that is used for this ingress. By default the name will be the name of the dictionary key |
 | ingresses.example.serviceName | string | `"example"` | Name of the service to attach this ingress. This corresponds to an service configured un the `services` key |
-| persistence | object | See below | Configure volumes for the chart here. Additional items can be added by adding a dictionary key similar to the 'example' key. TODO: NOT IMPLEMENTED |
-| persistence.example.appName | string | `"example"` | Name of the app to attach this volume. This corresponds to an app configured un the `apps` key TODO: NOT IMPLEMENTED Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something?  |
+| persistence | object | `{"example":{"appName":"example","enabled":false,"mountPath":null,"nameOverride":null,"persistentVolume":{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}},"persistentVolumeClaim":{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}},"readOnly":false,"subPath":null,"type":"persistentVolumeClaim","volume":{"spec":{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}}}}` | Configure volumes for the chart here. Additional items can be added by adding a dictionary key similar to the 'example' key.  Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride TODO: NOT IMPLEMENTED |
+| persistence.example.appName | string | `"example"` | Name of the app to attach this persistence eobject. This corresponds to an app configured un the `apps` key TODO: NOT IMPLEMENTED Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something? |
 | persistence.example.enabled | bool | `false` | Enables or disables the volume |
 | persistence.example.mountPath | string | `nil` | Where to mount the volume in the primary container. Defaults to `/<name_of_the_volume>`, setting to '-' creates the volume but disables the volumeMount. |
-| persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted directly to the app's primary container |
-| persistence.example.persistentVolume.spec | object | `{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}` | Reference https://kubernetes.io/docs/concepts/storage/persistent-volumes/ |
+| persistence.example.nameOverride | string | `nil` | Override the name that is used for this persistence object TODO: NOT IMPLEMENTED |
+| persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container |
+| persistence.example.persistentVolume.spec | object | `{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/ |
 | persistence.example.persistentVolumeClaim | object | `{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}}` | Configure a Persistent Volume Claim to be mounted to the app's primary container |
 | persistence.example.persistentVolumeClaim.existingClaimName | string | `nil` | Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec  |
-| persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | Reference https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims |
+| persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims |
 | persistence.example.readOnly | bool | `false` | Specify if the volume should be mounted read-only. |
 | persistence.example.subPath | string | `nil` | Used in conjunction with `existingClaim`. Specifies a sub-path inside the referenced volume instead of its root |
 | persistence.example.type | string | `"persistentVolumeClaim"` | Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"] type.volume is a static volume definition directly on an app type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app |
 | persistence.example.volume | object | `{"spec":{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}}` | Configure a volume to be mounted directly to the app's primary container |
-| persistence.example.volume.spec | object | `{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}` | Reference https://kubernetes.io/docs/concepts/storage/volumes |
-| secrets | object | See below | Configure the secrets for the chart here. Additional secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. TODO: nameOverride |
+| persistence.example.volume.spec | object | `{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}` | Reference - https://kubernetes.io/docs/concepts/storage/volumes |
+| secrets | object | See below | Configure the secrets for the chart here. Additional secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
 | secrets.exampleSecret.data | object | `{}` | configMap data content. Helm template enabled. |
 | secrets.exampleSecret.enabled | bool | `false` | Enables or disables the secret |
@@ -118,7 +119,7 @@ Kubernetes: `>=1.16.0-0`
 | secrets.exampleSecret.nameOverride | string | `nil` | Override the name that is used for this service |
 | services | object | See below | Configure the services for the chart here. Additional services can be added by adding a dictionary key similar to the 'example' service. TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
-| services.example.appName | string | `"example"` | Name of the app to attach this service. This corresponds to an app configured un the `apps` key TODO: Accept a list of appnames of which to associate the service |
+| services.example.appName | string | `"example"` | Name of the app to attach this service. This corresponds to an app configured un the `apps` key TODO: Accept a list of appnames of which to associate the service TODO: Needs to be optional |
 | services.example.enabled | bool | `false` | Enables or disables the service |
 | services.example.externalTrafficPolicy | string | `nil` | [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)] |
 | services.example.ipFamilies | list | `[]` | The ip families that should be used. Options: IPv4, IPv6 |
@@ -131,6 +132,7 @@ Kubernetes: `>=1.16.0-0`
 | services.example.ports.http.port | string | `nil` | The port number |
 | services.example.ports.http.protocol | string | `"HTTP"` | Port protocol. Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`. HTTPS and HTTPS spawn a TCP service and get used for internal URL and name generation |
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
+| services.example.selector | object | `{}` | Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName TODO: Not Implemented |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
 
 ----------------------------------------------
