@@ -18,13 +18,14 @@ apps:
     enabled: false
      # -- Specify the controller type.
      # Valid options are deployment, daemonset or statefulset
+     # TODO: daemonset and statefulset
     type: deployment
 
-    # -- Set the replica count
+    # -- Set the replica count. Only used for deployment and statefulset
     replicas: 1
 
     image:
-      # -- Specify the iamge repository for the primary container
+      # -- Specify the image repository for the primary container
       repository: nginx
       # -- Specify the image tag for the primary container
       tag: latest
@@ -63,7 +64,11 @@ apps:
     envFrom: []
 
     # -- Specify a list of additional volumes that get mounted in the primary container.
-    # -- TODO
+    # -- TODO: Not Implemented
+    additionalVolumes: []
+
+    # -- Specify a list of additional volumes mounts in the primary container.
+    # -- TODO: Not Implemented
     additionalVolumeMounts: []
 
     # -- Set annotations on the deployment/statefulset/daemonset
@@ -237,6 +242,10 @@ apps:
     # -- Set the resource requests / limits for the primary container.
     resources: {}
 
+# -- Configure the secrets for the chart here.
+# Additional secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret.
+# @default -- See below
+# TODO: nameOverride
 secrets:
   exampleSecret:
     # -- Enables or disables the secret
@@ -248,7 +257,13 @@ secrets:
     # -- configMap data content. Helm template enabled.
     data: {}
       # foo: bar
+    # -- Override the name that is used for this service
+    nameOverride:
 
+# -- Configure the configmaps for the chart here.
+# Additional configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap.
+# @default -- See below
+# TODO: nameOverride
 configmaps:
   exampleConfig:
     # -- Enables or disables the configMap
@@ -260,17 +275,21 @@ configmaps:
     # -- configMap data content. Helm template enabled.
     data: {}
       # foo: bar
+    # -- Override the name that is used for this configmap. By default the name will be the name of the dictionary key
+    nameOverride:
 
 # -- Configure the services for the chart here.
 # Additional services can be added by adding a dictionary key similar to the 'example' service.
 # @default -- See below
+# TODO: nameOverride
 services:
   example:
     # -- Enables or disables the service
     enabled: false
     # -- Name of the app to attach this service. This corresponds to an app configured un the `apps` key
+    # TODO: Accept a list of appnames of which to associate the service
     appName: example
-    # -- Override the name suffix that is used for this service
+    # -- Override the name that is used for this service. By default the name will be the name of the dictionary key
     nameOverride:
     # -- Set the service type
     type: ClusterIP
@@ -314,9 +333,8 @@ ingresses:
     # -- Enables or disables the ingress
     enabled: false
     # -- Name of the service to attach this ingress. This corresponds to an service configured un the `services` key
-    # TODO: NOT IMPLEMENTED
     serviceName: example
-    # -- Override the name suffix that is used for this ingress.
+    # -- Override the name that is used for this ingress. By default the name will be the name of the dictionary key
     nameOverride:
     # -- Provide additional annotations which may be required.
     annotations: {}
@@ -325,13 +343,15 @@ ingresses:
     # -- Set the ingressClass that is used for this ingress.
     # Requires Kubernetes >=1.19
     ingressClassName:  # "nginx"
-    ## Configure the hosts for the ingress
+    # -- Configure the hosts for the ingress
     hosts:
       - host: chart-example.local
         paths:
           - path: /
             pathType: Prefix
             service:
+              # -- Service Name for the path. By default this is ingresses.example.serviceName if not overwritten
+              # TODO: NOT IMPLEMENTED
               name:
               port:
     tls: []
@@ -340,16 +360,20 @@ ingresses:
 # Additional items can be added by adding a dictionary key similar to the 'example' key.
 # TODO: NOT IMPLEMENTED
 # @default -- See below
-volumes:
+persistence:
   example:
     # -- Enables or disables the volume
     enabled: false
 
     # -- Name of the app to attach this volume. This corresponds to an app configured un the `apps` key
     # TODO: NOT IMPLEMENTED
+    # Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something? 
     appName: example
 
-    # -- Volume type. Available options are ["persistentVolume," "persistentVolumeClaim"]
+    # -- Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"]
+    # type.volume is a static volume definition directly on an app
+    # type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app
+    # type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app
     type: persistentVolumeClaim
 
     # -- Where to mount the volume in the primary container.
@@ -363,20 +387,32 @@ volumes:
     # -- Used in conjunction with `existingClaim`. Specifies a sub-path inside the referenced volume instead of its root
     subPath:  # some-subpath
 
-    # -- Configure a Persistent Volume to be mounted directly to the app's primary container
-    persistentVolume:
+    # -- Configure a volume to be mounted directly to the app's primary container
+    volume:
       # -- Reference https://kubernetes.io/docs/concepts/storage/volumes
-      # All available volume types such as configMap, secret, nfs, emptyDir, hostPath, etc are available here
       spec:
         hostPath:
-          path: /var/local/aaa
+          path: /tmp/data1
           type: DirectoryOrCreate
+
+    # -- Configure a persistentVolume and persistentVolumeClaim pair to be mounted directly to the app's primary container
+    persistentVolume:
+      # -- Reference https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+      spec:
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteOnce
+        reclaimPolicy:
+          - Recycle
+        hostPath:
+          path: /tmp/data1
 
     # -- Configure a Persistent Volume Claim to be mounted to the app's primary container
     persistentVolumeClaim:
-      # -- Existing Persistnet Volume Claim name. Takes precedence over persistentVolumeClaim.spec 
+      # -- Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec 
       existingClaimName:
-      # -- https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims
+      # -- Reference https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims
       spec:
         accessModes:
           - ReadWriteOnce
