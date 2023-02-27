@@ -343,7 +343,7 @@ services:
 
 # -- Configure the ingresses for the chart here.
 # Ingresses can be added by adding a dictionary key similar to the 'example' ingress.
-# Name of the ingress object will be the name of the dictionary key unless overwritten with ingresses.*.nameOverride
+# Name of the ingress object will be the name of the dictionary key
 # @default -- See below
 ingresses:
   example:

@@ -88,7 +88,7 @@ Kubernetes: `>=1.16.0-0`
 | defaults | object | `{"image":{"pullPolicy":"IfNotPresent"}}` | Global defaults TODO: NOT IMPLEMENTED.  Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key |
 | global.annotations | object | `{}` | Set additional global annotations. |
 | global.labels | object | `{}` | Set additional global labels. |
-| ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key unless overwritten with ingresses.*.nameOverride |
+| ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key |
 | ingresses.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | ingresses.example.enabled | bool | `false` | Enables or disables the ingress |
 | ingresses.example.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"Prefix","service":{"name":null,"port":null}}]}]` | Configure the hosts for the ingress |
