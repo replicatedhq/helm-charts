@@ -1,0 +1,91 @@
+{{- define "custom.repository.organization" -}}
+replicated-library
+{{- end -}}
+
+{{- define "custom.repository.url" -}}
+https://github.com/k8s-at-home/charts
+{{- end -}}
+
+{{- define "custom.helm.url" -}}
+https://github.com/replicatedhq/replicated-library-chart
+{{- end -}}
+
+{{- define "custom.helm.path" -}}
+{{ template "custom.repository.organization" . }}/{{ template "chart.name" . }}
+{{- end -}}
+
+{{- define "custom.notes" -}}
+{{- end -}}
+
+{{- define "custom.requirements" -}}
+## Requirements
+
+{{ template "chart.kubeVersionLine" . }}
+{{- end -}}
+
+{{- define "custom.dependencies" -}}
+## Dependencies
+
+{{ template "chart.requirementsTable" . }}
+{{- end -}}
+
+{{- define "custom.install" -}}
+## Installing the Chart
+
+This is a [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm).
+
+**WARNING: THIS CHART IS NOT MEANT TO BE INSTALLED DIRECTLY**
+{{- end -}}
+
+{{- define "custom.usage" -}}
+{{- end -}}
+
+{{- define "custom.configuration.header" -}}
+## Configuration
+{{- end -}}
+
+{{- define "custom.configuration.readValues" -}}
+Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
+{{- end -}}
+
+{{- define "custom.valuesSection" -}}
+## Values
+
+{{ template "chart.valuesTable" . }}
+{{- end -}}
+
+{{- define "custom.support" -}}
+## Support
+
+{{- end -}}
+
+{{ template "chart.header" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "custom.notes" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "custom.requirements" . }}
+
+{{ template "custom.dependencies" . }}
+
+{{ template "custom.install" . }}
+
+{{ template "custom.usage" . }}
+
+{{ template "custom.configuration.header" . }}
+
+{{ template "custom.configuration.readValues" . }}
+
+{{ template "custom.valuesSection" . }}
+
+{{ template "custom.changelog" . }}
+
+{{ template "custom.support" . }}
+
+{{ template "helm-docs.versionFooter" . }}
+{{ "" }}

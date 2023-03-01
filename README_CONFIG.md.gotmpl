@@ -1,0 +1,34 @@
+{{- define "custom.notes" -}}
+This is a library chart maintined by Replicated in order to keep the creation of helm charts dry when deploying third party commercial software 
+{{- end -}}
+
+{{- define "custom.custom.configuration.header" -}}
+## Custom configuration
+{{- end -}}
+
+{{- define "custom.custom.configuration" -}}
+{{ template "custom.custom.configuration.header" . }}
+
+N/A
+{{- end -}}
+
+{{- define "custom.usage" }}
+## Using this library
+
+First you will need clone this repository.
+
+```
+git@github.com:replicatedhq/replicated-library-chart.git
+```
+
+Soon we'll publish the chart to a remote repository so you don't need to clone locally, but for now you'll need to include this chart as a `file` dependency in your `Chart.yaml` e.g.
+
+```yaml
+# Chart.yaml
+dependencies:
+- name: replicated-library
+  version: 0.1.0
+  repository: "file://path/to/replicated-library-chart"
+```
+
+{{- end -}}
