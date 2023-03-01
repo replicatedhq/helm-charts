@@ -5,10 +5,11 @@ within the replicated-library library.
 {{- define "replicated-library.classes.ingress" -}}
   {{- $fullName := include "replicated-library.names.fullname" . -}}
   {{- $ingressName := $fullName -}}
-  {{- $defaultServiceName := $fullName -}}
-  {{- $defaultServicePort := "3000" -}}
   {{- $values := .Values.ingress -}}
 
+  {{- if hasKey . "ObjectName" -}}
+    {{- $ingressName = .ObjectName -}}
+  {{ end -}}
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.ingress -}}
       {{- $values = . -}}
@@ -20,6 +21,8 @@ within the replicated-library library.
   {{- end -}}
 
   {{- $isStable := include "replicated-library.capabilities.ingress.isStable" . }}
+
+  {{- $serviceName := $values.serviceName }}
 ---
 apiVersion: {{ include "replicated-library.capabilities.ingress.apiVersion" . }}
 kind: Ingress
@@ -53,8 +56,8 @@ spec:
       http:
         paths:
           {{- range .paths }}
-          {{- $service := $defaultServiceName -}}
-          {{- $port := $defaultServicePort -}}
+          {{- $service := $serviceName -}}
+          {{- $port := 80 -}}
           {{- if .service -}}
             {{- $service = default $service .service.name -}}
             {{- $port = default $port .service.port -}}
