@@ -1,5 +1,5 @@
 {{- define "custom.notes" -}}
-This is a library chart maintined by Replicated in order to keep the creation of helm charts dry when deploying third party commercial software 
+This is a library chart maintained by Replicated in order to keep the creation of helm charts dry when deploying third party commercial software 
 {{- end -}}
 
 {{- define "custom.custom.configuration.header" -}}
@@ -30,5 +30,7 @@ dependencies:
   version: 0.1.0
   repository: "file://path/to/replicated-library-chart"
 ```
+
+You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-kots-helm/blob/main/manifests/charts/vaultwarden/values.yaml)
 
 {{- end -}}
