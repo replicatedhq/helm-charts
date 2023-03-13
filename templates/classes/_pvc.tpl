@@ -9,7 +9,7 @@ within the replicated-library library.
     {{- $values = . -}}
   {{- end -}}
 {{ end -}}
-{{- $pvcName := include "replicated-library.names.fullname" . -}}
+{{- $pvcName := .ObjectName -}}
 {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
   {{- if not (eq $values.nameOverride "-") -}}
     {{- $pvcName = printf "%v-%v" $pvcName $values.nameOverride -}}
@@ -24,22 +24,11 @@ metadata:
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
   annotations:
-    {{- if $values.retain }}
-    "helm.sh/resource-policy": keep
-    {{- end }}
     {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+{{- with $values.persistentVolumeClaim.spec }}
 spec:
-  accessModes:
-    - {{ required (printf "accessMode is required for PVC %v" $pvcName) $values.accessMode | quote }}
-  resources:
-    requests:
-      storage: {{ required (printf "size is required for PVC %v" $pvcName) $values.size | quote }}
-  {{- if $values.storageClass }}
-  storageClassName: {{ if (eq "-" $values.storageClass) }}""{{- else }}{{ $values.storageClass | quote }}{{- end }}
-  {{- end }}
-  {{- if $values.volumeName }}
-  volumeName: {{ $values.volumeName | quote }}
-  {{- end }}
+    {{- toYaml . | nindent 4 }}
+{{- end }}
 {{- end -}}

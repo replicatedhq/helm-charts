@@ -57,9 +57,9 @@
   {{- end }}
   ports:
   {{- include "replicated-library.ports" . | trim | nindent 4 }}
-  {{- with $values.volumeMounts }}
+  {{- with (include "replicated-library.volumeMounts" . | trim) }}
   volumeMounts:
-    {{- toYaml . | nindent 4 }}
+    {{- nindent 4 . }}
   {{- end }}
   {{- include "replicated-library.probes" . | trim | nindent 2 }}
   {{- with $values.resources }}
