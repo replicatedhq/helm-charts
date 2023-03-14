@@ -2,14 +2,19 @@
 Volumes included by the main.
 */}}
 {{- define "replicated-library.volumes" -}}
-{{- range $index, $volume := .Values.volumes }}
-{{- if $volume.enabled }}
+{{- $name := . -}}
+{{- if hasKey . "AppName" -}}
+  {{- $name = .AppName -}}
+{{ end -}}
+
+{{- range $index, $volume := .Values.persistence }}
+{{- if and $volume.enabled (eq $name (default $name $volume.appName)) }}
 - name: {{ $index }}
-  {{- if eq (default "pvc" $volume.type) "pvc" }}
-    {{- $pvcName := (include "replicated-library.names.fullname" $) -}}
-    {{- if $volume.existingClaim }}
+  {{- if eq (default "persistentVolumeClaim" $volume.type) "persistentVolumeClaim" }}
+    {{- $pvcName := $index -}}
+    {{- if $volume.persistentVolumeClaim.existingClaim }}
       {{- /* Always prefer an existingClaim if that is set */}}
-      {{- $pvcName = $volume.existingClaim -}}
+      {{- $pvcName = $volume.persistentVolumeClaim.existingClaim -}}
     {{- else -}}
       {{- /* Otherwise refer to the PVC name */}}
       {{- if $volume.nameOverride -}}
