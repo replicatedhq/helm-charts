@@ -12,7 +12,7 @@ within the replicated-library library.
 {{- $pvcName := .ObjectName -}}
 {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
   {{- if not (eq $values.nameOverride "-") -}}
-    {{- $pvcName = printf "%v-%v" $pvcName $values.nameOverride -}}
+    {{- $pvcName = printf "%v" $pvcName -}}
   {{ end -}}
 {{ end }}
 ---

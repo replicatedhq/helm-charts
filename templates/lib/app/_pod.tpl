@@ -70,26 +70,10 @@ initContainers:
     {{- tpl (toYaml $initContainers) $ | nindent 2 }}
   {{- end }}
 containers:
-  {{- include "replicated-library.mainContainer" . | nindent 2 }}
-  {{- with .additionalContainers }}
-    {{- $additionalContainers := list }}
-    {{- range $name, $container := . }}
-      {{- if not $container.name -}}
-        {{- $_ := set $container "name" $name }}
-      {{- end }}
-      {{- if $container.env -}}
-        {{- $_ := set $ "ObjectValues" (dict "env" $container.env) -}}
-        {{- $newEnv := fromYaml (include "replicated-library.env_vars" $) -}}
-        {{- $_ := set $container "env" $newEnv.env }}
-        {{- $_ := unset $.ObjectValues "env" -}}
-      {{- end }}
-      {{- $additionalContainers = append $additionalContainers $container }}
-    {{- end }}
-    {{- tpl (toYaml $additionalContainers) $ | nindent 2 }}
-  {{- end }}
-  {{- with (include "replicated-library.volumes" . | trim) }}
+  {{- include "replicated-library.container" . | nindent 2 }}
+  {{- with $values.volumes }}
 volumes:
-    {{- nindent 2 . }}
+    {{- toYaml . | nindent 2 . }}
   {{- end }}
   {{- with $values.hostAliases }}
 hostAliases:
