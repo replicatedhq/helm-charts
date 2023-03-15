@@ -73,7 +73,7 @@ containers:
   {{- include "replicated-library.container" . | nindent 2 }}
   {{- with $values.volumes }}
 volumes:
-    {{- toYaml . | nindent 2 . }}
+    {{- toYaml . | nindent 2 }}
   {{- end }}
   {{- with $values.hostAliases }}
 hostAliases:
