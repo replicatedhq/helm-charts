@@ -11,9 +11,16 @@ This is a library chart maintained by Replicated in order to keep the creation o
 Kubernetes: `>=1.16.0-0`
 
 ## Dependencies
-
 | Repository | Name | Version |
 |------------|------|---------|
+
+## Updating the README
+
+We use [Helm Docs](https://github.com/norwoodj/helm-docs)
+
+```
+helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl
+```
 
 ## Installing the Chart
 
@@ -50,70 +57,59 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | apps | object | See below | Configure the apps for the chart here. Apps can be added by adding a dictionary key similar to the 'example' app. By default the name of the app will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
-| apps.example.additionalContainers | object | `{}` | Specify any additional containers here as dictionary items. Each additional container should have its own key. Helm templates can be used. |
-| apps.example.additionalContainers | object | `{}` | Specify any additional containers here as dictionary items. Each additional container should have its own key. Helm templates can be used. |
-| apps.example.additionalVolumeMounts | list | `[]` | TODO: Not Implemented |
-| apps.example.additionalVolumes | list | `[]` | TODO: Not Implemented |
 | apps.example.affinity | object | `{}` | Defines affinity constraint rules. [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) |
 | apps.example.annotations | object | `{}` | Set annotations on the deployment/statefulset/daemonset |
-| apps.example.args | list | `[]` | Override the arguments for the primary container |
 | apps.example.automountServiceAccountToken | bool | `true` | Specifies whether a service account token should be automatically mounted. |
-| apps.example.command | list | `[]` | Override the command for the primary container |
+| apps.example.containers.example.args | list | `[]` | Override the arguments for the container |
+| apps.example.containers.example.command | list | `[]` | Override the command for the container |
+| apps.example.containers.example.env | string | `nil` | Environment variables. Template enabled. Syntax options: A) TZ: UTC B) PASSWD: '{{ .Release.Name }}' C) PASSWD:      configMapKeyRef:        name: config-map-name        key: key-name D) PASSWD:      valueFrom:        secretKeyRef:          name: secret-name          key: key-name      ... E) - name: TZ      value: UTC F) - name: TZ      value: '{{ .Release.Name }}' |
+| apps.example.containers.example.envFrom | list | `[]` | Secrets and/or ConfigMaps that will be loaded as environment variables. [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables) |
+| apps.example.containers.example.image.pullPolicy | string | `nil` | Specify the image pull policy for the container |
+| apps.example.containers.example.image.repository | string | `"nginx"` | Specify the image repository for the container |
+| apps.example.containers.example.image.tag | string | `"latest"` | Specify the image tag for the container |
+| apps.example.containers.example.lifecycle | object | `{}` | Configure the lifecycle for the container |
+| apps.example.containers.example.livenessProbe | object | `{}` | Specify the liveness probes for the container |
+| apps.example.containers.example.ports | list | `[]` | Specify the ports for the container |
+| apps.example.containers.example.readinessProbe | object | `{}` | Specify the readiness probes for the container |
+| apps.example.containers.example.resources | object | `{}` | Set the resource requests / limits for the container. |
+| apps.example.containers.example.securityContext | object | `{}` | Configure the Security Context for the container |
+| apps.example.containers.example.startupProbe | object | `{}` | Specify the startup probes for the container |
+| apps.example.containers.example.termination.gracePeriodSeconds | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle)] |
+| apps.example.containers.example.termination.messagePath | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
+| apps.example.containers.example.termination.messagePolicy | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
+| apps.example.containers.example.volumeMounts | list | `[]` | Specify a list of volumes mounts in the container. |
 | apps.example.dnsConfig | object | `{}` | Optional DNS settings, configuring the ndots option may resolve nslookup issues on some Kubernetes setups. |
 | apps.example.dnsPolicy | string | `nil` | Defaults to "ClusterFirst" if hostNetwork is false and "ClusterFirstWithHostNet" if hostNetwork is true. |
 | apps.example.enableServiceLinks | bool | `true` | Enable/disable the generation of environment variables for services. [[ref]](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#accessing-the-service) |
 | apps.example.enabled | bool | `false` | Enable the app Each app represents a single controller type (deployment, daemonset, statefulset) |
-| apps.example.env | string | `nil` | Main environment variables. Template enabled. Syntax options: A) TZ: UTC B) PASSWD: '{{ .Release.Name }}' C) PASSWD:      configMapKeyRef:        name: config-map-name        key: key-name D) PASSWD:      valueFrom:        secretKeyRef:          name: secret-name          key: key-name      ... E) - name: TZ      value: UTC F) - name: TZ      value: '{{ .Release.Name }}' |
-| apps.example.envFrom | list | `[]` | Secrets and/or ConfigMaps that will be loaded as environment variables. [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables) |
 | apps.example.hostAliases | list | `[]` | Use hostAliases to add custom entries to /etc/hosts - mapping IP addresses to hostnames. [[ref]](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/) |
 | apps.example.hostNetwork | bool | `false` | When using hostNetwork make sure you set dnsPolicy to `ClusterFirstWithHostNet` |
 | apps.example.hostname | string | `nil` | Allows specifying explicit hostname setting |
-| apps.example.image.pullPolicy | string | `nil` | Specify the image pull policy for the primary container |
-| apps.example.image.repository | string | `"nginx"` | Specify the image repository for the primary container |
-| apps.example.image.tag | string | `"latest"` | Specify the image tag for the primary container |
-| apps.example.imagePullSecrets | list | `[]` | Specify one or more image pull secrets |
-| apps.example.initContainers | object | `{}` | Specify any initContainers here as dictionary items. Each initContainer should have its own key. The dictionary item key will determine the order. Helm templates can be used. |
-| apps.example.initContainers | object | `{}` | Specify any initContainers here as dictionary items. Each initContainer should have its own key. The dictionary item key will determine the order. Helm templates can be used. |
+| apps.example.imagePullSecrets | list | `[]` | Specify one or more image pull secrets for the app |
+| apps.example.initContainers | object | `{}` | Specify any initContainers here as dictionary items. Each initContainer should have its own key. The dictionary item key will determine the order. |
 | apps.example.labels | object | `{}` | Set labels on the deployment/statefulset/daemonset |
-| apps.example.lifecycle | object | `{}` | Configure the lifecycle for the main container |
 | apps.example.nodeSelector | object | `{}` | Node selection constraint [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) |
 | apps.example.podAnnotations | object | `{}` | Set annotations on the pod |
 | apps.example.podLabels | object | `{}` | Set labels on the pod |
 | apps.example.podManagementPolicy | string | `nil` | Set statefulset podManagementPolicy, valid values are Parallel and OrderedReady (default). |
 | apps.example.podSecurityContext | object | `{}` | Configure the Security Context for the Pod |
 | apps.example.priorityClassName | string | `nil` | Custom priority class for different treatment by the scheduler |
-| apps.example.probes | object | See below | [[ref]](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
-| apps.example.probes.liveness | object | See below | Liveness probe configuration |
-| apps.example.probes.liveness.custom | bool | `false` | Set this to `true` if you wish to specify your own livenessProbe |
-| apps.example.probes.liveness.enabled | bool | `false` | Enable the liveness probe |
-| apps.example.probes.liveness.spec | object | See below | The spec field contains the values for the default livenessProbe. If you selected `custom: true`, this field holds the definition of the livenessProbe. |
-| apps.example.probes.readiness.custom | bool | `false` | Set this to `true` if you wish to specify your own readinessProbe |
-| apps.example.probes.readiness.enabled | bool | `false` | Enable the readiness probe |
-| apps.example.probes.readiness.spec | object | See below | The spec field contains the values for the default readinessProbe. If you selected `custom: true`, this field holds the definition of the readinessProbe. |
-| apps.example.probes.startup | object | See below | Startup probe configuration |
-| apps.example.probes.startup.custom | bool | `false` | Set this to `true` if you wish to specify your own startupProbe |
-| apps.example.probes.startup.enabled | bool | `false` | Enable the startup probe |
-| apps.example.probes.startup.spec | object | See below | The spec field contains the values for the default startupProbe. If you selected `custom: true`, this field holds the definition of the startupProbe. |
 | apps.example.replicas | int | `1` | Set the replica count. Only used for deployment and statefulset |
-| apps.example.resources | object | `{}` | Set the resource requests / limits for the primary container. |
 | apps.example.revisionHistoryLimit | int | `3` | ReplicaSet revision history limit |
 | apps.example.rollingUpdate.partition | string | `nil` | Set statefulset RollingUpdate partition |
 | apps.example.rollingUpdate.surge | string | `nil` | Set deployment RollingUpdate max surge |
 | apps.example.rollingUpdate.unavailable | string | `nil` | Set deployment RollingUpdate max unavailable |
 | apps.example.runtimeClassName | string | `nil` | Allow specifying a runtimeClassName other than the default one (ie: nvidia) |
 | apps.example.schedulerName | string | `nil` | Allows specifying a custom scheduler name |
-| apps.example.securityContext | object | `{}` | Configure the Security Context for the primary container |
 | apps.example.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | apps.example.serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | apps.example.serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | apps.example.strategy | string | `nil` | Set the controller upgrade strategy For Deployments, valid values are Recreate (default) and RollingUpdate. For StatefulSets, valid values are OnDelete and RollingUpdate (default). DaemonSets ignore this. |
-| apps.example.termination.gracePeriodSeconds | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle)] |
-| apps.example.termination.messagePath | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
-| apps.example.termination.messagePolicy | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
 | apps.example.tolerations | list | `[]` | Specify taint tolerations [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) |
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
 | apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset |
 | apps.example.volumeClaimTemplates | list | `[]` | Used to create individual disks for each instance when type: StatefulSet |
+| apps.example.volumes | list | `[]` | Specify a list of volumes that get mounted to the app. |
 | configmaps | object | See below | Configure the configmaps for the chart here. Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. By default the name of the configmap will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | configmaps.exampleConfig.annotations | object | `{}` | Annotations to add to the configMap |
 | configmaps.exampleConfig.data | object | `{}` | configMap data content. Helm template enabled. |
@@ -132,21 +128,15 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | ingresses.example.labels | object | `{}` | Provide additional labels which may be required. |
 | ingresses.example.nameOverride | string | `nil` | Override the name that is used for this ingress. By default the name will be the name of the dictionary key |
 | ingresses.example.serviceName | string | `"example"` | Name of the service to attach this ingress. This corresponds to an service configured un the `services` key |
-| persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key.  Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride TODO: NOT IMPLEMENTED |
-| persistence.example.appName | string | `"example"` | Name of the app to attach this persistence eobject. This corresponds to an app configured un the `apps` key TODO: NOT IMPLEMENTED Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something? |
+| persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key.  Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride |
 | persistence.example.enabled | bool | `false` | Enables or disables the volume |
-| persistence.example.mountPath | string | `nil` | Where to mount the volume in the primary container. Defaults to `/<name_of_the_volume>`, setting to '-' creates the volume but disables the volumeMount. |
 | persistence.example.nameOverride | string | `nil` | Override the name that is used for this persistence object TODO: NOT IMPLEMENTED |
-| persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container |
+| persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container TODO |
 | persistence.example.persistentVolume.spec | object | `{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/ |
 | persistence.example.persistentVolumeClaim | object | `{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}}` | Configure a Persistent Volume Claim to be mounted to the app's primary container |
 | persistence.example.persistentVolumeClaim.existingClaimName | string | `nil` | Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec  |
 | persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims |
-| persistence.example.readOnly | bool | `false` | Specify if the volume should be mounted read-only. |
-| persistence.example.subPath | string | `nil` | Used in conjunction with `existingClaim`. Specifies a sub-path inside the referenced volume instead of its root |
 | persistence.example.type | string | `"persistentVolumeClaim"` | Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"] type.volume is a static volume definition directly on an app type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app |
-| persistence.example.volume | object | `{"spec":{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}}` | Configure a volume to be mounted directly to the app's primary container |
-| persistence.example.volume.spec | object | `{"hostPath":{"path":"/tmp/data1","type":"DirectoryOrCreate"}}` | Reference - https://kubernetes.io/docs/concepts/storage/volumes |
 | secrets | object | See below | Configure the secrets for the chart here. Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. By default the name of the secret will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
 | secrets.exampleSecret.data | object | `{}` | configMap data content. Helm template enabled. |

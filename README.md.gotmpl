@@ -23,9 +23,18 @@ https://github.com/replicatedhq/replicated-library-chart
 {{ template "chart.kubeVersionLine" . }}
 {{- end -}}
 
+{{- define "custom.generateREADME" -}}
+## Updating the README
+
+We use [Helm Docs](https://github.com/norwoodj/helm-docs)
+
+```
+helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl
+```
+{{- end -}}
+
 {{- define "custom.dependencies" -}}
 ## Dependencies
-
 {{ template "chart.requirementsTable" . }}
 {{- end -}}
 
@@ -72,6 +81,8 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 {{ template "custom.requirements" . }}
 
 {{ template "custom.dependencies" . }}
+
+{{ template "custom.generateREADME" . }}
 
 {{ template "custom.install" . }}
 

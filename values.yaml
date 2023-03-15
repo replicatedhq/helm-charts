@@ -30,52 +30,84 @@ apps:
     # -- Set the replica count. Only used for deployment and statefulset
     replicas: 1
 
-    image:
-      # -- Specify the image repository for the primary container
-      repository: nginx
-      # -- Specify the image tag for the primary container
-      tag: latest
-      # -- Specify the image pull policy for the primary container
-      pullPolicy:
-    # -- Specify one or more image pull secrets
+    # -- Specify one or more image pull secrets for the app
     imagePullSecrets: []
 
-    # -- Override the command for the primary container
-    command: []
-    # -- Override the arguments for the primary container
-    args: []
+    containers:
+      example:
+        image:
+          # -- Specify the image repository for the container
+          repository: nginx
+          # -- Specify the image tag for the container
+          tag: latest
+          # -- Specify the image pull policy for the container
+          pullPolicy:
 
-    # -- Main environment variables. Template enabled.
-    # Syntax options:
-    # A) TZ: UTC
-    # B) PASSWD: '{{ .Release.Name }}'
-    # C) PASSWD:
-    #      configMapKeyRef:
-    #        name: config-map-name
-    #        key: key-name
-    # D) PASSWD:
-    #      valueFrom:
-    #        secretKeyRef:
-    #          name: secret-name
-    #          key: key-name
-    #      ...
-    # E) - name: TZ
-    #      value: UTC
-    # F) - name: TZ
-    #      value: '{{ .Release.Name }}'
-    env:
+        # -- Override the command for the container
+        command: []
+        # -- Override the arguments for the container
+        args: []
 
-    # -- Secrets and/or ConfigMaps that will be loaded as environment variables.
-    # [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables)
-    envFrom: []
+        # -- Environment variables. Template enabled.
+        # Syntax options:
+        # A) TZ: UTC
+        # B) PASSWD: '{{ .Release.Name }}'
+        # C) PASSWD:
+        #      configMapKeyRef:
+        #        name: config-map-name
+        #        key: key-name
+        # D) PASSWD:
+        #      valueFrom:
+        #        secretKeyRef:
+        #          name: secret-name
+        #          key: key-name
+        #      ...
+        # E) - name: TZ
+        #      value: UTC
+        # F) - name: TZ
+        #      value: '{{ .Release.Name }}'
+        env:
 
-    # -- Specify a list of additional volumes that get mounted in the primary container.
-    # -- TODO: Not Implemented
-    additionalVolumes: []
+        # -- Secrets and/or ConfigMaps that will be loaded as environment variables.
+        # [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables)
+        envFrom: []
 
-    # -- Specify a list of additional volumes mounts in the primary container.
-    # -- TODO: Not Implemented
-    additionalVolumeMounts: []
+        # -- Specify the ports for the container
+        ports: []
+        # -- Specify a list of volumes mounts in the container.
+        volumeMounts: []
+        # -- Specify the readiness probes for the container
+        readinessProbe: {}
+        # -- Specify the liveness probes for the container
+        livenessProbe: {}
+        # -- Specify the startup probes for the container
+        startupProbe: {}
+        # -- Configure the Security Context for the container
+        securityContext: {}
+        # -- Configure the lifecycle for the container
+        lifecycle: {}
+
+        termination:
+          # -- Configure the path at which the file to which the container's termination message will be written.
+          # -- [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)]
+          messagePath:
+          # -- Indicate how the container's termination message should be populated.
+          # Valid options are `File` and `FallbackToLogsOnError`.
+          # -- [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)]
+          messagePolicy:
+          # -- Duration in seconds the pod needs to terminate gracefully
+          # -- [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle)]
+          gracePeriodSeconds:
+
+        # -- Set the resource requests / limits for the container.
+        resources: {}
+
+    # -- Specify any initContainers here as dictionary items. Each initContainer should have its own key.
+    # The dictionary item key will determine the order.
+    initContainers: {}
+
+    # -- Specify a list of volumes that get mounted to the app.
+    volumes: []
 
     # -- Set annotations on the deployment/statefulset/daemonset
     annotations: {}
@@ -92,14 +124,6 @@ apps:
       # -- The name of the service account to use.
       # If not set and create is true, a name is generated using the fullname template
       name: ""
-
-    # -- Specify any initContainers here as dictionary items. Each initContainer should have its own key.
-    # The dictionary item key will determine the order. Helm templates can be used.
-    initContainers: {}
-
-    # -- Specify any additional containers here as dictionary items. Each additional container should have its own key.
-    # Helm templates can be used.
-    additionalContainers: {}
     
     # -- Set statefulset podManagementPolicy, valid values are Parallel and OrderedReady (default).
     podManagementPolicy:
@@ -142,77 +166,6 @@ apps:
     enableServiceLinks: true
     # -- Configure the Security Context for the Pod
     podSecurityContext: {}
-    # -- Configure the Security Context for the primary container
-    securityContext: {}
-    # -- Configure the lifecycle for the main container
-    lifecycle: {}
-    # -- Specify any initContainers here as dictionary items. Each initContainer should have its own key.
-    # The dictionary item key will determine the order. Helm templates can be used.
-    initContainers: {}
-    # -- Specify any additional containers here as dictionary items. Each additional container should have its own key.
-    # Helm templates can be used.
-    additionalContainers: {}
-    # -- Probe configuration
-    # -- [[ref]](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
-    # @default -- See below
-    probes:
-      # -- Liveness probe configuration
-      # @default -- See below
-      liveness:
-        # -- Enable the liveness probe
-        enabled: false
-        # -- Set this to `true` if you wish to specify your own livenessProbe
-        custom: false
-        # -- The spec field contains the values for the default livenessProbe.
-        # If you selected `custom: true`, this field holds the definition of the livenessProbe.
-        # @default -- See below
-        spec:
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-       # -- Redainess probe configuration
-       # @default -- See below
-      readiness:
-        # -- Enable the readiness probe
-        enabled: false
-        # -- Set this to `true` if you wish to specify your own readinessProbe
-        custom: false
-        # -- The spec field contains the values for the default readinessProbe.
-        # If you selected `custom: true`, this field holds the definition of the readinessProbe.
-        # @default -- See below
-        spec:
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      # -- Startup probe configuration
-      # @default -- See below
-      startup:
-        # -- Enable the startup probe
-        enabled: false
-        # -- Set this to `true` if you wish to specify your own startupProbe
-        custom: false
-        # -- The spec field contains the values for the default startupProbe.
-        # If you selected `custom: true`, this field holds the definition of the startupProbe.
-        # @default -- See below
-        spec:
-          initialDelaySeconds: 0
-          timeoutSeconds: 1
-          ## This means it has a maximum of 5*30=150 seconds to start up before it fails
-          periodSeconds: 5
-          failureThreshold: 30
-    termination:
-      # -- Configure the path at which the file to which the main container's termination message will be written.
-      # -- [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)]
-      messagePath:
-      # -- Indicate how the main container's termination message should be populated.
-      # Valid options are `File` and `FallbackToLogsOnError`.
-      # -- [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)]
-      messagePolicy:
-      # -- Duration in seconds the pod needs to terminate gracefully
-      # -- [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle)]
-      gracePeriodSeconds:
 
     # -- Used to create individual disks for each instance when type: StatefulSet
     volumeClaimTemplates: []
@@ -244,9 +197,6 @@ apps:
     #   hostnames:
     #   - "example.com"
     #   - "www.example.com"
-
-    # -- Set the resource requests / limits for the primary container.
-    resources: {}
 
 # -- Configure the secrets for the chart here.
 # Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret.
@@ -376,17 +326,11 @@ ingresses:
 # -- Configure volumes for the chart here.
 # Persistence items can be added by adding a dictionary key similar to the 'example' key. 
 # Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride
-# TODO: NOT IMPLEMENTED
 # @default -- See below
 persistence:
   example:
     # -- Enables or disables the volume
     enabled: false
-
-    # -- Name of the app to attach this persistence eobject. This corresponds to an app configured un the `apps` key
-    # TODO: NOT IMPLEMENTED
-    # Should this be optional or mandatory? Safe to assume that any persistent object should be mounted by something?
-    appName: example
 
     # -- Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"]
     # type.volume is a static volume definition directly on an app
@@ -394,30 +338,12 @@ persistence:
     # type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app
     type: persistentVolumeClaim
 
-    # -- Where to mount the volume in the primary container.
-    # Defaults to `/<name_of_the_volume>`,
-    # setting to '-' creates the volume but disables the volumeMount.
-    mountPath:  # /config
-
-    # -- Specify if the volume should be mounted read-only.
-    readOnly: false
-
-    # -- Used in conjunction with `existingClaim`. Specifies a sub-path inside the referenced volume instead of its root
-    subPath:  # some-subpath
-
     # -- Override the name that is used for this persistence object
     # TODO: NOT IMPLEMENTED
     nameOverride:
 
-    # -- Configure a volume to be mounted directly to the app's primary container
-    volume:
-      # -- Reference - https://kubernetes.io/docs/concepts/storage/volumes
-      spec:
-        hostPath:
-          path: /tmp/data1
-          type: DirectoryOrCreate
-
     # -- Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container
+    # TODO
     persistentVolume:
       # -- Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/
       spec:
