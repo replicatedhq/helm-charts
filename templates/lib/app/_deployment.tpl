@@ -12,6 +12,7 @@ within the replicated-library library.
 ---
 apiVersion: apps/v1
 kind: Deployment
+thisAintRight: yup
 metadata:
   name: {{ include "replicated-library.names.appname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
