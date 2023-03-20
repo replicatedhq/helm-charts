@@ -7,3 +7,6 @@ kubeVersion: ">=1.16.0-0"
 keywords:
   - replicated-library
 home: https://github.com/replicatedhq/replicated-library-chart/tree/main
+maintainers:
+  - name: diamonwiggins
+    email: diamon@replicated.com

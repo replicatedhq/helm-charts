@@ -5,7 +5,7 @@ global:
   annotations: {}
 
 # -- Global defaults
-# TODO: NOT IMPLEMENTED. 
+# TODO: NOT IMPLEMENTED.
 # Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key
 defaults:
   image:
@@ -124,7 +124,7 @@ apps:
       # -- The name of the service account to use.
       # If not set and create is true, a name is generated using the fullname template
       name: ""
-    
+
     # -- Set statefulset podManagementPolicy, valid values are Parallel and OrderedReady (default).
     podManagementPolicy:
     # -- Set annotations on the pod
@@ -324,7 +324,7 @@ ingresses:
     tls: []
 
 # -- Configure volumes for the chart here.
-# Persistence items can be added by adding a dictionary key similar to the 'example' key. 
+# Persistence items can be added by adding a dictionary key similar to the 'example' key.
 # Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride
 # @default -- See below
 persistence:
@@ -358,7 +358,7 @@ persistence:
 
     # -- Configure a Persistent Volume Claim to be mounted to the app's primary container
     persistentVolumeClaim:
-      # -- Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec 
+      # -- Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec
       existingClaimName:
       # -- Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims
       spec:
@@ -370,8 +370,3 @@ persistence:
           requests:
             storage: 8Gi
         storageClassName: slow
-        selector:
-          matchLabels:
-            release: "stable"
-          matchExpressions:
-            - {key: environment, operator: In, values: [dev]}
