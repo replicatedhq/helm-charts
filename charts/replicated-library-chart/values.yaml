@@ -332,8 +332,7 @@ persistence:
     # -- Enables or disables the volume
     enabled: false
 
-    # -- Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"]
-    # type.volume is a static volume definition directly on an app
+    # -- Volume type. Available options are ["persistentVolume," "persistentVolumeClaim"]
     # type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app
     # type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app
     type: persistentVolumeClaim
