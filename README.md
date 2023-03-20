@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -116,7 +116,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
 | configmaps.exampleConfig.nameOverride | string | `nil` | Override the name suffix that is used for this configap |
-| defaults | object | `{"image":{"pullPolicy":"IfNotPresent"}}` | Global defaults TODO: NOT IMPLEMENTED.  Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key |
+| defaults | object | `{"image":{"pullPolicy":"IfNotPresent"}}` | Global defaults TODO: NOT IMPLEMENTED. Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key |
 | global.annotations | object | `{}` | Set additional global annotations. |
 | global.labels | object | `{}` | Set additional global labels. |
 | ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key |
@@ -128,14 +128,14 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | ingresses.example.labels | object | `{}` | Provide additional labels which may be required. |
 | ingresses.example.nameOverride | string | `nil` | Override the name that is used for this ingress. By default the name will be the name of the dictionary key |
 | ingresses.example.serviceName | string | `"example"` | Name of the service to attach this ingress. This corresponds to an service configured un the `services` key |
-| persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key.  Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride |
+| persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key. Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride |
 | persistence.example.enabled | bool | `false` | Enables or disables the volume |
 | persistence.example.nameOverride | string | `nil` | Override the name that is used for this persistence object TODO: NOT IMPLEMENTED |
 | persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container TODO |
 | persistence.example.persistentVolume.spec | object | `{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/ |
-| persistence.example.persistentVolumeClaim | object | `{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}}` | Configure a Persistent Volume Claim to be mounted to the app's primary container |
-| persistence.example.persistentVolumeClaim.existingClaimName | string | `nil` | Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec  |
-| persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"selector":{"matchExpressions":[{"key":"environment","operator":"In","values":["dev"]}],"matchLabels":{"release":"stable"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims |
+| persistence.example.persistentVolumeClaim | object | `{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"storageClassName":"slow","volumeMode":"Filesystem"}}` | Configure a Persistent Volume Claim to be mounted to the app's primary container |
+| persistence.example.persistentVolumeClaim.existingClaimName | string | `nil` | Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec |
+| persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims |
 | persistence.example.type | string | `"persistentVolumeClaim"` | Volume type. Available options are ["volume", "persistentVolume," "persistentVolumeClaim"] type.volume is a static volume definition directly on an app type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app |
 | secrets | object | See below | Configure the secrets for the chart here. Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. By default the name of the secret will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
