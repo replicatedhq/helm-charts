@@ -30,23 +30,17 @@ This is a [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm)
 
 ## Using this library
 
-First you will need clone this repository.
-
-```
-git@github.com:replicatedhq/replicated-library-chart.git
-```
-
-Soon we'll publish the chart to a remote repository so you don't need to clone locally, but for now you'll need to include this chart as a `file` dependency in your `Chart.yaml` e.g.
+Include the chart as a dependency in your `Chart.yaml`
 
 ```yaml
 # Chart.yaml
 dependencies:
 - name: replicated-library
-  version: 0.1.0
-  repository: "file://path/to/replicated-library-chart"
+  repository: https://replicatedhq.github.io/helm-charts
+  version: 0.1.1
 ```
 
-You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-kots-helm/blob/main/manifests/charts/vaultwarden/values.yaml)
+You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
 
 ## Configuration
 
