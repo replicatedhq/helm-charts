@@ -33,4 +33,4 @@ jobs:
         uses: helm/chart-testing-action@v2.3.1
 
       - name: Run chart-testing (lint)
-        run: ct lint --charts ./charts/replicated-library-chart
+        run: ct lint --charts ./charts/replicated-library
