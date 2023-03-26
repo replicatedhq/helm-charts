@@ -23,19 +23,29 @@ app.kubernetes.io/appname: {{ include "replicated-library.names.appname" . }}
 
 {{- define "replicated-library.labels.serviceSelectorLabels" -}}
   {{- $serviceValues := . -}}
+
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.service -}}
       {{- $serviceValues = . -}}
     {{- end -}}
   {{ end -}}
-  {{- $matchingAppFound := false -}}
-  {{- range $appName, $appValues := .Values.apps }}
-    {{- if and $appValues.enabled (eq $appName $serviceValues.appName) (ne $matchingAppFound true) -}}
-      {{- $matchingAppFound = true -}}
+
+  {{- if $serviceValues.appName }}
+    {{- $matchingAppFound := false -}}
+
+    {{- range $appName, $appValues := .Values.apps }}
+      {{- if and $appValues.enabled (eq $appName $serviceValues.appName) (ne $matchingAppFound true) -}}
+        {{- $matchingAppFound = true -}}
 app.kubernetes.io/appname: {{ $appName }}
+      {{- end }}
     {{- end }}
+
+    {{- if (ne $matchingAppFound true) -}}
+      {{- fail (printf "Matching app for AppName (%s) was not found" $serviceValues.appName) }}
+    {{- end }}
+  
+  {{- else }}
+app.kubernetes.io/appname: {{- include "replicated-library.names.fullname" -}}
   {{- end }}
-  {{- if (ne $matchingAppFound true) -}}
-    {{- fail (printf "Matching app for AppName (%s) was not found" $serviceValues.appName) }}
-  {{- end }}
+
 {{- end -}}
