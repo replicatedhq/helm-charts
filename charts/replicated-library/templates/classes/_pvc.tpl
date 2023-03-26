@@ -10,12 +10,6 @@ within the replicated-library library.
     {{- $pvcName = .ObjectName -}}
   {{ end -}}
 
-{{- if hasKey . "ObjectValues" -}}
-  {{- with .ObjectValues.volume -}}
-    {{- $values = . -}}
-  {{- end -}}
-{{ end -}}
-
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.persistence -}}
       {{- $values = . -}}
