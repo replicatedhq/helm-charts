@@ -3,19 +3,18 @@ This template serves as a blueprint for all configMap objects that are created
 within the replicated-library library.
 */}}
 {{- define "replicated-library.classes.configmap" -}}
-  {{- $fullName := include "replicated-library.names.fullname" . -}}
-  {{- $configMapName := $fullName -}}
+  {{- $name := include "replicated-library.names.fullname" . -}}
   {{- $values := .Values.configmap -}}
+
+  {{- if hasKey . "ObjectName" -}}
+    {{- $name = .ObjectName -}}
+  {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.configmap -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
-
-  {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
-    {{- $configMapName = printf "%v-%v" $configMapName $values.nameOverride -}}
-  {{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
