@@ -3,11 +3,11 @@ This template serves as a blueprint for all configMap objects that are created
 within the replicated-library library.
 */}}
 {{- define "replicated-library.classes.configmap" -}}
-  {{- $name := include "replicated-library.names.fullname" . -}}
-  {{- $values := .Values.configmap -}}
+  {{- $configMapName := include "replicated-library.names.fullname" . -}}
+  {{- $values := .Values.configmaps -}}
 
   {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
+    {{- $configMapName = .ObjectName -}}
   {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}

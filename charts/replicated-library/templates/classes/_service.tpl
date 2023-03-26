@@ -3,22 +3,19 @@ This template serves as a blueprint for all Service objects that are created
 within the replicated-library library.
 */}}
 {{- define "replicated-library.classes.service" -}}
-  {{- $name := include "replicated-library.names.fullname" . -}}
-  {{- $values := .Values.service -}}
+  {{- $serviceName := include "replicated-library.names.fullname" . -}}
+  {{- $values := .Values.services -}}
 
   {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
+    {{- $serviceName = .ObjectName -}}
   {{ end -}}
+
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.service -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
   
-  {{- $serviceName := $name -}}
-  {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
-    {{- $serviceName = printf "%v-%v" $serviceName $values.nameOverride -}}
-  {{ end -}}
   {{- $svcType := $values.type | default "" -}}
 ---
 apiVersion: v1

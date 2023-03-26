@@ -3,22 +3,18 @@ This template serves as a blueprint for all Ingress objects that are created
 within the replicated-library library.
 */}}
 {{- define "replicated-library.classes.ingress" -}}
-  {{- $fullName := include "replicated-library.names.fullname" . -}}
-  {{- $ingressName := $fullName -}}
-  {{- $values := .Values.ingress -}}
+  {{- $ingressName := include "replicated-library.names.fullname" . -}}
+  {{- $values := .Values.ingresses -}}
 
   {{- if hasKey . "ObjectName" -}}
     {{- $ingressName = .ObjectName -}}
   {{ end -}}
+
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.ingress -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
-
-  {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
-    {{- $ingressName = printf "%v-%v" $ingressName $values.nameOverride -}}
-  {{- end -}}
 
   {{- $isStable := include "replicated-library.capabilities.ingress.isStable" . }}
 

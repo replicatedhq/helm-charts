@@ -3,11 +3,11 @@ This template serves as a blueprint for all secret objects that are created
 within the replicated-library library.
 */}}
 {{- define "replicated-library.classes.secret" -}}
-  {{- $name := include "replicated-library.names.fullname" . -}}
-  {{- $values := .Values.secret -}}
+  {{- $secretName := include "replicated-library.names.fullname" . -}}
+  {{- $values := .Values.secrets -}}
 
   {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
+    {{- $secretName = .ObjectName -}}
   {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}
@@ -19,7 +19,7 @@ within the replicated-library library.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ $name }}
+  name: {{ $secretName }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
