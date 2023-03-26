@@ -32,7 +32,7 @@ app.kubernetes.io/appname: {{ include "replicated-library.names.appname" . }}
   {{- range $appName, $appValues := .Values.apps }}
     {{- if and $appValues.enabled (eq $appName $serviceValues.appName) (ne $matchingAppFound true) -}}
       {{- $matchingAppFound = true -}}
-app.kubernetes.io/appname: {{ include "replicated-library.names.servicename" $ }}
+app.kubernetes.io/appname: {{ $appName }}
     {{- end }}
   {{- end }}
   {{- if (ne $matchingAppFound true) -}}

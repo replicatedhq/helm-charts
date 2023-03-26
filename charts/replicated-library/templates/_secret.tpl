@@ -7,13 +7,13 @@ Renders the Secret objects required by the chart.
     {{- if $secret.enabled -}}
       {{- $secretValues := $secret -}}
 
-      {{/* set the default nameOverride to the secret name */}}
-      {{- if not $secretValues.nameOverride -}}
-        {{- $_ := set $secretValues "nameOverride" $name -}}
+      {{- $_ := set $ "ObjectName" $name -}}
+      {{- if $secretValues.nameOverride -}}
+        {{- $_ := set $ "ObjectName" $secretValues.nameOverride -}}
       {{ end -}}
 
       {{- $_ := set $ "ObjectValues" (dict "secret" $secretValues) -}}
-      {{- include "replicated-library.classes.secret" $ }}
+      {{- include "replicated-library.classes.secret" $ | nindent 0 }}
     {{- end }}
   {{- end }}
 {{- end }}
