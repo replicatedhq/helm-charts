@@ -51,21 +51,6 @@ apps:
         # -- Environment variables. Template enabled.
         # Syntax options:
         # A) TZ: UTC
-        # B) PASSWD: '{{ .Release.Name }}'
-        # C) PASSWD:
-        #      configMapKeyRef:
-        #        name: config-map-name
-        #        key: key-name
-        # D) PASSWD:
-        #      valueFrom:
-        #        secretKeyRef:
-        #          name: secret-name
-        #          key: key-name
-        #      ...
-        # E) - name: TZ
-        #      value: UTC
-        # F) - name: TZ
-        #      value: '{{ .Release.Name }}'
         env:
 
         # -- Secrets and/or ConfigMaps that will be loaded as environment variables.
