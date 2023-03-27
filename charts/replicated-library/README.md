@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -56,7 +56,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.automountServiceAccountToken | bool | `true` | Specifies whether a service account token should be automatically mounted. |
 | apps.example.containers.example.args | list | `[]` | Override the arguments for the container |
 | apps.example.containers.example.command | list | `[]` | Override the command for the container |
-| apps.example.containers.example.env | string | `nil` | Environment variables. Template enabled. Syntax options: A) TZ: UTC B) PASSWD: '{{ .Release.Name }}' C) PASSWD:      configMapKeyRef:        name: config-map-name        key: key-name D) PASSWD:      valueFrom:        secretKeyRef:          name: secret-name          key: key-name      ... E) - name: TZ      value: UTC F) - name: TZ      value: '{{ .Release.Name }}' |
+| apps.example.containers.example.env | string | `nil` | Environment variables. Template enabled. Syntax options: A) TZ: UTC |
 | apps.example.containers.example.envFrom | list | `[]` | Secrets and/or ConfigMaps that will be loaded as environment variables. [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables) |
 | apps.example.containers.example.image.pullPolicy | string | `nil` | Specify the image pull policy for the container |
 | apps.example.containers.example.image.repository | string | `"nginx"` | Specify the image repository for the container |

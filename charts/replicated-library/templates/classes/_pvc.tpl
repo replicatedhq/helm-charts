@@ -3,13 +3,19 @@ This template serves as a blueprint for all PersistentVolumeClaim objects that a
 within the replicated-library library.
 */}}
 {{- define "replicated-library.classes.pvc" -}}
-{{- $values := .Values.volumes -}}
-{{- if hasKey . "ObjectValues" -}}
-  {{- with .ObjectValues.volume -}}
-    {{- $values = . -}}
-  {{- end -}}
-{{ end -}}
-{{- $pvcName := .ObjectName -}}
+{{- $pvcName := include "replicated-library.names.fullname" . -}}
+{{- $values := .Values.persistence -}}
+
+  {{- if hasKey . "ObjectName" -}}
+    {{- $pvcName = .ObjectName -}}
+  {{ end -}}
+
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.persistence -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{ end -}}
+
 {{- if and (hasKey $values "nameOverride") $values.nameOverride -}}
   {{- if not (eq $values.nameOverride "-") -}}
     {{- $pvcName = printf "%v" $pvcName -}}
