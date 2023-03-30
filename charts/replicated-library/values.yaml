@@ -12,14 +12,14 @@ defaults:
     livenessProbe:
       initialDelaySeconds: 0
       periodSeconds: 10
-      timeoutSeconds: 10
+      timeoutSeconds: 5
       successThreshold: 1
       failureThreshold: 5
       terminationGracePeriodSeconds: 30
     readinessProbe:
       initialDelaySeconds: 0
       periodSeconds: 10
-      timeoutSeconds: 5
+      timeoutSeconds: 1
       successThreshold: 1
       failureThreshold: 5
     startupProbe: {}
@@ -78,16 +78,12 @@ apps:
         # -- Specify probes for the container
         # [[ref]](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
         probes:
+          # -- Specify the readiness probes for the container
           readinessProbe: {}
+          # -- Specify the liveness probes for the container
           livenessProbe: {}
+          # -- Specify the startup probes for the container
           startupProbe: {}
-        # -- Specify the readiness probes for the container
-        readinessProbe: {}
-        # -- Specify the liveness probes for the container
-        livenessProbe: {}
-        # -- Specify the startup probes for the container
-        startupProbe: {}
-        # -- Configure the Security Context for the container
         securityContext: {}
         # -- Configure the lifecycle for the container
         lifecycle: {}

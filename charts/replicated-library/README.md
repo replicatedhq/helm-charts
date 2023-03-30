@@ -62,13 +62,12 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.containers.example.image.repository | string | `"nginx"` | Specify the image repository for the container |
 | apps.example.containers.example.image.tag | string | `"latest"` | Specify the image tag for the container |
 | apps.example.containers.example.lifecycle | object | `{}` | Configure the lifecycle for the container |
-| apps.example.containers.example.livenessProbe | object | `{}` | Specify the liveness probes for the container |
 | apps.example.containers.example.ports | list | `[]` | Specify the ports for the container |
 | apps.example.containers.example.probes | object | `{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}}` | Specify probes for the container [[ref]](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
-| apps.example.containers.example.readinessProbe | object | `{}` | Specify the readiness probes for the container |
+| apps.example.containers.example.probes.livenessProbe | object | `{}` | Specify the liveness probes for the container |
+| apps.example.containers.example.probes.readinessProbe | object | `{}` | Specify the readiness probes for the container |
+| apps.example.containers.example.probes.startupProbe | object | `{}` | Specify the startup probes for the container |
 | apps.example.containers.example.resources | object | `{}` | Set the resource requests / limits for the container. |
-| apps.example.containers.example.securityContext | object | `{}` | Configure the Security Context for the container |
-| apps.example.containers.example.startupProbe | object | `{}` | Specify the startup probes for the container |
 | apps.example.containers.example.termination.gracePeriodSeconds | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle)] |
 | apps.example.containers.example.termination.messagePath | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
 | apps.example.containers.example.termination.messagePolicy | string | `nil` | [[ref](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle-1)] |
@@ -117,12 +116,12 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | defaults.probes.livenessProbe.periodSeconds | int | `10` |  |
 | defaults.probes.livenessProbe.successThreshold | int | `1` |  |
 | defaults.probes.livenessProbe.terminationGracePeriodSeconds | int | `30` |  |
-| defaults.probes.livenessProbe.timeoutSeconds | int | `10` |  |
+| defaults.probes.livenessProbe.timeoutSeconds | int | `5` |  |
 | defaults.probes.readinessProbe.failureThreshold | int | `5` |  |
 | defaults.probes.readinessProbe.initialDelaySeconds | int | `0` |  |
 | defaults.probes.readinessProbe.periodSeconds | int | `10` |  |
 | defaults.probes.readinessProbe.successThreshold | int | `1` |  |
-| defaults.probes.readinessProbe.timeoutSeconds | int | `5` |  |
+| defaults.probes.readinessProbe.timeoutSeconds | int | `1` |  |
 | defaults.probes.startupProbe | object | `{}` |  |
 | defaults.strategy | string | `"RollingUpdate"` |  |
 | global.annotations | object | `{}` | Set additional global annotations. |
