@@ -64,6 +64,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.containers.example.lifecycle | object | `{}` | Configure the lifecycle for the container |
 | apps.example.containers.example.livenessProbe | object | `{}` | Specify the liveness probes for the container |
 | apps.example.containers.example.ports | list | `[]` | Specify the ports for the container |
+| apps.example.containers.example.probes | object | `{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}}` | Specify probes for the container [[ref]](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | apps.example.containers.example.readinessProbe | object | `{}` | Specify the readiness probes for the container |
 | apps.example.containers.example.resources | object | `{}` | Set the resource requests / limits for the container. |
 | apps.example.containers.example.securityContext | object | `{}` | Configure the Security Context for the container |
@@ -98,7 +99,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | apps.example.serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | apps.example.serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
-| apps.example.strategy | string | `nil` | Set the controller upgrade strategy For Deployments, valid values are Recreate (default) and RollingUpdate. For StatefulSets, valid values are OnDelete and RollingUpdate (default). DaemonSets ignore this. |
+| apps.example.strategy | string | `nil` | Set the controller upgrade strategy For Deployments, valid values are Recreate and RollingUpdate. For StatefulSets, valid values are OnDelete and RollingUpdate. For Daemonsets, valid values are OnDelete and RollingUpdate. |
 | apps.example.tolerations | list | `[]` | Specify taint tolerations [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) |
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
 | apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset |
@@ -110,7 +111,20 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
 | configmaps.exampleConfig.nameOverride | string | `nil` | Override the name suffix that is used for this configap |
-| defaults | object | `{"image":{"pullPolicy":"IfNotPresent"}}` | Global defaults TODO: NOT IMPLEMENTED. Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key |
+| defaults.image.pullPolicy | string | `"IfNotPresent"` |  |
+| defaults.probes.livenessProbe.failureThreshold | int | `5` |  |
+| defaults.probes.livenessProbe.initialDelaySeconds | int | `0` |  |
+| defaults.probes.livenessProbe.periodSeconds | int | `10` |  |
+| defaults.probes.livenessProbe.successThreshold | int | `1` |  |
+| defaults.probes.livenessProbe.terminationGracePeriodSeconds | int | `30` |  |
+| defaults.probes.livenessProbe.timeoutSeconds | int | `10` |  |
+| defaults.probes.readinessProbe.failureThreshold | int | `5` |  |
+| defaults.probes.readinessProbe.initialDelaySeconds | int | `0` |  |
+| defaults.probes.readinessProbe.periodSeconds | int | `10` |  |
+| defaults.probes.readinessProbe.successThreshold | int | `1` |  |
+| defaults.probes.readinessProbe.timeoutSeconds | int | `5` |  |
+| defaults.probes.startupProbe | object | `{}` |  |
+| defaults.strategy | string | `"RollingUpdate"` |  |
 | global.annotations | object | `{}` | Set additional global annotations. |
 | global.labels | object | `{}` | Set additional global labels. |
 | ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key |
@@ -140,6 +154,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services | object | See below | Configure the services for the chart here. Services can be added by adding a dictionary key similar to the 'example' service. By default the name of the service will be the name of the dictionary key TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | services.example.appName | string | `"example"` | Name of the app to attach this service. This corresponds to an app configured un the `apps` key TODO: Accept a list of appnames of which to associate the service TODO: Needs to be optional |
+| services.example.clusterIP | string | `nil` | Set the clusterIP |
 | services.example.enabled | bool | `false` | Enables or disables the service |
 | services.example.externalTrafficPolicy | string | `nil` | [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)] |
 | services.example.ipFamilies | list | `[]` | The ip families that should be used. Options: IPv4, IPv6 |

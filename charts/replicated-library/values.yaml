@@ -4,12 +4,26 @@ global:
   # -- Set additional global annotations.
   annotations: {}
 
-# -- Global defaults
-# TODO: NOT IMPLEMENTED.
-# Intended to be best practice defaults across different areas of the chart. May collapse this into the "global" key
 defaults:
   image:
     pullPolicy: IfNotPresent
+  strategy: RollingUpdate
+  probes:
+    livenessProbe:
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 10
+      successThreshold: 1
+      failureThreshold: 5
+      terminationGracePeriodSeconds: 30
+    readinessProbe:
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 5
+      successThreshold: 1
+      failureThreshold: 5
+    startupProbe: {}
+
 
 # -- Configure the apps for the chart here.
 # Apps can be added by adding a dictionary key similar to the 'example' app.
@@ -61,6 +75,12 @@ apps:
         ports: []
         # -- Specify a list of volumes mounts in the container.
         volumeMounts: []
+        # -- Specify probes for the container
+        # [[ref]](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+        probes:
+          readinessProbe: {}
+          livenessProbe: {}
+          startupProbe: {}
         # -- Specify the readiness probes for the container
         readinessProbe: {}
         # -- Specify the liveness probes for the container
@@ -118,9 +138,9 @@ apps:
     podLabels: {}
 
     # -- Set the controller upgrade strategy
-    # For Deployments, valid values are Recreate (default) and RollingUpdate.
-    # For StatefulSets, valid values are OnDelete and RollingUpdate (default).
-    # DaemonSets ignore this.
+    # For Deployments, valid values are Recreate and RollingUpdate.
+    # For StatefulSets, valid values are OnDelete and RollingUpdate.
+    # For Daemonsets, valid values are OnDelete and RollingUpdate.
     strategy:
     rollingUpdate:
       # -- Set deployment RollingUpdate max unavailable
@@ -240,6 +260,8 @@ services:
     nameOverride:
     # -- Set the service type
     type: ClusterIP
+    # -- Set the clusterIP
+    clusterIP:
     # -- Specify the externalTrafficPolicy for the service. Options: Cluster, Local
     # -- [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)]
     externalTrafficPolicy:
