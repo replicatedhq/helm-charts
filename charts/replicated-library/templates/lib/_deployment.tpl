@@ -23,7 +23,7 @@ metadata:
 spec:
   revisionHistoryLimit: {{ $values.revisionHistoryLimit }}
   replicas: {{ $values.replicas }}
-  {{- $strategy := default "Recreate" $values.strategy }}
+  {{- $strategy := default $.Values.defaults.strategy $values.strategy }}
   {{- if and (ne $strategy "Recreate") (ne $strategy "RollingUpdate") }}
     {{- fail (printf "Not a valid strategy type for Deployment (%s)" $strategy) }}
   {{- end }}
@@ -51,7 +51,7 @@ spec:
       {{- end }}
       labels:
         {{- include "replicated-library.labels.selectorLabels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
+        {{- with $values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:

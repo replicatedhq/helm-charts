@@ -9,7 +9,7 @@
 {{- range $containerName, $containerValues := $values.containers }}
 - name: {{ default "container" $containerName }}
   image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion $containerValues.image.tag) | quote }}
-  imagePullPolicy: {{ $containerValues.image.pullPolicy }}
+  imagePullPolicy: {{ default $.Values.defaults.image.pullPolicy $containerValues.image.pullPolicy }}
   {{- with $containerValues.command }}
   command:
     {{- if kindIs "string" . }}
@@ -64,17 +64,25 @@
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with $containerValues.livenessProbe }}
+{{- if $containerValues.probes -}}
+  {{- if $containerValues.probes.livenessProbe -}}
+  {{- with (mergeOverwrite $.Values.defaults.probes.livenessProbe $containerValues.probes.livenessProbe) }}
   livenessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with $containerValues.readinessProbe }}
+  {{- end -}}
+  {{- if $containerValues.probes.readinessProbe -}}
+  {{- with (mergeOverwrite $.Values.defaults.probes.readinessProbe $containerValues.probes.readinessProbe) }}
   readinessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with $containerValues.startupProbe }}
+  {{- end -}}
+  {{- if $containerValues.probes.startupProbe -}}
+  {{- with (mergeOverwrite $.Values.defaults.probes.startupProbe $containerValues.probes.startupProbe) }}
   startupProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- end -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
