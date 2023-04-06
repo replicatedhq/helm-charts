@@ -37,7 +37,11 @@ spec:
   selector:
     matchLabels:
       {{- include "replicated-library.labels.selectorLabels" . | nindent 6 }}
+  {{- if $values.serviceName}}
+  serviceName: {{ $values.serviceName }}
+  {{- else }}
   serviceName: {{ include "replicated-library.names.fullname" . }}
+  {{- end }}
   template:
     metadata:
       {{- with include ("replicated-library.podAnnotations") . }}

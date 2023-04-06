@@ -43,6 +43,7 @@ apps:
      # - If require persistent storage, use apps.volumeClaimTemplates section to define a volumeClaimTemplate.  Ensure that persistence is disabled.
      # TODO: daemonset and statefulset
     type: deployment
+    serviceName: 
 
     # -- Set the replica count. Only used for deployment and statefulset
     replicas: 1
