@@ -8,7 +8,7 @@
   {{ end -}}
 {{- range $containerName, $containerValues := $values.containers }}
 - name: {{ default "container" $containerName }}
-  image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion $containerValues.image.tag) | quote }}
+  image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion ($containerValues.image.tag | toString)) | quote }}
   imagePullPolicy: {{ default $.Values.defaults.image.pullPolicy $containerValues.image.pullPolicy }}
   {{- with $containerValues.command }}
   command:
