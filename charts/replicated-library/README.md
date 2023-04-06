@@ -1,6 +1,10 @@
 # replicated-library
 
+<<<<<<< HEAD
 ![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+=======
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?
+>>>>>>> efe0cce (Replicated Library Chart v0.3.0 (#19))
 
 Replicated library chart
 
@@ -186,6 +190,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 >>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ### [Unreleased]
 
+### [0.5.0]
+
+#### Added
+- deployment type statefulset
 ### [0.4.0]
 
 #### Changed
@@ -210,14 +218,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [0.2.0]: #15
 [0.1.1]: #9
-
-[Unreleased]
-
-[0.4.0]
-
-Changed
-
-- Added statefulset deployment type.
 
 ## Support
 
