@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.1.1
+  version: 0.2.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -56,13 +56,13 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.automountServiceAccountToken | bool | `true` | Specifies whether a service account token should be automatically mounted. |
 | apps.example.containers.example.args | list | `[]` | Override the arguments for the container |
 | apps.example.containers.example.command | list | `[]` | Override the command for the container |
-| apps.example.containers.example.env | string | `nil` | Environment variables. Template enabled. Syntax options: A) TZ: UTC |
+| apps.example.containers.example.env | string | `nil` | Environment variables. Template enabled. Syntax options: DATABASE_USER: USERNAME |
 | apps.example.containers.example.envFrom | list | `[]` | Secrets and/or ConfigMaps that will be loaded as environment variables. [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables) |
 | apps.example.containers.example.image.pullPolicy | string | `nil` | Specify the image pull policy for the container |
 | apps.example.containers.example.image.repository | string | `"nginx"` | Specify the image repository for the container |
 | apps.example.containers.example.image.tag | string | `"latest"` | Specify the image tag for the container |
 | apps.example.containers.example.lifecycle | object | `{}` | Configure the lifecycle for the container |
-| apps.example.containers.example.ports | list | `[]` | Specify the ports for the container |
+| apps.example.containers.example.ports | list | `[]` | Specify the ports for the container [[ref]](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#ports) |
 | apps.example.containers.example.probes | object | `{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}}` | Specify probes for the container [[ref]](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | apps.example.containers.example.probes.livenessProbe | object | `{}` | Specify the liveness probes for the container |
 | apps.example.containers.example.probes.readinessProbe | object | `{}` | Specify the readiness probes for the container |
@@ -138,11 +138,11 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key. Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride |
 | persistence.example.enabled | bool | `false` | Enables or disables the volume |
 | persistence.example.nameOverride | string | `nil` | Override the name that is used for this persistence object TODO: NOT IMPLEMENTED |
-| persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container TODO |
-| persistence.example.persistentVolume.spec | object | `{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/ |
+| persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container TODO: Not implemented |
+| persistence.example.persistentVolume.spec | object | `{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}` | PersistentVolumeClaim spec [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) |
 | persistence.example.persistentVolumeClaim | object | `{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"storageClassName":"slow","volumeMode":"Filesystem"}}` | Configure a Persistent Volume Claim to be mounted to the app's primary container |
 | persistence.example.persistentVolumeClaim.existingClaimName | string | `nil` | Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec |
-| persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims |
+| persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | PersistentVolumeClaim spec [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
 | persistence.example.type | string | `"persistentVolumeClaim"` | Volume type. Available options are ["persistentVolume," "persistentVolumeClaim"] type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app TODO: type.persistentVolume not implemented |
 | secrets | object | See below | Configure the secrets for the chart here. Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. By default the name of the secret will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
@@ -166,7 +166,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services.example.ports.http.port | string | `nil` | The port number |
 | services.example.ports.http.protocol | string | `"HTTP"` | Port protocol. Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`. HTTPS and HTTPS spawn a TCP service and get used for internal URL and name generation |
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
-| services.example.selector | object | `{}` | Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName TODO: Not Implemented |
+| services.example.selector | object | `{}` | [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors) TODO: Not Implemented |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
 
 ## Changelog
@@ -176,7 +176,15 @@ All notable changes to this library Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-[0.1.0]: xxxx
+### [0.3.0]
+
+#### Changed
+
+- Setting best practice defaults for imagePullPolicy, updateStrategy, and probes.
+- Updated README to use .Chart.Version instead of hardcoding the chart version
+
+[0.2.0]: #15
+[0.1.1]: #9
 
 ## Support
 

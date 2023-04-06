@@ -64,7 +64,7 @@ apps:
 
         # -- Environment variables. Template enabled.
         # Syntax options:
-        # A) TZ: UTC
+        # DATABASE_USER: USERNAME
         env:
 
         # -- Secrets and/or ConfigMaps that will be loaded as environment variables.
@@ -72,6 +72,7 @@ apps:
         envFrom: []
 
         # -- Specify the ports for the container
+        # [[ref]](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#ports)
         ports: []
         # -- Specify a list of volumes mounts in the container.
         volumeMounts: []
@@ -269,8 +270,8 @@ services:
     annotations: {}
     # -- Provide additional labels which may be required.
     labels: {}
-    # -- Reference - https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors
     # -- Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName
+    # -- [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors)
     # TODO: Not Implemented
     selector: {}
     # -- Configure the Service port information here.
@@ -346,9 +347,10 @@ persistence:
     nameOverride:
 
     # -- Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container
-    # TODO
+    # TODO: Not implemented
     persistentVolume:
-      # -- Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+      # -- PersistentVolumeClaim spec
+      # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
       spec:
         capacity:
           storage: 1Gi
@@ -363,7 +365,8 @@ persistence:
     persistentVolumeClaim:
       # -- Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec
       existingClaimName:
-      # -- Reference - https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims
+      # -- PersistentVolumeClaim spec
+      # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
       spec:
         accessModes:
           - ReadWriteOnce

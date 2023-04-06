@@ -1,0 +1,50 @@
+{{- define "custom.breakglass" }}
+## Breaking the Glass
+
+The library chart can cover a lot of ground, but you may have the need to bring your own templates, hardcode values that you don't want end-users to change, 
+or write a conditional that's toggled with the contents of a variable in your values.yaml. Here we'll provide a few examples of how 
+to implement this on top of the library chart.
+
+
+### Bringing your own templates and manifests
+
+Because the library chart is still helm, it doesn't prevent you from doing this in anyway. For example, let's say you need to create 
+the below TLS secret for use in an ingress:
+
+templates/tls.yaml
+```yaml
+{{ $cert := genSelfSignedCert "yourapp.example.com" nil nil 730 }}
+apiVersion: v1
+data:
+  tls.crt: {{ $cert.Cert | b64enc }}
+  tls.key: {{ $cert.Key | b64enc }}
+kind: Secret
+metadata:
+  name: yourapp-tls-secret
+type: kubernetes.io/tls
+```
+
+And then you could use this secret in `ingresses` section of your values.yaml
+
+values.yaml
+```
+ingresses:
+  yourapp:
+    enabled: true
+    serviceName: yourapp
+    hosts:
+      - host: yourapp.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              port: 8080
+    tls:
+    - hosts:
+        - yourapp.example.com
+      secretName: yourapp-tls-secret
+```
+
+### Hardcoding values
+
+{{- end -}}
