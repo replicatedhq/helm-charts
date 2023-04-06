@@ -13,7 +13,7 @@ the below TLS secret for use in an ingress:
 
 templates/tls.yaml
 ```yaml
-{{ $cert := genSelfSignedCert "yourapp.example.com" nil nil 730 }}
+{{$cert := genSelfSignedCert "yourapp.example.com" nil nil 730 }}
 apiVersion: v1
 data:
   tls.crt: {{ $cert.Cert | b64enc }}
@@ -68,11 +68,9 @@ apps:
       emptyDir: {}
 ```
 
-**NOTE**: You'll need to remove the /**/ comment markers from the below example in your chart.
-
 templates/all.yaml
 ```tpl
-{{/*- define "youapp.hardcodedValues" -*/}}
+{{- define "youapp.hardcodedValues" -}}
 apps:
   yourapp:
     enabled: true
@@ -86,11 +84,11 @@ apps:
     - name: yourapp
       persistentVolumeClaim:
         claimName: yourapp
-{{/*- end -*/}}
+{{- end -}}
 
-{{/*- $_ := mergeOverwrite .Values (include "yourapp.hardcodedValues" . | fromYaml) -*/}}
+{{- $_ := mergeOverwrite .Values (include "yourapp.hardcodedValues" . | fromYaml) -}}
 
-{{/*- include "replicated-library.all" . */}}
+{{- include "replicated-library.all" . }}
 ```
 
 The computed values in this case would be:
@@ -142,7 +140,7 @@ yourAppConfig:
 
 templates/all.yaml
 ```yaml
-{{/*- define "youapp.hardcodedValues" -*/}}
+{{- define "youapp.hardcodedValues" -}}
 apps:
   yourapp:
     enabled: true
@@ -157,11 +155,11 @@ apps:
         env:
           SOME_FEATURE: enabled
         {{- end -}}
-{{/*- end -*/}}
+{{- end -}}
 
-{{/*- $_ := mergeOverwrite .Values (include "yourapp.hardcodedValues" . | fromYaml) -*/}}
+{{- $_ := mergeOverwrite .Values (include "yourapp.hardcodedValues" . | fromYaml) -}}
 
-{{/*- include "replicated-library.all" . */}}
+{{- include "replicated-library.all" . }}
 ```
 
 You've now created a new value specific to your helm chart which optionally enables an environment variable. And as we know from the first hardcoded values example,

@@ -1,0 +1,290 @@
+install.go:173: [debug] Original chart version: ""
+install.go:190: [debug] CHART PATH: /Users/diamonwiggins/go/src/github.com/replicatedhq/helm-charts/charts/wg-easy
+
+NAME: wg-easy
+LAST DEPLOYED: Thu Apr  6 11:11:35 2023
+NAMESPACE: default
+STATUS: pending-install
+REVISION: 1
+TEST SUITE: None
+USER-SUPPLIED VALUES:
+{}
+
+COMPUTED VALUES:
+apps:
+  wg-easy:
+    containers:
+      wg-easy:
+        image:
+          repository: weejewel/wg-easy
+          tag: 7
+        volumeMounts:
+        - mountPath: /data
+          name: vaultwarden
+    enabled: true
+    replicas: 2
+    type: deployment
+    volumes:
+    - name: config
+      persistentVolumeClaim:
+        claimName: config
+persistence:
+  config:
+    enabled: true
+    persistentVolumeClaim:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+    type: persistentVolumeClaim
+replicated-library:
+  apps:
+    example:
+      affinity: {}
+      annotations: {}
+      automountServiceAccountToken: true
+      containers:
+        example:
+          args: []
+          command: []
+          envFrom: []
+          image:
+            repository: nginx
+            tag: latest
+          lifecycle: {}
+          livenessProbe: {}
+          ports: []
+          readinessProbe: {}
+          resources: {}
+          securityContext: {}
+          startupProbe: {}
+          termination: {}
+          volumeMounts: []
+      dnsConfig: {}
+      enableServiceLinks: true
+      enabled: false
+      hostAliases: []
+      hostNetwork: false
+      imagePullSecrets: []
+      initContainers: {}
+      labels: {}
+      nodeSelector: {}
+      podAnnotations: {}
+      podLabels: {}
+      podSecurityContext: {}
+      replicas: 1
+      revisionHistoryLimit: 3
+      rollingUpdate: {}
+      serviceAccount:
+        annotations: {}
+        create: false
+        name: ""
+      tolerations: []
+      topologySpreadConstraints: []
+      type: deployment
+      volumeClaimTemplates: []
+      volumes: []
+  configmaps:
+    exampleConfig:
+      annotations: {}
+      data: {}
+      enabled: false
+      labels: {}
+  defaults:
+    image:
+      pullPolicy: IfNotPresent
+  global:
+    annotations: {}
+    labels: {}
+  ingresses:
+    example:
+      annotations: {}
+      enabled: false
+      hosts:
+      - host: chart-example.local
+        paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: null
+            port: null
+      labels: {}
+      serviceName: example
+      tls: []
+  persistence:
+    example:
+      enabled: false
+      persistentVolume:
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          capacity:
+            storage: 1Gi
+          hostPath:
+            path: /tmp/data1
+          reclaimPolicy:
+          - Recycle
+      persistentVolumeClaim:
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          persistentVolumeReclaimPolicy: Retain
+          resources:
+            requests:
+              storage: 8Gi
+          storageClassName: slow
+          volumeMode: Filesystem
+      type: persistentVolumeClaim
+  secrets:
+    exampleSecret:
+      annotations: {}
+      data: {}
+      enabled: false
+      labels: {}
+  services:
+    example:
+      annotations: {}
+      appName: example
+      enabled: false
+      ipFamilies: []
+      labels: {}
+      ports:
+        http:
+          enabled: true
+          protocol: HTTP
+      selector: {}
+      type: ClusterIP
+services:
+  vpn:
+    appName: wg-easy
+    enabled: true
+    ports:
+      udp:
+        appProtocol: udp
+        enabled: true
+        port: 51820
+        protocol: UDP
+        targetPort: 51820
+    type: LoadBalancer
+  web:
+    appName: wg-easy
+    enabled: true
+    ports:
+      http:
+        appProtocol: http
+        enabled: true
+        port: 51821
+        protocol: HTTP
+        targetPort: 51821
+    type: ClusterIP
+
+HOOKS:
+MANIFEST:
+---
+# Source: wg-easy/templates/replicated-library.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: config
+  labels:
+    app.kubernetes.io/instance: wg-easy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: wg-easy
+    app.kubernetes.io/version: "7"
+    helm.sh/chart: wg-easy-0.0.1
+  annotations:
+spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+---
+# Source: wg-easy/templates/replicated-library.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vpn
+  labels:
+    app.kubernetes.io/instance: wg-easy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: wg-easy
+    app.kubernetes.io/version: "7"
+    helm.sh/chart: wg-easy-0.0.1
+  annotations:
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 51820
+    targetPort: 51820
+    protocol: UDP
+    name: udp
+  selector:
+    app.kubernetes.io/appname: wg-easy
+---
+# Source: wg-easy/templates/replicated-library.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app.kubernetes.io/instance: wg-easy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: wg-easy
+    app.kubernetes.io/version: "7"
+    helm.sh/chart: wg-easy-0.0.1
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+  - port: 51821
+    targetPort: 51821
+    protocol: TCP
+    name: http
+  selector:
+    app.kubernetes.io/appname: wg-easy
+---
+# Source: wg-easy/templates/replicated-library.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wg-easy
+  labels:
+    app.kubernetes.io/instance: wg-easy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: wg-easy
+    app.kubernetes.io/version: "7"
+    helm.sh/chart: wg-easy-0.0.1
+spec:
+  revisionHistoryLimit: 
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/appname: wg-easy
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/appname: wg-easy
+    spec:
+      
+      serviceAccountName: 
+      automountServiceAccountToken: 
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: 
+      containers:
+        
+        - name: wg-easy
+          image: "weejewel/wg-easy:%!s(float64=7)"
+          imagePullPolicy: 
+          volumeMounts:
+            - mountPath: /data
+              name: vaultwarden
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: config
+

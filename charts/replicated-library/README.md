@@ -42,6 +42,10 @@ dependencies:
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
 
+## Breaking the Glass
+
+Examples of how you can break glass and build on top of this library chart](BREAK_GLASS.md)
+
 ## Configuration
 
 Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
