@@ -1,4 +1,3 @@
-{{- define "custom.breakglass" }}
 ## Breaking the Glass
 
 The library chart can cover a lot of ground, but you may have the need to bring your own templates, hardcode values that you don't want end-users to change, 
@@ -164,4 +163,3 @@ apps:
 
 You've now created a new value specific to your helm chart which optionally enables an environment variable. And as we know from the first hardcoded values example,
 the template including the conditional will merge and overwrite over the values in the `values.yaml`
-{{- end -}}
