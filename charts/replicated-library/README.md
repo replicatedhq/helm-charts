@@ -44,7 +44,7 @@ You can see an example of this library chart in use [here](https://github.com/re
 
 ## Breaking the Glass
 
-[Examples of how you can break glass and build on top of this library chart](https://github.com/replicatedhq/helm-charts/blob/main/charts/replicated-library/BREAK_GLASS.md)
+[Examples of how you can break glass and build on top of this library chart](/../../charts/replicated-library/BREAK_GLASS.md)
 
 ## Configuration
 
