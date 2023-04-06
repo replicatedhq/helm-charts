@@ -38,6 +38,9 @@ apps:
     enabled: false
      # -- Specify the controller type.
      # Valid options are deployment, daemonset or statefulset
+     # When deployment type: statefulset:
+     # - Configure service as headless in services section
+     # - If require persistent storage, use apps.volumeClaimTemplates section to define a volumeClaimTemplate.  Ensure that persistence is disabled.
      # TODO: daemonset and statefulset
     type: deployment
 
@@ -170,6 +173,14 @@ apps:
 
     # -- Used to create individual disks for each instance when type: StatefulSet
     volumeClaimTemplates: []
+    # sample volumeClaimTemplates:
+    #    volumeClaimTemplates:
+    #  - name: "backup"
+    #    mountPath: /backup
+    #    subPath: theSubPath
+    #    accessMode: "ReadWriteOnce"
+    #    size: 2Gi
+    #    storageClass: default
 
     # -- Node selection constraint
     # [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
@@ -255,6 +266,9 @@ services:
         # -- Override the name suffix that is used for this service
     nameOverride:
     # -- Set the service type
+    # When deployment type is statefulset; configure service as headless:
+    # - Set type: ClusterIP
+    # - Set clusterIP: None
     type: ClusterIP
     # -- Set the clusterIP
     clusterIP:
@@ -333,6 +347,7 @@ ingresses:
 persistence:
   example:
     # -- Enables or disables the volume
+    # when deployment type: statefulset; ensure that persistence is disabled; use apps.volumeClaimTemplate section to define a pvc template.
     enabled: false
 
     # -- Volume type. Available options are ["persistentVolume," "persistentVolumeClaim"]
