@@ -49,6 +49,12 @@ This is a [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm)
 {{- define "custom.usage" -}}
 {{- end -}}
 
+{{- define "custom.breakglass" }}
+## Breaking the Glass
+
+[Examples of how you can break glass and build on top of this library chart](BREAK_GLASS.md)
+{{- end -}}
+
 {{- define "custom.configuration.header" -}}
 ## Configuration
 {{- end -}}
@@ -87,6 +93,8 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 {{ template "custom.install" . }}
 
 {{ template "custom.usage" . }}
+
+{{ template "custom.breakglass" . }}
 
 {{ template "custom.configuration.header" . }}
 
