@@ -1,0 +1,5 @@
+# Helm resources
+charts/*/Chart.lock
+charts/*/charts
+helper-charts/*/Chart.lock
+helper-charts/*/charts
