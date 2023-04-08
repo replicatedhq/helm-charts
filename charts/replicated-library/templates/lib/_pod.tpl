@@ -12,7 +12,7 @@ The pod definition included in the main.
   {{- with $values.imagePullSecrets }}
 imagePullSecrets:
     {{- toYaml . | nindent 2 }}
-  {{- end }}
+  {{- end -}}
 serviceAccountName: {{ include "replicated-library.names.serviceAccountName" . }}
 automountServiceAccountToken: {{ $values.automountServiceAccountToken }}
   {{- with $values.podSecurityContext }}
