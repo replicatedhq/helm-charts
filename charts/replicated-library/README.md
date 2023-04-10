@@ -170,15 +170,8 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services.example.ports.http.port | string | `nil` | The port number |
 | services.example.ports.http.protocol | string | `"HTTP"` | Port protocol. Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`. HTTPS and HTTPS spawn a TCP service and get used for internal URL and name generation |
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
-| services.example.selector | object | `{}` | Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName TODO: Not 
-| services.example.type | string | `"ClusterIP"` | Set the service type When deployment type is statefulset; configure service as headless: - Set type: ClusterIP - Set clusterIP: None |
 | services.example.selector | object | `{}` | [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors) TODO: Not Implemented |
-<<<<<<< HEAD
-
-=======
 | services.example.type | string | `"ClusterIP"` | Set the service type When deployment type is statefulset; configure service as headless: - Set type: ClusterIP - Set clusterIP: None |
->>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
-
 
 ## Changelog
 
@@ -188,6 +181,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ### [Unreleased]
 
 ### [0.4.0]
@@ -197,8 +193,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Livesness and Readiness probes are automatically generated if a container has ports defined
 - All probe definitions moved to conatiner rather than "probes" sub-key.
 
+<<<<<<< HEAD
 =======
 >>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
+=======
+>>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ### [0.3.0]
 
 #### Changed
