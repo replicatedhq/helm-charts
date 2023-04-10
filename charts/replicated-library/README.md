@@ -1,14 +1,23 @@
 # replicated-library
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 =======
+=======
+>>>>>>> 00be428 (Update version to 0.4.0 (#25))
 <<<<<<< HEAD
 ![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 =======
 ![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 >>>>>>> 27a4486 (Replicated Library Chart v0.3.0 (#19))
+<<<<<<< HEAD
 >>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
+=======
+=======
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+>>>>>>> 2d13369 (Update version to 0.4.0 (#25))
+>>>>>>> 00be428 (Update version to 0.4.0 (#25))
 
 Replicated library chart
 
@@ -46,10 +55,14 @@ dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
 <<<<<<< HEAD
+<<<<<<< HEAD
   version: 0.4.0
 =======
   version: 0.3.0
 >>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
+=======
+  version: 0.4.0
+>>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -183,8 +196,9 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services.example.ports.http.protocol | string | `"HTTP"` | Port protocol. Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`. HTTPS and HTTPS spawn a TCP service and get used for internal URL and name generation |
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
 | services.example.selector | object | `{}` | Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName TODO: Not 
-| services.example.selector | object | `{}` | [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors) TODO: Not Implemented |
 | services.example.type | string | `"ClusterIP"` | Set the service type When deployment type is statefulset; configure service as headless: - Set type: ClusterIP - Set clusterIP: None |
+| services.example.selector | object | `{}` | [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors) TODO: Not Implemented |
+
 
 
 ## Changelog
@@ -195,6 +209,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ### [Unreleased]
 
 ### [0.4.0]
@@ -204,8 +221,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Livesness and Readiness probes are automatically generated if a container has ports defined
 - All probe definitions moved to conatiner rather than "probes" sub-key.
 
+<<<<<<< HEAD
 =======
 >>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
+=======
+>>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ### [0.3.0]
 
 #### Changed
