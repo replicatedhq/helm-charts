@@ -19,7 +19,7 @@ within the replicated-library library.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ printf "%s-%s" (include "replicated-library.names.fullname") $configMapName | trunc 63 | trimSuffix "-" }}
+  name: {{ printf "%s-%s" (include "replicated-library.names.fullname" .) $configMapName | trunc 63 | trimSuffix "-" }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

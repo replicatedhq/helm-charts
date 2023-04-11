@@ -24,11 +24,9 @@ If release name contains chart name it will be used as a full name.
     {{- trunc 63 $values.fullNameOverride | trimSuffix "-" -}}
   {{- else -}}
     {{- $name := include "replicated-library.names.name" . -}}
-    {{- $globalFullNameOverride := "" -}}
-    {{- if hasKey .Values "global" -}}
-      {{- $globalFullNameOverride = (default $globalFullNameOverride .Values.global.fullnameOverride) -}}
-    {{- end -}}
-    {{- if contains $name .Release.Name -}}
+    {{- if .Values.global.fullNameOverride -}}
+      {{- $name = .Values.global.fullnameOverride -}}
+    {{- else if contains $name .Release.Name -}}
       {{- $name = .Release.Name -}}
     {{- else -}}
       {{- $name = printf "%s-%s" .Release.Name $name -}}

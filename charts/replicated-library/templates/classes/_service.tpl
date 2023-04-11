@@ -21,7 +21,7 @@ within the replicated-library library.
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ printf "%s-%s" (include "replicated-library.names.fullname") $serviceName | trunc 63 | trimSuffix "-" }}
+  name: {{ printf "%s-%s" (include "replicated-library.names.fullname" .) $serviceName | trunc 63 | trimSuffix "-" }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
