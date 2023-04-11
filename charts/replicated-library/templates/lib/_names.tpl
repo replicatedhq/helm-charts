@@ -18,7 +18,7 @@ If release name contains chart name it will be used as a full name.
     {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
-  {{ end -}}
+  {{- end -}}
 
   {{- if $values.nameOverride -}}
     {{- trunc 63 $values.nameOverride | trimSuffix "-" -}}
