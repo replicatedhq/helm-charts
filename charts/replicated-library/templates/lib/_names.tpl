@@ -20,8 +20,8 @@ If release name contains chart name it will be used as a full name.
     {{- end -}}
   {{- end -}}
 
-  {{- if $values.nameOverride -}}
-    {{- trunc 63 $values.nameOverride | trimSuffix "-" -}}
+  {{- if $values.fullNameOverride -}}
+    {{- trunc 63 $values.fullNameOverride | trimSuffix "-" -}}
   {{- else -}}
     {{- $name := include "replicated-library.names.name" . -}}
     {{- $globalFullNameOverride := "" -}}
