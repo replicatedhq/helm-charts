@@ -12,7 +12,7 @@ Renders the Secret objects required by the chart.
         {{- $_ := set $ "ObjectName" $secretValues.nameOverride -}}
       {{ end -}}
 
-      {{- $_ := set $ "ObjectValues" (dict "secret" $secretValues) -}}
+      {{- $_ := set $ "ObjectValues" (dict "values" $secretValues) -}}
 
       {{- include "replicated-library.classes.secret" $ | nindent 0 }}
     {{- end }}

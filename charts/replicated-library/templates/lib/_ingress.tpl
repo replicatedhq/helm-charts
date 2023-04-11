@@ -12,7 +12,7 @@ Renders the Service objects required by the chart.
         {{- $_ := set $ "ObjectName" $ingressValues.nameOverride -}}
       {{ end -}}
 
-      {{- $_ := set $ "ObjectValues" (dict "ingress" $ingressValues) -}}
+      {{- $_ := set $ "ObjectValues" (dict "values" $ingressValues) -}}
 
       {{- if $ingress.serviceName }}
         {{- $matchingAppFound := false -}}

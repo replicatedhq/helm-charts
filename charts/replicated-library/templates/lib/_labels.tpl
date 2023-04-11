@@ -25,7 +25,7 @@ app.kubernetes.io/appname: {{ include "replicated-library.names.appname" . }}
   {{- $serviceValues := . -}}
 
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.service -}}
+    {{- with .ObjectValues.values -}}
       {{- $serviceValues = . -}}
     {{- end -}}
   {{ end -}}
@@ -45,7 +45,7 @@ app.kubernetes.io/appname: {{ $appName }}
     {{- end }}
   
   {{- else }}
-app.kubernetes.io/appname: {{- include "replicated-library.names.fullname" -}}
+app.kubernetes.io/appname: {{- include "replicated-library.names.fullname" . -}}
   {{- end }}
 
 {{- end -}}

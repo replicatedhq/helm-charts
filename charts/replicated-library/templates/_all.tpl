@@ -20,8 +20,8 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
     {{- if $app.enabled -}}
       {{- $appValues := $app -}}
 
-      {{- $_ := set $ "AppName" $name -}}
-      {{- $_ := set $ "AppValues" (dict "app" $appValues) -}}
+      {{- $_ := set $ "ObjectName" $name -}}
+      {{- $_ := set $ "ObjectValues" (dict "values" $appValues) -}}
 
       {{- if eq $appValues.type "deployment" }}
         {{- include "replicated-library.deployment" $ | nindent 0 }}

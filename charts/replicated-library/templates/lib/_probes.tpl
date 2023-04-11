@@ -3,8 +3,8 @@ Probes selection logic.
 */}}
 {{- define "replicated-library.probes" -}}
   {{- $values := .Values.probes -}}
-  {{- if hasKey . "AppValues" -}}
-    {{- with .AppValues.app -}}
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}

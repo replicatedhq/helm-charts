@@ -12,7 +12,7 @@ Renders the configmap objects required by the chart.
         {{- $_ := set $ "ObjectName" $configmapValues.nameOverride -}}
       {{ end -}}
 
-      {{- $_ := set $ "ObjectValues" (dict "configmap" $configmapValues) -}}
+      {{- $_ := set $ "ObjectValues" (dict "values" $configmapValues) -}}
 
       {{- include "replicated-library.classes.configmap" $ | nindent 0 }}
     {{- end }}

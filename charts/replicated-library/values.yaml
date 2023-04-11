@@ -3,6 +3,8 @@ global:
   labels: {}
   # -- Set additional global annotations.
   annotations: {}
+  fullnameOverride: ""
+  nameOverride: ""
 
 defaults:
   image:
