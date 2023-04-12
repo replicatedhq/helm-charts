@@ -157,7 +157,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services | object | See below | Configure the services for the chart here. Services can be added by adding a dictionary key similar to the 'example' service. By default the name of the service will be the name of the dictionary key TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | services.example.appName | string | `"example"` | Name of the app to attach this service. This corresponds to an app configured un the `apps` key TODO: Accept a list of appnames of which to associate the service TODO: Needs to be optional |
-| services.example.clusterIP | string | `nil` | Set the clusterIP if deployment type = statefulset, then set clusterIP to "None" |
+| services.example.clusterIP | string | `nil` | Set the clusterIP To deploy a headless service, set clusterIP: "None" |
 | services.example.enabled | bool | `false` | Enables or disables the service |
 | services.example.externalTrafficPolicy | string | `nil` | [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)] |
 | services.example.ipFamilies | list | `[]` | The ip families that should be used. Options: IPv4, IPv6 |
@@ -179,8 +179,6 @@ All notable changes to this library Helm chart will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-### [Unreleased]
 
 ### [0.5.0]
 
