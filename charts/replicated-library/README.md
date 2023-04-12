@@ -37,15 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-<<<<<<< HEAD
-<<<<<<< HEAD
   version: 0.4.0
-=======
-  version: 0.3.0
->>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
-=======
-  version: 0.4.0
->>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -191,10 +183,6 @@ All notable changes to this library Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ### [Unreleased]
 
 ### [0.4.0]
@@ -204,11 +192,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Livesness and Readiness probes are automatically generated if a container has ports defined
 - All probe definitions moved to conatiner rather than "probes" sub-key.
 
-<<<<<<< HEAD
-=======
->>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
-=======
->>>>>>> 00be428 (Update version to 0.4.0 (#25))
 ### [0.3.0]
 
 #### Changed
