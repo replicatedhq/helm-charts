@@ -7,10 +7,32 @@
   {{- default .Chart.Name (default "" $globalNameOverride) | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
+{{/* 
+Return the object prefix including user provided overrides. 
+Prefix will be of the form: ReleaseName-ChartName.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
+The global nameOverride will replace the ChartName if provided.
+The global fullNameOverride will replace the entire prefix if provided.
+The ChartName will not be included if it is contained in the ReleaseName, leaving only the ReleaseName.
+*/}}
+{{- define "replicated-library.names.prefix" -}}
+  {{- if and (hasKey .Values "global") (hasKey .Values.global "fullNameOverride") -}}
+    {{- trunc 63 .Values.global.fullNameOverride | trimSuffix "-" -}}
+  {{- else -}}
+    {{- $chartName := include "replicated-library.names.name" . -}}
+    {{- if contains $chartName .Release.Name -}}
+      {{- trunc 63 .Release.Name | trimSuffix "-" -}}
+    {{- else -}}
+      {{- printf "%s-%s" .Release.Name $chartName | trunc 63 | trimSuffix "-" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end }}
+
+{{/*
+Create a default fully qualified object name.
+This function will fail if called outside the scope of an object.
+If only the prefix is needed use "replicated-library.names.prefix" instead.
+If fullNameOverride is provided on the object it will take precedence over the normal prefix calculation.
 */}}
 {{- define "replicated-library.names.fullname" -}}
   {{- $objectName := "" -}}
@@ -28,15 +50,8 @@ If release name contains chart name it will be used as a full name.
   {{- if $values.fullNameOverride -}}
     {{- trunc 63 $values.fullNameOverride | trimSuffix "-" -}}
   {{- else -}}
-    {{- $name := include "replicated-library.names.name" . -}}
-    {{- if .Values.global.fullNameOverride -}}
-      {{- $name = .Values.global.fullNameOverride -}}
-    {{- else if contains $name .Release.Name -}}
-      {{- $name = .Release.Name -}}
-    {{- else -}}
-      {{- $name = printf "%s-%s" .Release.Name $name -}}
-    {{- end -}}
-    {{- printf "%s-%s" $name $objectName | trunc 63 | trimSuffix "-" -}}
+    {{- $prefix := include "replicated-library.names.prefix" . -}}
+    {{- printf "%s-%s" $prefix $objectName | trunc 63 | trimSuffix "-" -}}
   {{- end -}}
 {{- end -}}
 
