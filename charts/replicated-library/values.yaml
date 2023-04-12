@@ -396,5 +396,3 @@ persistence:
           requests:
             storage: 8Gi
         storageClassName: slow
-
-
