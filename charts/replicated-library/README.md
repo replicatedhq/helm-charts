@@ -1,30 +1,6 @@
 # replicated-library
 
-<<<<<<< HEAD
 ![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
-=======
-=======
->>>>>>> 00be428 (Update version to 0.4.0 (#25))
-<<<<<<< HEAD
-![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
-=======
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
->>>>>>> 27a4486 (Replicated Library Chart v0.3.0 (#19))
-<<<<<<< HEAD
->>>>>>> cff317d (Replicated Library Chart v0.3.0 (#19))
-=======
-=======
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
->>>>>>> 2d13369 (Update version to 0.4.0 (#25))
->>>>>>> 00be428 (Update version to 0.4.0 (#25))
->>>>>>> c074079 (Update version to 0.4.0 (#25))
->>>>>>> 3148d20 (Update version to 0.4.0 (#25))
 
 Replicated library chart
 
