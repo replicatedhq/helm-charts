@@ -6,9 +6,9 @@
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
-{{- range $containerName, $containerValues := $values.containers }}
+{{- range $containerName, $containerValues := $values.containers -}}
 - name: {{ default "container" $containerName }}
-  image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion $containerValues.image.tag) | quote }}
+  image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion ($containerValues.image.tag | toString)) | quote }}
   imagePullPolicy: {{ default $.Values.defaults.image.pullPolicy $containerValues.image.pullPolicy }}
   {{- with $containerValues.command }}
   command:
@@ -64,25 +64,37 @@
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-{{- if $containerValues.probes -}}
-  {{- if $containerValues.probes.livenessProbe -}}
-  {{- with (mergeOverwrite $.Values.defaults.probes.livenessProbe $containerValues.probes.livenessProbe) }}
+  {{- if $containerValues.livenessProbe -}}
+  {{- with (mergeOverwrite $.Values.defaults.probes.livenessProbe $containerValues.livenessProbe) }}
   livenessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- else if hasKey $containerValues "livenessProbe" -}}
+  {{- else if and $containerValues.ports (first $containerValues.ports).containerPort -}}
+  {{- $_ := set $.Values.defaults.probes.livenessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
+  {{- with $.Values.defaults.probes.livenessProbe }}
+  livenessProbe:
+    {{- toYaml . | nindent 4 }}
   {{- end -}}
-  {{- if $containerValues.probes.readinessProbe -}}
-  {{- with (mergeOverwrite $.Values.defaults.probes.readinessProbe $containerValues.probes.readinessProbe) }}
+  {{- end -}}
+  {{- if $containerValues.readinessProbe -}}
+  {{- with (mergeOverwrite $.Values.defaults.probes.readinessProbe $containerValues.readinessProbe) }}
   readinessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- else if hasKey $containerValues "readinessProbe" -}}
+  {{- else if and $containerValues.ports (first $containerValues.ports).containerPort -}}
+  {{- $_ := set $.Values.defaults.probes.readinessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
+  {{- with $.Values.defaults.probes.readinessProbe }}
+  readinessProbe:
+    {{- toYaml . | nindent 4 }}
   {{- end -}}
-  {{- if $containerValues.probes.startupProbe -}}
-  {{- with (mergeOverwrite $.Values.defaults.probes.startupProbe $containerValues.probes.startupProbe) }}
+  {{- end -}}
+  {{- if $containerValues.startupProbe -}}
+  {{- with (mergeOverwrite $.Values.defaults.probes.startupProbe $containerValues.startupProbe) }}
   startupProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- end -}}
-{{- end -}}
 {{- end -}}
 {{- end -}}

@@ -10,15 +10,24 @@ All notable changes to this library Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### [Unreleased]
-
 ### [0.4.0]
 
 #### Changed
 
+- Livesness and Readiness probes are automatically generated if a container has ports defined
+- All probe definitions moved to conatiner rather than "probes" sub-key.
 - added statefulset deployment.
 
+### [0.3.0]
 
-[0.1.0]: xxxx
+#### Changed
 
+- Setting best practice defaults for imagePullPolicy, updateStrategy, and probes.
+- Updated README to use .Chart.Version instead of hardcoding the chart version
+
+#### Fixed
+- Container image tags which were not strings failing to be templated correctly
+
+[0.2.0]: #15
+[0.1.1]: #9
 {{- end -}}
