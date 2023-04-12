@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.4.0
+  version: 0.5.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -105,7 +105,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.strategy | string | `nil` | Set the controller upgrade strategy For Deployments, valid values are Recreate and RollingUpdate. For StatefulSets, valid values are OnDelete and RollingUpdate. For Daemonsets, valid values are OnDelete and RollingUpdate. |
 | apps.example.tolerations | list | `[]` | Specify taint tolerations [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) |
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
-| apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset |
+| apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset When deployment type: statefulset: - Configure service as headless in services section - If require persistent storage, use apps.volumeClaimTemplates section to define a volumeClaimTemplate. Ensure that persistence is disabled. |
 | apps.example.volumeClaimTemplates | list | `[]` | Used to create individual disks for each instance when type: StatefulSet |
 | apps.example.volumes | list | `[]` | Specify a list of volumes that get mounted to the app. |
 | configmaps | object | See below | Configure the configmaps for the chart here. Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. By default the name of the configmap will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
@@ -157,7 +157,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services | object | See below | Configure the services for the chart here. Services can be added by adding a dictionary key similar to the 'example' service. By default the name of the service will be the name of the dictionary key TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | services.example.appName | string | `"example"` | Name of the app to attach this service. This corresponds to an app configured un the `apps` key TODO: Accept a list of appnames of which to associate the service TODO: Needs to be optional |
-| services.example.clusterIP | string | `nil` | Set the clusterIP |
+| services.example.clusterIP | string | `nil` | Set the clusterIP if deployment type = statefulset, then set clusterIP to "None" |
 | services.example.enabled | bool | `false` | Enables or disables the service |
 | services.example.externalTrafficPolicy | string | `nil` | [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)] |
 | services.example.ipFamilies | list | `[]` | The ip families that should be used. Options: IPv4, IPv6 |
@@ -181,6 +181,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
+
+### [0.5.0]
+
+#### Added
+- Deployment type statefulset
 
 ### [0.4.0]
 
