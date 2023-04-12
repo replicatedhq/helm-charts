@@ -15,13 +15,13 @@ within the replicated-library library.
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
-  
+
   {{- $svcType := $values.type | default "" -}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ printf "%s-%s" (include "replicated-library.names.fullname" .) $serviceName | trunc 63 | trimSuffix "-" }}
+  name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

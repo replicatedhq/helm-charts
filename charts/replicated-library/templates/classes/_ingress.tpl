@@ -23,7 +23,7 @@ within the replicated-library library.
 apiVersion: {{ include "replicated-library.capabilities.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
-  name: {{ printf "%s-%s" (include "replicated-library.names.fullname" .) $ingressName | trunc 63 | trimSuffix "-" }}
+  name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

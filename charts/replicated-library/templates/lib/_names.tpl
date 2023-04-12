@@ -13,6 +13,11 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "replicated-library.names.fullname" -}}
+  {{- $objectName := "" -}}
+  {{- if hasKey . "ObjectName" -}}
+    {{- $objectName = .ObjectName -}}
+  {{- end -}}
+
   {{- $values := . -}}
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.values -}}
@@ -31,7 +36,7 @@ If release name contains chart name it will be used as a full name.
     {{- else -}}
       {{- $name = printf "%s-%s" .Release.Name $name -}}
     {{- end -}}
-    {{- trunc 63 $name | trimSuffix "-" -}}
+    {{- printf "%s-%s" $name $objectName | trunc 63 | trimSuffix "-" -}}
   {{- end -}}
 {{- end -}}
 
