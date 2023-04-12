@@ -10,3 +10,5 @@ home: https://github.com/replicatedhq/helm-charts/tree/main/charts/replicated-li
 maintainers:
   - name: diamonwiggins
     email: diamon@replicated.com
+  - name: chris-sanders
+    email: chriss@replicated.com
