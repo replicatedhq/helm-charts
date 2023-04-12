@@ -171,6 +171,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services.example.ports.http.port | string | `nil` | The port number |
 | services.example.ports.http.protocol | string | `"HTTP"` | Port protocol. Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`. HTTPS and HTTPS spawn a TCP service and get used for internal URL and name generation |
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
+| services.example.selector | object | `{}` | Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName TODO: Not 
 | services.example.selector | object | `{}` | [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors) TODO: Not Implemented |
 | services.example.type | string | `"ClusterIP"` | Set the service type When deployment type is statefulset; configure service as headless: - Set type: ClusterIP - Set clusterIP: None |
 
