@@ -37,9 +37,7 @@ spec:
   selector:
     matchLabels:
       {{- include "replicated-library.labels.selectorLabels" . | nindent 6 }}
-  {{- $serviceName := default (include "replicated-library.names.appname" .) ($values.serviceName) }}
-  serviceName:  {{ $serviceName }}
-  template:
+  serviceName:  {{- default (include "replicated-library.names.appname" .) ($values.serviceName) }}
     metadata:
       {{- with include ("replicated-library.podAnnotations") . }}
       annotations:
