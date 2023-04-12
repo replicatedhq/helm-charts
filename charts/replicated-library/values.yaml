@@ -44,12 +44,12 @@ apps:
      # TODO: daemonset and statefulset
     type: deployment
 
-    # This setting is applicable for when deployment type = statefulset. 
+    # This setting is applicable for when deployment type = statefulset.
     # The domain managed by this Service takes the form: $(service name).$(namespace).svc.cluster.local, where "cluster.local" is the cluster domain.
-    # As each Pod is created, it gets a matching DNS subdomain, taking the form: $(podname).$(governing service domain), 
+    # As each Pod is created, it gets a matching DNS subdomain, taking the form: $(podname).$(governing service domain),
     # where the governing service is defined by the serviceName field on the StatefulSet.
     # If you want to define a specific governing service domain
-    serviceName: 
+    serviceName:
 
     # -- Set the replica count. Only used for deployment and statefulset
     replicas: 1
@@ -276,7 +276,7 @@ services:
     # -- Set the service type
     # When deployment type is statefulset; configure service as headless:
     # - Set type: ClusterIP
-    # - Set clusterIP: 
+    # - Set clusterIP:
     type: ClusterIP
     # -- Set the clusterIP; if deployment type = statefulset, then set clusterIP to "None"
     clusterIP:
