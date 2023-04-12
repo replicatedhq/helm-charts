@@ -44,14 +44,12 @@ apps:
      # - If require persistent storage, use apps.volumeClaimTemplates section to define a volumeClaimTemplate.
      # Ensure that persistence is disabled.
     type: deployment
-
     # The serviceName is applicable for when deployment type = statefulset.
     # The domain managed by this Service takes the form: $(service name).$(namespace).svc.cluster.local, where "cluster.local" is the cluster domain.
     # As each Pod is created, it gets a matching DNS subdomain, taking the form: $(podname).$(governing service domain),
     # where the governing service is defined by the serviceName field on the StatefulSet.
     # If you want to define a specific governing service domain
     serviceName:
-
     # -- Set the replica count. Only used for deployment and statefulset
     replicas: 1
 
@@ -190,7 +188,7 @@ apps:
     #    accessMode: "ReadWriteOnce"
     #    size: 2Gi
     #    storageClass: default
-
+    
     # -- Node selection constraint
     # [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
     nodeSelector: {}
@@ -277,7 +275,7 @@ services:
     # -- Set the service type
     type: ClusterIP
     # -- Set the clusterIP
-    # To deploy a headless service, set clusterIP:
+    # To deploy a headless service, set clusterIP: "None"
     clusterIP:
     # -- Specify the externalTrafficPolicy for the service. Options: Cluster, Local
     # -- [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)]
