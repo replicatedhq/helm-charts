@@ -188,7 +188,7 @@ apps:
     #    accessMode: "ReadWriteOnce"
     #    size: 2Gi
     #    storageClass: default
-    
+
     # -- Node selection constraint
     # [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
     nodeSelector: {}
