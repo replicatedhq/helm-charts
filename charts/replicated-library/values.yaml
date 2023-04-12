@@ -277,7 +277,7 @@ services:
     # -- Set the service type
     type: ClusterIP
     # -- Set the clusterIP
-    # if deployment type = statefulset, then set clusterIP to "None"
+    # To deploy a headless service, set clusterIP: "None"
     clusterIP:
     # -- Specify the externalTrafficPolicy for the service. Options: Cluster, Local
     # -- [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)]
@@ -396,3 +396,5 @@ persistence:
           requests:
             storage: 8Gi
         storageClassName: slow
+
+
