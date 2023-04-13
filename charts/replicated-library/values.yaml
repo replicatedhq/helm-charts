@@ -3,7 +3,7 @@ global:
   labels: {}
   # -- Set additional global annotations.
   annotations: {}
-  # -- Set the entire name definition
+  # -- Set the full object prefix, defaults to releasName-ChartName if not set. This value takes precedence over nameOverride.
   fullNameOverride:
   # -- Set an override for the prefix of the fullname
   nameOverride:
