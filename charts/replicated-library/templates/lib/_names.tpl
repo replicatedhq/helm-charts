@@ -30,7 +30,7 @@ If release name contains chart name it will be used as a full name.
   {{- else -}}
     {{- $name := include "replicated-library.names.name" . -}}
     {{- if .Values.global.fullNameOverride -}}
-      {{- $name = .Values.global.fullnameOverride -}}
+      {{- $name = .Values.global.fullNameOverride -}}
     {{- else if contains $name .Release.Name -}}
       {{- $name = .Release.Name -}}
     {{- else -}}
