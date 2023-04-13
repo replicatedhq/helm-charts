@@ -4,7 +4,7 @@ global:
   # -- Set additional global annotations.
   annotations: {}
   # -- Set the entire name definition
-  fullnameOverride:
+  fullNameOverride:
   # -- Set an override for the prefix of the fullname
   nameOverride:
 
