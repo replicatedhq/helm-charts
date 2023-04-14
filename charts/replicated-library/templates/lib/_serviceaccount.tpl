@@ -3,8 +3,8 @@ The ServiceAccount object to be created.
 */}}
 {{- define "replicated-library.serviceAccount" }}
   {{- $values := .Values.serviceAccount -}}
-  {{- if hasKey . "AppValues" -}}
-    {{- with .AppValues.app -}}
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}

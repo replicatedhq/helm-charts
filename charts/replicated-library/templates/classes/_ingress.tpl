@@ -11,7 +11,7 @@ within the replicated-library library.
   {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.ingress -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
@@ -23,7 +23,7 @@ within the replicated-library library.
 apiVersion: {{ include "replicated-library.capabilities.ingress.apiVersion" . }}
 kind: Ingress
 metadata:
-  name: {{ $ingressName }}
+  name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

@@ -11,17 +11,17 @@ within the replicated-library library.
   {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.service -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
-  
+
   {{- $svcType := $values.type | default "" -}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $serviceName }}
+  name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

@@ -11,7 +11,7 @@ within the replicated-library library.
   {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.secret -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
@@ -19,7 +19,7 @@ within the replicated-library library.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ $secretName }}
+  name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

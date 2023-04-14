@@ -3,8 +3,8 @@ The pod definition included in the main.
 */ -}}
 {{- define "replicated-library.pod" -}}
   {{- $values := . -}}
-  {{- if hasKey . "AppValues" -}}
-    {{- with .AppValues.app -}}
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}

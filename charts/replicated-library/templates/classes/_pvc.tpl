@@ -11,7 +11,7 @@ within the replicated-library library.
   {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.persistence -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
@@ -25,7 +25,7 @@ within the replicated-library library.
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ $pvcName }}
+  name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

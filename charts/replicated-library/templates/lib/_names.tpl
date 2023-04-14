@@ -4,7 +4,7 @@
   {{- if hasKey .Values "global" -}}
     {{- $globalNameOverride = (default $globalNameOverride .Values.global.nameOverride) -}}
   {{- end -}}
-  {{- default .Chart.Name (default .Values.nameOverride $globalNameOverride) | trunc 63 | trimSuffix "-" -}}
+  {{- default .Chart.Name (default "" $globalNameOverride) | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -13,21 +13,31 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "replicated-library.names.fullname" -}}
-  {{- $name := include "replicated-library.names.name" . -}}
-  {{- $globalFullNameOverride := "" -}}
-  {{- if hasKey .Values "global" -}}
-    {{- $globalFullNameOverride = (default $globalFullNameOverride .Values.global.fullnameOverride) -}}
+  {{- $objectName := "" -}}
+  {{- if hasKey . "ObjectName" -}}
+    {{- $objectName = .ObjectName -}}
   {{- end -}}
-  {{- if or .Values.fullnameOverride $globalFullNameOverride -}}
-    {{- $name = default .Values.fullnameOverride $globalFullNameOverride -}}
+
+  {{- $values := . -}}
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.values -}}
+      {{- $values = . -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if $values.fullNameOverride -}}
+    {{- trunc 63 $values.fullNameOverride | trimSuffix "-" -}}
   {{- else -}}
-    {{- if contains $name .Release.Name -}}
+    {{- $name := include "replicated-library.names.name" . -}}
+    {{- if .Values.global.fullNameOverride -}}
+      {{- $name = .Values.global.fullNameOverride -}}
+    {{- else if contains $name .Release.Name -}}
       {{- $name = .Release.Name -}}
     {{- else -}}
       {{- $name = printf "%s-%s" .Release.Name $name -}}
     {{- end -}}
+    {{- printf "%s-%s" $name $objectName | trunc 63 | trimSuffix "-" -}}
   {{- end -}}
-  {{- trunc 63 $name | trimSuffix "-" -}}
 {{- end -}}
 
 {{/* Create chart name and version as used by the chart label */}}
@@ -39,12 +49,12 @@ If release name contains chart name it will be used as a full name.
 {{- define "replicated-library.names.serviceAccountName" -}}
   {{- $name := "default" }}
   {{- $values := .Values.serviceAccount -}}
-  {{- if hasKey . "AppName" -}}
-    {{- $name = .AppName -}}
+  {{- if hasKey . "ObjectName" -}}
+    {{- $name = .ObjectName -}}
   {{ end -}}
 
-  {{- if hasKey . "AppValues" -}}
-    {{- with .AppValues.app -}}
+  {{- if hasKey . "ObjectValues" -}}
+    {{- with .ObjectValues.app -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}

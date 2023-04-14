@@ -12,7 +12,7 @@ Renders the Service objects required by the chart.
         {{- $_ := set $ "ObjectName" $serviceValues.nameOverride -}}
       {{ end -}}
 
-      {{- $_ := set $ "ObjectValues" (dict "service" $serviceValues) -}}
+      {{- $_ := set $ "ObjectValues" (dict "values" $serviceValues) -}}
 
       {{- include "replicated-library.classes.service" $ | nindent 0 }}
     {{- end }}

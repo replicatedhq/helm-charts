@@ -80,6 +80,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.dnsPolicy | string | `nil` | Defaults to "ClusterFirst" if hostNetwork is false and "ClusterFirstWithHostNet" if hostNetwork is true. |
 | apps.example.enableServiceLinks | bool | `true` | Enable/disable the generation of environment variables for services. [[ref]](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#accessing-the-service) |
 | apps.example.enabled | bool | `false` | Enable the app Each app represents a single controller type (deployment, daemonset, statefulset) |
+| apps.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | apps.example.hostAliases | list | `[]` | Use hostAliases to add custom entries to /etc/hosts - mapping IP addresses to hostnames. [[ref]](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/) |
 | apps.example.hostNetwork | bool | `false` | When using hostNetwork make sure you set dnsPolicy to `ClusterFirstWithHostNet` |
 | apps.example.hostname | string | `nil` | Allows specifying explicit hostname setting |
@@ -112,8 +113,8 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | configmaps.exampleConfig.annotations | object | `{}` | Annotations to add to the configMap |
 | configmaps.exampleConfig.data | object | `{}` | configMap data content. Helm template enabled. |
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
+| configmaps.exampleConfig.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
-| configmaps.exampleConfig.nameOverride | string | `nil` | Override the name suffix that is used for this configap |
 | defaults.image.pullPolicy | string | `"IfNotPresent"` |  |
 | defaults.probes.livenessProbe.failureThreshold | int | `5` |  |
 | defaults.probes.livenessProbe.initialDelaySeconds | int | `0` |  |
@@ -129,19 +130,21 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | defaults.probes.startupProbe | object | `{}` |  |
 | defaults.strategy | string | `"RollingUpdate"` |  |
 | global.annotations | object | `{}` | Set additional global annotations. |
+| global.fullnameOverride | string | `nil` | Set the entire name definition |
 | global.labels | object | `{}` | Set additional global labels. |
+| global.nameOverride | string | `nil` | Set an override for the prefix of the fullname |
 | ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key |
 | ingresses.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | ingresses.example.enabled | bool | `false` | Enables or disables the ingress |
+| ingresses.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | ingresses.example.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"Prefix","service":{"name":null,"port":null}}]}]` | Configure the hosts for the ingress |
 | ingresses.example.hosts[0].paths[0].service.name | string | `nil` | Service Name for the path. By default this is ingresses.example.serviceName if not overwritten TODO: NOT IMPLEMENTED |
 | ingresses.example.ingressClassName | string | `nil` | Set the ingressClass that is used for this ingress. Requires Kubernetes >=1.19 |
 | ingresses.example.labels | object | `{}` | Provide additional labels which may be required. |
-| ingresses.example.nameOverride | string | `nil` | Override the name that is used for this ingress. By default the name will be the name of the dictionary key |
 | ingresses.example.serviceName | string | `"example"` | Name of the service to attach this ingress. This corresponds to an service configured un the `services` key |
 | persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key. Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride |
 | persistence.example.enabled | bool | `false` | Enables or disables the volume |
-| persistence.example.nameOverride | string | `nil` | Override the name that is used for this persistence object TODO: NOT IMPLEMENTED |
+| persistence.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | persistence.example.persistentVolume | object | `{"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}}` | Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container TODO: Not implemented |
 | persistence.example.persistentVolume.spec | object | `{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"1Gi"},"hostPath":{"path":"/tmp/data1"},"reclaimPolicy":["Recycle"]}` | PersistentVolumeClaim spec [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) |
 | persistence.example.persistentVolumeClaim | object | `{"existingClaimName":null,"spec":{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"storageClassName":"slow","volumeMode":"Filesystem"}}` | Configure a Persistent Volume Claim to be mounted to the app's primary container |
@@ -152,18 +155,18 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
 | secrets.exampleSecret.data | object | `{}` | configMap data content. Helm template enabled. |
 | secrets.exampleSecret.enabled | bool | `false` | Enables or disables the secret |
+| secrets.exampleSecret.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | secrets.exampleSecret.labels | object | `{}` | Labels to add to the secret |
-| secrets.exampleSecret.nameOverride | string | `nil` | Override the name suffix that is used for this secret |
 | services | object | See below | Configure the services for the chart here. Services can be added by adding a dictionary key similar to the 'example' service. By default the name of the service will be the name of the dictionary key TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | services.example.appName | string | `"example"` | Name of the app to attach this service. This corresponds to an app configured un the `apps` key TODO: Accept a list of appnames of which to associate the service TODO: Needs to be optional |
 | services.example.clusterIP | string | `nil` | Set the clusterIP |
 | services.example.enabled | bool | `false` | Enables or disables the service |
 | services.example.externalTrafficPolicy | string | `nil` | [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)] |
+| services.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | services.example.ipFamilies | list | `[]` | The ip families that should be used. Options: IPv4, IPv6 |
 | services.example.ipFamilyPolicy | string | `nil` | Specify the ip policy. Options: SingleStack, PreferDualStack, RequireDualStack |
 | services.example.labels | object | `{}` | Provide additional labels which may be required. |
-| services.example.nameOverride | string | `nil` | Override the name suffix that is used for this service |
 | services.example.ports | object | See below | Configure the Service port information here. Additional ports can be added by adding a dictionary key similar to the 'http' service. |
 | services.example.ports.http.enabled | bool | `true` | Enables or disables the port |
 | services.example.ports.http.nodePort | string | `nil` | Specify the nodePort value for the LoadBalancer and NodePort service types. [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) |

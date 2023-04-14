@@ -3,6 +3,10 @@ global:
   labels: {}
   # -- Set additional global annotations.
   annotations: {}
+  # -- Set the full object prefix, defaults to releasName-ChartName if not set. This value takes precedence over nameOverride.
+  fullNameOverride:
+  # -- Set an override for the ChartName, defaults to ChartName if not set.
+  nameOverride:
 
 defaults:
   image:
@@ -40,6 +44,9 @@ apps:
      # Valid options are deployment, daemonset or statefulset
      # TODO: daemonset and statefulset
     type: deployment
+
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
 
     # -- Set the replica count. Only used for deployment and statefulset
     replicas: 1
@@ -217,8 +224,8 @@ secrets:
     # -- configMap data content. Helm template enabled.
     data: {}
       # foo: bar
-    # -- Override the name suffix that is used for this secret
-    nameOverride:
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
 
 # -- Configure the configmaps for the chart here.
 # Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap.
@@ -237,8 +244,8 @@ configmaps:
     # -- configMap data content. Helm template enabled.
     data: {}
       # foo: bar
-    # -- Override the name suffix that is used for this configap
-    nameOverride:
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
 
 # -- Configure the services for the chart here.
 # Services can be added by adding a dictionary key similar to the 'example' service.
@@ -253,8 +260,8 @@ services:
     # TODO: Accept a list of appnames of which to associate the service
     # TODO: Needs to be optional
     appName: example
-        # -- Override the name suffix that is used for this service
-    nameOverride:
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
     # -- Set the service type
     type: ClusterIP
     # -- Set the clusterIP
@@ -305,8 +312,8 @@ ingresses:
     enabled: false
     # -- Name of the service to attach this ingress. This corresponds to an service configured un the `services` key
     serviceName: example
-    # -- Override the name that is used for this ingress. By default the name will be the name of the dictionary key
-    nameOverride:
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
     # -- Provide additional annotations which may be required.
     annotations: {}
     # -- Provide additional labels which may be required.
@@ -342,9 +349,8 @@ persistence:
     # TODO: type.persistentVolume not implemented
     type: persistentVolumeClaim
 
-    # -- Override the name that is used for this persistence object
-    # TODO: NOT IMPLEMENTED
-    nameOverride:
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
 
     # -- Configure a persistentVolume and persistentVolumeClaim pair to be mounted to the app's primary container
     # TODO: Not implemented

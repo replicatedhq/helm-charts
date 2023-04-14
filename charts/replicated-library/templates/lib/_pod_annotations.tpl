@@ -2,7 +2,7 @@
 {{- define "replicated-library.podAnnotations" -}}
   {{- $values := . -}}
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.configmaps -}}
+    {{- with .ObjectValues.values -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}
