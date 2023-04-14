@@ -1,4 +1,4 @@
-## Breaking the Glass
+## Advanced Templating
 
 The library chart can cover a lot of ground, but you may have the need to bring your own templates, hardcode values that you don't want end-users to change, 
 or write a conditional that's toggled with the contents of a variable in your values.yaml. Here we'll provide a few examples of how 

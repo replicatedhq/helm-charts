@@ -42,9 +42,9 @@ dependencies:
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
 
-## Breaking the Glass
+## Advanced Templating
 
-[Examples of how you can break glass and build on top of this library chart](BREAK_GLASS.md)
+[Examples of how you can advanced templating and build on top of this library chart](ADVANCED_TEMPLATING.md)
 
 ## Configuration
 
