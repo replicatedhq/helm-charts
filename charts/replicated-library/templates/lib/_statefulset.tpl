@@ -2,6 +2,16 @@
 This template serves as the blueprint for the StatefulSet objects that are created
 within the replicated library.
 */}}
+{{- define "replicated-library.servicefor" -}}
+  {{- $appName := include "replicated-library.names.appname" . }}
+  {{- $matchingServices := list }}
+  {{- range $name, $values := .Values.services }}
+    {{- if eq $values.appName $appName }}
+    {{- $matchingServices = append $matchingServices $name }}
+    {{- end }}
+  {{- end }}
+  {{- first $matchingServices }}
+{{- end }}
 {{- define "replicated-library.statefulset" }}
   {{- $values := . -}}
   {{- if hasKey . "AppValues" -}}
@@ -30,14 +40,15 @@ spec:
   {{- end }}
   updateStrategy:
     type: {{ $strategy }}
-    {{- if and (eq $strategy "RollingUpdate") $values.rollingUpdate.partition}}
+    {{- if and (eq $strategy "RollingUpdate") (and $values.rollingUpdate $values.rollingUpdate.partition) }}
     rollingUpdate:
       partition: {{ $values.rollingUpdate.partition }}
     {{- end }}
   selector:
     matchLabels:
       {{- include "replicated-library.labels.selectorLabels" . | nindent 6 }}
-  serviceName:  {{- default (include "replicated-library.names.appname" .) ($values.serviceName) }}
+  serviceName: {{ default (include "replicated-library.servicefor" .) ($values.serviceName) }}
+  template:
     metadata:
       {{- with include ("replicated-library.podAnnotations") . }}
       annotations:
@@ -50,18 +61,23 @@ spec:
         {{- end }}
     spec:
       {{- include "replicated-library.pod" . | nindent 6 }}
+  {{- if $values.volumeClaimTemplates }}
   volumeClaimTemplates:
      {{- range $index, $vct := $values.volumeClaimTemplates }}
      - metadata:
          name: {{ $vct.name }}
        spec:
+         {{- $accessModes := $vct.accessModes | required (printf "accessModes is required, not found on %v" $vct.name) }}
          accessModes:
-           - {{ required (printf "accessMode is required for vCT %v" $vct.name) $vct.accessMode  | quote }}
+         {{- range $accessModes }}
+           - {{ . }}
+         {{- end }}
          resources:
            requests:
-             storage: {{ required (printf "size is required for PVC %v" $vct.name) $vct.size | quote }}
+             storage: {{ required (printf "storage is required for volumeClaimTemplate %v" $vct.name) $vct.storage | quote }}
          {{- if $vct.storageClass }}
          storageClassName: {{ if (eq "-" $vct.storageClass) }}""{{- else }}{{ $vct.storageClass | quote }}{{- end }}
         {{- end }}
     {{- end }}
+  {{- end }}
 {{- end }}
