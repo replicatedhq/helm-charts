@@ -10,17 +10,19 @@ All notable changes to this library Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### [Unreleased]
+### [0.5.0]
+#### Changed
+
+- Add a unique prefix with global overrides to prevent multiple installs from conflicting.
+- Update readme for Advanced Templating clarification
 
 ### [0.4.0]
-
 #### Changed
 
 - Livesness and Readiness probes are automatically generated if a container has ports defined
 - All probe definitions moved to conatiner rather than "probes" sub-key.
 
 ### [0.3.0]
-
 #### Changed
 
 - Setting best practice defaults for imagePullPolicy, updateStrategy, and probes.
