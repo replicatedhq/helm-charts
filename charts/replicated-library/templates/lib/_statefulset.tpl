@@ -63,21 +63,11 @@ spec:
       {{- include "replicated-library.pod" . | nindent 6 }}
   {{- if $values.volumeClaimTemplates }}
   volumeClaimTemplates:
-     {{- range $index, $vct := $values.volumeClaimTemplates }}
-     - metadata:
-         name: {{ $vct.name }}
-       spec:
-         {{- $accessModes := $vct.accessModes | required (printf "accessModes is required, not found on %v" $vct.name) }}
-         accessModes:
-         {{- range $accessModes }}
-           - {{ . }}
-         {{- end }}
-         resources:
-           requests:
-             storage: {{ required (printf "storage is required for volumeClaimTemplate %v" $vct.name) $vct.storage | quote }}
-         {{- if $vct.storageClass }}
-         storageClassName: {{ if (eq "-" $vct.storageClass) }}""{{- else }}{{ $vct.storageClass | quote }}{{- end }}
-        {{- end }}
-    {{- end }}
+  {{- range $name, $vct := $values.volumeClaimTemplates }}
+  - metadata:
+      name: {{ $name }}
+    spec:
+      {{- toYaml $vct.spec | nindent 6 }}
+  {{- end }}
   {{- end }}
 {{- end }}
