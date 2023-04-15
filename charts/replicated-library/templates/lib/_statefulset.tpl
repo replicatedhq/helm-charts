@@ -2,7 +2,7 @@
 This template serves as the blueprint for the StatefulSet objects that are created
 within the replicated library.
 */}}
-{{- define "replicated-library.servicefor" -}}
+{{- define "replicated-library.firstservice" -}}
   {{- $appName := include "replicated-library.names.appname" . }}
   {{- $matchingServices := list }}
   {{- range $name, $values := .Values.services }}
@@ -47,7 +47,7 @@ spec:
   selector:
     matchLabels:
       {{- include "replicated-library.labels.selectorLabels" . | nindent 6 }}
-  serviceName: {{ default (include "replicated-library.servicefor" .) ($values.serviceName) }}
+  serviceName: {{ default (include "replicated-library.firstservice" .) ($values.serviceName) }}
   template:
     metadata:
       {{- with include ("replicated-library.podAnnotations") . }}
