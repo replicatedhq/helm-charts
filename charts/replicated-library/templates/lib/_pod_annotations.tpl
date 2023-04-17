@@ -18,6 +18,6 @@
     {{- end -}}
   {{- end -}}
   {{- if $configMapsFound -}}
-    {{- printf "checksum/config: %v" (include ("replicated-library.configmap") . | sha256sum) | nindent 0 -}}
+    {{- printf "checksum/config: %v" (include ("replicated-library.configmaps") . | sha256sum) | nindent 0 -}}
   {{- end -}}
 {{- end -}}
