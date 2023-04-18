@@ -71,8 +71,8 @@ If release name contains chart name it will be used as a full name.
 {{/* Get name of current app */}}
 {{- define "replicated-library.names.appname" -}}
   {{- $name := include "replicated-library.names.name" . -}}
-  {{- if hasKey . "AppName" -}}
-    {{- $name = .AppName -}}
+  {{- if hasKey . "ObjectName" -}}
+    {{- $name = .ObjectName -}}
   {{ end -}}
   {{- trunc 63 $name | trimSuffix "-" -}}
 {{- end -}}

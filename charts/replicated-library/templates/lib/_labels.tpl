@@ -18,7 +18,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{/* Selector labels shared across objects */}}
 {{- define "replicated-library.labels.selectorLabels" -}}
-app.kubernetes.io/appname: {{ include "replicated-library.names.appname" . }}
+app.kubernetes.io/name: {{ include "replicated-library.names.appname" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{- define "replicated-library.labels.serviceSelectorLabels" -}}
@@ -36,7 +37,8 @@ app.kubernetes.io/appname: {{ include "replicated-library.names.appname" . }}
     {{- range $appName, $appValues := .Values.apps }}
       {{- if and $appValues.enabled (eq $appName $serviceValues.appName) (ne $matchingAppFound true) -}}
         {{- $matchingAppFound = true -}}
-app.kubernetes.io/appname: {{ $appName }}
+app.kubernetes.io/name: {{ $appName }}
+app.kubernetes.io/instance: {{ $.Release.Name }}
       {{- end }}
     {{- end }}
 
@@ -45,7 +47,8 @@ app.kubernetes.io/appname: {{ $appName }}
     {{- end }}
   
   {{- else }}
-app.kubernetes.io/appname: {{- include "replicated-library.names.fullname" . -}}
+app.kubernetes.io/name: {{- include "replicated-library.names.fullname" . -}}
+app.kubernetes.io/instance: {{ $.Release.Name }}
   {{- end }}
 
 {{- end -}}
