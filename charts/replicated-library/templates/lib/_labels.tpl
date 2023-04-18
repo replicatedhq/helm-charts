@@ -27,23 +27,28 @@ app.kubernetes.io/instance: {{ .Release.Name }}
       {{- $serviceValues = . -}}
     {{- end -}}
   {{ end -}}
-  {{- if $serviceValues.appName }}
-    {{- range $serviceValues.appName }}
-      {{- $name := . -}}
-      {{- $matchingAppFound := false -}}
-      {{- range $appName, $appValues := $.Values.apps }}
-        {{- if and $appValues.enabled (eq $appName $name) (ne $matchingAppFound true) -}}
-          {{- $matchingAppFound = true -}}
+  {{- if $serviceValues.selectorOverride -}}
+{{ toYaml $serviceValues.selectorOverride }}
+  {{- else -}}
+    {{- if $serviceValues.appName }}
+      {{- range $serviceValues.appName }}
+        {{- $name := . -}}
+        {{- $matchingAppFound := false -}}
+        {{- range $appName, $appValues := $.Values.apps }}
+          {{- if and $appValues.enabled (eq $appName $name) (ne $matchingAppFound true) -}}
+            {{- $matchingAppFound = true -}}
 {{ printf "app.kubernetes.io/name: %s\n" $appName }}
+          {{- end -}}
+        {{- end -}}
+        {{- if (ne $matchingAppFound true) -}}
+          {{- fail (printf "Matching app for AppName (%s) was not found" $serviceValues.appName) }}
         {{- end -}}
       {{- end -}}
-      {{- if (ne $matchingAppFound true) -}}
-        {{- fail (printf "Matching app for AppName (%s) was not found" $serviceValues.appName) }}
-      {{- end -}}
-    {{- end -}}
 app.kubernetes.io/instance: {{ $.Release.Name }}
-  {{- else -}}
+    {{- else -}}
 app.kubernetes.io/name: {{ .ObjectName }}
 app.kubernetes.io/instance: {{ $.Release.Name }}
-  {{- end }}
+    {{- end }}
+  {{- end -}}
+
 {{- end -}}
