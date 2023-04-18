@@ -30,4 +30,5 @@ stringData:
 {{- with $values.data }}
   {{- tpl (toYaml .) $ | nindent 2 }}
 {{- end }}
+type: {{ $values.type}}
 {{- end }}
