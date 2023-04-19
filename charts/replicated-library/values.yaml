@@ -116,6 +116,7 @@ apps:
     initContainers: {}
 
     # -- Specify a list of volumes that get mounted to the app.
+    # persistentVolumeClaims which are present and enabled in the persistence configuraiton will have the prefix added automatically.
     volumes: []
 
     # -- Set annotations on the deployment/statefulset/daemonset
