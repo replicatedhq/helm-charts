@@ -2,6 +2,24 @@ apiVersion: v1
 entries:
   replicated-library:
   - apiVersion: v2
+    created: "2023-04-19T21:49:47.12733106Z"
+    description: Replicated library chart
+    digest: 8f8949d02a3fd14315ca86e6e24ec1ab69b4ae580ed2bac3ee95971bdf9bf47e
+    home: https://github.com/replicatedhq/helm-charts/tree/main/charts/replicated-library
+    keywords:
+    - replicated-library
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: diamon@replicated.com
+      name: diamonwiggins
+    - email: chriss@replicated.com
+      name: chris-sanders
+    name: replicated-library
+    type: library
+    urls:
+    - https://github.com/replicatedhq/helm-charts/releases/download/replicated-library-0.5.3/replicated-library-0.5.3.tgz
+    version: 0.5.3
+  - apiVersion: v2
     created: "2023-04-18T18:50:40.842552002Z"
     description: Replicated library chart
     digest: e0e614ee5972cae7cf7fffd5dbf9684e1d91e7f930c4e3c7f18d32ad2dd75c72
@@ -119,4 +137,4 @@ entries:
     urls:
     - https://github.com/replicatedhq/helm-charts/releases/download/replicated-library-0.1.1/replicated-library-0.1.1.tgz
     version: 0.1.1
-generated: "2023-04-18T18:50:40.842963507Z"
+generated: "2023-04-19T21:49:47.127505661Z"
