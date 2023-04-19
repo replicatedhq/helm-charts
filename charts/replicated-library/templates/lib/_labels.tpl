@@ -27,8 +27,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
       {{- $serviceValues = . -}}
     {{- end -}}
   {{ end -}}
-  {{- if $serviceValues.selectorOverride -}}
-{{ toYaml $serviceValues.selectorOverride }}
+  {{- if $serviceValues.selector -}}
+{{ toYaml $serviceValues.selector }}
   {{- else -}}
     {{- if $serviceValues.appName }}
       {{- range $serviceValues.appName }}

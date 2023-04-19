@@ -266,8 +266,8 @@ services:
     fullNameOverride:
     # -- Set the service type
     type: ClusterIP
-    # -- Override the list of selectors for this object. this takes precedence over appName.
-    selectorOverride:
+    # -- Set the list of selectors for this object. this takes precedence over appName.
+    selector:
       app: my-app
     # -- Set the clusterIP
     clusterIP:
