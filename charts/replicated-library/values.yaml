@@ -226,6 +226,9 @@ secrets:
       # foo: bar
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
+    # option to select secret type; default is Opaque
+    # example: set type: kubernetes.io/tls for secrets that contain tls data.
+    type:
 
 # -- Configure the configmaps for the chart here.
 # Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap.
