@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.5.2](https://img.shields.io/badge/Version-0.5.2-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.5.3](https://img.shields.io/badge/Version-0.5.3-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.5.2
+  version: 0.5.3
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -108,7 +108,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
 | apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset |
 | apps.example.volumeClaimTemplates | list | `[]` | Used to create individual disks for each instance when type: StatefulSet |
-| apps.example.volumes | list | `[]` | Specify a list of volumes that get mounted to the app. |
+| apps.example.volumes | list | `[]` | Specify a list of volumes that get mounted to the app. persistentVolumeClaims which are present and enabled in the persistence configuraiton will have the prefix added automatically. |
 | configmaps | object | See below | Configure the configmaps for the chart here. Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. By default the name of the configmap will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | configmaps.exampleConfig.annotations | object | `{}` | Annotations to add to the configMap |
 | configmaps.exampleConfig.data | object | `{}` | configMap data content. Helm template enabled. |
@@ -182,6 +182,11 @@ All notable changes to this library Helm chart will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+### [0.5.3]
+#### Added
+
+- Automatically add prefix to Statefulset volumes if it's a volume defined and enabled in the chart
 
 ### [0.5.2]
 #### Added
