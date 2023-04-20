@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.6.1](https://img.shields.io/badge/Version-0.6.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.6.0
+  version: 0.6.1
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -181,6 +181,11 @@ All notable changes to this library Helm chart will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+### [0.6.1]
+#### Changed
+
+- Fixed automatic prefix on volumes
 
 ### [0.6.0]
 #### Added
