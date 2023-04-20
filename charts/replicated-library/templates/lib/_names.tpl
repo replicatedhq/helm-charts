@@ -16,8 +16,9 @@ The global fullNameOverride will replace the entire prefix if provided.
 The ChartName will not be included if it is contained in the ReleaseName, leaving only the ReleaseName.
 */}}
 {{- define "replicated-library.names.prefix" -}}
+ {{- $globalFullNameOverride := "" -}}
   {{- if and (hasKey .Values "global") (hasKey .Values.global "fullNameOverride") -}}
-    {{- trunc 63 .Values.global.fullNameOverride | trimSuffix "-" -}}
+    {{- $globalFullNameOverride = (default $globalFullNameOverride .Values.global.fullNameOverride) -}}
   {{- else -}}
     {{- $chartName := include "replicated-library.names.name" . -}}
     {{- if contains $chartName .Release.Name -}}
