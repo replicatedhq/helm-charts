@@ -73,7 +73,15 @@ containers:
   {{- include "replicated-library.container" . | nindent 2 }}
   {{- with $values.volumes }}
 volumes:
-    {{- toYaml . | nindent 2 }}
+    {{- range . }} 
+      {{- /* Add the prefix to the claimName if the claim is in the persistence dict and is enabled */}}
+      {{- if and .persistentVolumeClaim .persistentVolumeClaim.claimName }}
+        {{- if and (hasKey $.Values.persistence .persistentVolumeClaim.claimName) (get (get $.Values.persistence .persistentVolumeClaim.claimName) "enabled") }}
+          {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName) }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- toYaml . | nindent 2}}
   {{- end }}
   {{- with $values.hostAliases }}
 hostAliases:

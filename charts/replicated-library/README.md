@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.6.0
+  version: 0.7.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -80,7 +80,6 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.dnsPolicy | string | `nil` | Defaults to "ClusterFirst" if hostNetwork is false and "ClusterFirstWithHostNet" if hostNetwork is true. |
 | apps.example.enableServiceLinks | bool | `true` | Enable/disable the generation of environment variables for services. [[ref]](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#accessing-the-service) |
 | apps.example.enabled | bool | `false` | Enable the app Each app represents a single controller type (deployment, daemonset, statefulset) |
-| apps.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | apps.example.hostAliases | list | `[]` | Use hostAliases to add custom entries to /etc/hosts - mapping IP addresses to hostnames. [[ref]](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/) |
 | apps.example.hostNetwork | bool | `false` | When using hostNetwork make sure you set dnsPolicy to `ClusterFirstWithHostNet` |
 | apps.example.hostname | string | `nil` | Allows specifying explicit hostname setting |
@@ -106,9 +105,9 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | apps.example.strategy | string | `nil` | Set the controller upgrade strategy For Deployments, valid values are Recreate and RollingUpdate. For StatefulSets, valid values are OnDelete and RollingUpdate. For Daemonsets, valid values are OnDelete and RollingUpdate. |
 | apps.example.tolerations | list | `[]` | Specify taint tolerations [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) |
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
-| apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset TODO: daemonset and statefulset |
+| apps.example.type | string | `"deployment"` | Specify the controller type. Valid options are deployment, daemonset or statefulset |
 | apps.example.volumeClaimTemplates | list | `[]` | Used to create individual disks for each instance when type: StatefulSet |
-| apps.example.volumes | list | `[]` | Specify a list of volumes that get mounted to the app. |
+| apps.example.volumes | list | `[]` | Specify a list of volumes that get mounted to the app. persistentVolumeClaims which are present and enabled in the persistence configuraiton will have the prefix added automatically. |
 | configmaps | object | See below | Configure the configmaps for the chart here. Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. By default the name of the configmap will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | configmaps.exampleConfig.annotations | object | `{}` | Annotations to add to the configMap |
 | configmaps.exampleConfig.data | object | `{}` | configMap data content. Helm template enabled. |
@@ -160,7 +159,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services | object | See below | Configure the services for the chart here. Services can be added by adding a dictionary key similar to the 'example' service. By default the name of the service will be the name of the dictionary key TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | services.example.appName | list | `["example"]` | Optional list of apps to attach this service. This corresponds to apps configured in the `apps` key |
-| services.example.clusterIP | string | `nil` | Set the clusterIP |
+| services.example.clusterIP | string | `nil` | Set the clusterIP To deploy a headless service, set clusterIP: "None" |
 | services.example.enabled | bool | `false` | Enables or disables the service |
 | services.example.externalTrafficPolicy | string | `nil` | [[ref](https://kubernetes.io/docs/tutorials/services/source-ip/)] |
 | services.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
@@ -183,11 +182,28 @@ All notable changes to this library Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### [0.6.0]
+
+### [0.7.0]
 ### Changed
 
 - The `appName` key for services is now an optional list of apps to associate the service to.
 - Services `selector` now overrides selectors set by `appName`.
+
+### [0.6.1]
+#### Changed
+
+- Fixed automatic prefix on volumes
+
+### [0.6.0]
+#### Added
+
+- Added Statefulsets template
+- Added a prefix function
+
+### [0.5.3]
+#### Added
+
+- Automatically add prefix to Statefulset volumes if it's a volume defined and enabled in the chart
 
 ### [0.5.2]
 #### Added
