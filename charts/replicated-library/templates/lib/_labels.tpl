@@ -46,8 +46,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
       {{- end -}}
 app.kubernetes.io/instance: {{ $.Release.Name }}
     {{- else -}}
-app.kubernetes.io/name: {{ .ObjectName }}
+
+      {{/* if no appName or selector is set on the service, check if there's an app that matches the service name to use instead */}}
+      {{- $name := .ObjectName -}}
+      {{- $matchingAppFound := false -}}
+      {{- range $appName, $appValues := $.Values.apps -}}
+        {{- if and $appValues.enabled (eq $appName $name) (ne $matchingAppFound true) -}}
+          {{- $matchingAppFound = true -}}
+app.kubernetes.io/name: {{ $name }}
 app.kubernetes.io/instance: {{ $.Release.Name }}
+        {{- end -}}
+      {{- end -}}
+      {{- if (ne $matchingAppFound true) -}}
+        {{- fail (printf "Service (%s) has no selectors or matching apps" $name ) }}
+      {{- end -}}
+
+
     {{- end }}
   {{- end -}}
 
