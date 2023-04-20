@@ -1,7 +1,6 @@
 apps:
   wg-easy:
     enabled: true
-    AppName: wg-override
     type: deployment
     replicas: 1
     containers:
