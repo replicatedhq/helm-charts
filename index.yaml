@@ -194,6 +194,21 @@ entries:
   wg-easy:
   - apiVersion: v2
     appVersion: "7"
+    created: "2023-04-20T20:48:14.727597387Z"
+    dependencies:
+    - name: replicated-library
+      repository: https://replicatedhq.github.io/helm-charts
+      version: ^0.7.0
+    description: wg-easy description todo
+    digest: 15a09f23527ded95704c6b7fd12f7078e20688f482e610ee78947ac097da1eb5
+    home: https://github.com/replicatedhq/replicated-starter-helm/charts/tree/main/
+    kubeVersion: '>=1.20.0-0'
+    name: wg-easy
+    urls:
+    - https://github.com/replicatedhq/helm-charts/releases/download/wg-easy-0.1.0/wg-easy-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: "7"
     created: "2023-04-20T15:30:01.741731423Z"
     dependencies:
     - name: replicated-library
@@ -237,4 +252,4 @@ entries:
     urls:
     - https://github.com/replicatedhq/helm-charts/releases/download/wg-easy-0.0.1/wg-easy-0.0.1.tgz
     version: 0.0.1
-generated: "2023-04-20T20:43:07.333404671Z"
+generated: "2023-04-20T20:48:14.727630589Z"
