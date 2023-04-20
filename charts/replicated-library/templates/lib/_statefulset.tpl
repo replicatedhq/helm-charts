@@ -5,17 +5,21 @@ within the replicated library.
 {{- define "replicated-library.firstservice" -}}
   {{- $appName := include "replicated-library.names.appname" . }}
   {{- $matchingServices := list }}
+
   {{- range $name, $values := .Values.services }}
-    {{- if eq $values.appName $appName }}
-      {{- $serviceName := "" }}
-      {{- if $values.fullNameOverride }}
-        {{- $serviceName = $values.fullNameOverride }}
-      {{- else }}
-        {{- $serviceName = printf "%s-%s" (include "replicated-library.names.prefix" $) $name -}}
+    {{- range $values.appName -}}
+      {{- if eq . $appName }}
+        {{- $serviceName := "" }}
+        {{- if $values.fullNameOverride }}
+          {{- $serviceName = $values.fullNameOverride }}
+        {{- else }}
+          {{- $serviceName = printf "%s-%s" (include "replicated-library.names.prefix" $) $name -}}
+        {{- end }}
+        {{- $matchingServices = append $matchingServices $serviceName }}
       {{- end }}
-      {{- $matchingServices = append $matchingServices $serviceName }}
     {{- end }}
   {{- end }}
+
   {{- if len $matchingServices }}
     {{- first $matchingServices }}
   {{- end }}
