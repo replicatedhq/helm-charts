@@ -265,7 +265,7 @@ services:
     fullNameOverride:
     # -- Set the service type
     type: ClusterIP
-    # -- Set the list of selectors for this object. this takes precedence over appName.
+    # -- Label sleector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName
     selector: {}
     # -- Set the clusterIP
     # To deploy a headless service, set clusterIP: "None"
