@@ -33,7 +33,8 @@ apps:
 services:
   web:
     enabled: true
-    appName: wg-easy
+    appName: 
+      - wg-easy
     type: ClusterIP
     ipFamilyPolicy: SingleStack
     ports:
@@ -45,7 +46,8 @@ services:
         targetPort: 51821
   vpn:
     enabled: true
-    appName: wg-easy
+    appName: 
+      - wg-easy
     type: LoadBalancer
     ports:
       udp:
