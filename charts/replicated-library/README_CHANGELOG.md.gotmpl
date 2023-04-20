@@ -10,6 +10,13 @@ All notable changes to this library Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [0.7.0]
+### Changed
+
+- BREAKING: The `appName` key for services is now an optional list instead of a string. Charts using the previous implementation will need to convert the string into a single entry list which will work as before.
+- Services `selector` now overrides selectors set by `appName`.
+- If no `appName` or `selector` is defined, we try and match on the service name itself
+
 ### [0.6.1]
 #### Changed
 

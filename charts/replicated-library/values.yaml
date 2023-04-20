@@ -258,14 +258,15 @@ services:
   example:
     # -- Enables or disables the service
     enabled: false
-    # -- Name of the app to attach this service. This corresponds to an app configured un the `apps` key
-    # TODO: Accept a list of appnames of which to associate the service
-    # TODO: Needs to be optional
-    appName: example
+    # -- Optional list of apps to attach this service. This corresponds to apps configured in the `apps` key
+    appName:
+    - example
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
     # -- Set the service type
     type: ClusterIP
+    # -- Label sleector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName
+    selector: {}
     # -- Set the clusterIP
     # To deploy a headless service, set clusterIP: "None"
     clusterIP:
@@ -280,10 +281,6 @@ services:
     annotations: {}
     # -- Provide additional labels which may be required.
     labels: {}
-    # -- Labels selector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName
-    # -- [[ref]](https://kubernetes.io/docs/concepts/services-networking/service/#services-without-selectors)
-    # TODO: Not Implemented
-    selector: {}
     # -- Configure the Service port information here.
     # Additional ports can be added by adding a dictionary key similar to the 'http' service.
     # @default -- See below

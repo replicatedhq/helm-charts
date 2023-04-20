@@ -15,40 +15,54 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
     {{- end }}
   {{- end }}
 {{- end -}}
-
 {{/* Selector labels shared across objects */}}
 {{- define "replicated-library.labels.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "replicated-library.names.appname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
-
 {{- define "replicated-library.labels.serviceSelectorLabels" -}}
   {{- $serviceValues := . -}}
-
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.values -}}
       {{- $serviceValues = . -}}
     {{- end -}}
   {{ end -}}
-
-  {{- if $serviceValues.appName }}
-    {{- $matchingAppFound := false -}}
-
-    {{- range $appName, $appValues := .Values.apps }}
-      {{- if and $appValues.enabled (eq $appName $serviceValues.appName) (ne $matchingAppFound true) -}}
-        {{- $matchingAppFound = true -}}
-app.kubernetes.io/name: {{ $appName }}
+  {{- if $serviceValues.selector -}}
+{{ toYaml $serviceValues.selector }}
+  {{- else -}}
+    {{- if $serviceValues.appName }}
+      {{- range $serviceValues.appName }}
+        {{- $name := . -}}
+        {{- $matchingAppFound := false -}}
+        {{- range $appName, $appValues := $.Values.apps }}
+          {{- if and $appValues.enabled (eq $appName $name) (ne $matchingAppFound true) -}}
+            {{- $matchingAppFound = true -}}
+{{ printf "app.kubernetes.io/name: %s\n" $appName }}
+          {{- end -}}
+        {{- end -}}
+        {{- if (ne $matchingAppFound true) -}}
+          {{- fail (printf "Matching app for AppName (%s) was not found" $serviceValues.appName) }}
+        {{- end -}}
+      {{- end -}}
 app.kubernetes.io/instance: {{ $.Release.Name }}
-      {{- end }}
-    {{- end }}
+    {{- else -}}
 
-    {{- if (ne $matchingAppFound true) -}}
-      {{- fail (printf "Matching app for AppName (%s) was not found" $serviceValues.appName) }}
-    {{- end }}
-  
-  {{- else }}
-app.kubernetes.io/name: {{- include "replicated-library.names.fullname" . -}}
+      {{/* if no appName or selector is set on the service, check if there's an app that matches the service name to use instead */}}
+      {{- $name := .ObjectName -}}
+      {{- $matchingAppFound := false -}}
+      {{- range $appName, $appValues := $.Values.apps -}}
+        {{- if and $appValues.enabled (eq $appName $name) (ne $matchingAppFound true) -}}
+          {{- $matchingAppFound = true -}}
+app.kubernetes.io/name: {{ $name }}
 app.kubernetes.io/instance: {{ $.Release.Name }}
-  {{- end }}
+        {{- end -}}
+      {{- end -}}
+      {{- if (ne $matchingAppFound true) -}}
+        {{- fail (printf "Service (%s) has no selectors or matching apps" $name ) }}
+      {{- end -}}
+
+
+    {{- end }}
+  {{- end -}}
 
 {{- end -}}
