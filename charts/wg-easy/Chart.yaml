@@ -5,8 +5,7 @@ version: 0.0.2
 description: wg-easy description todo
 dependencies:
 - name: replicated-library
-  #repository: https://replicatedhq.github.io/helm-charts
-  repository: file://../../../helm-charts-library/charts/replicated-library/
+  repository: https://replicatedhq.github.io/helm-charts
   version: '^0.6.1'
 home: https://github.com/replicatedhq/replicated-starter-helm/charts/tree/main/
 kubeVersion: '>=1.20.0-0'
