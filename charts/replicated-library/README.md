@@ -185,7 +185,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### [0.7.0]
 ### Changed
 
-- BREAKING: The `appName` key for services is now an optional list of apps to associate the service to.
+- BREAKING: The `appName` key for services is now an optional list instead of a string. Charts using the previous implementation will need to convert the string into a single entry list which will work as before.
 - Services `selector` now overrides selectors set by `appName`.
 - If no `appName` or `selector` is defined, we try and match on the service name itself
 
