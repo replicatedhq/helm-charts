@@ -267,8 +267,7 @@ services:
     # -- Set the service type
     type: ClusterIP
     # -- Set the list of selectors for this object. this takes precedence over appName.
-    selector:
-      app: my-app
+    selector: {}
     # -- Set the clusterIP
     clusterIP:
     # -- Specify the externalTrafficPolicy for the service. Options: Cluster, Local

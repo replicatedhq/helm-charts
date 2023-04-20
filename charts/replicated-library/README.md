@@ -173,7 +173,7 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | services.example.ports.http.port | string | `nil` | The port number |
 | services.example.ports.http.protocol | string | `"HTTP"` | Port protocol. Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`. HTTPS and HTTPS spawn a TCP service and get used for internal URL and name generation |
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
-| services.example.selector | object | `{"app":"my-app"}` | Set the list of selectors for this object. this takes precedence over appName. |
+| services.example.selector | object | `{}` | Set the list of selectors for this object. this takes precedence over appName. |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
 
 ## Changelog
