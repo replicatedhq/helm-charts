@@ -185,8 +185,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### [0.7.0]
 ### Changed
 
-- The `appName` key for services is now an optional list of apps to associate the service to.
+- BREAKING: The `appName` key for services is now an optional list of apps to associate the service to.
 - Services `selector` now overrides selectors set by `appName`.
+- If no `appName` or `selector` is defined, we try and match on the service name itself
 
 ### [0.6.1]
 #### Changed
