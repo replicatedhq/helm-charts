@@ -81,9 +81,9 @@ spec:
       {{- include "replicated-library.pod" . | nindent 6 }}
   {{- if $values.volumeClaimTemplates }}
   volumeClaimTemplates:
-  {{- range $name, $vct := $values.volumeClaimTemplates }}
+  {{- range $index, $vct := $values.volumeClaimTemplates }}
   - metadata:
-      name: {{ $name }}
+      name: {{ $vct.name }}
     spec:
       {{- toYaml $vct.spec | nindent 6 }}
   {{- end }}
