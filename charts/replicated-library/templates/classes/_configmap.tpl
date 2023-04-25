@@ -11,7 +11,7 @@ within the replicated-library library.
   {{ end -}}
 
   {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
+    {{- with .ObjectValues.configmapValues -}}
       {{- $values = . -}}
     {{- end -}}
   {{ end -}}

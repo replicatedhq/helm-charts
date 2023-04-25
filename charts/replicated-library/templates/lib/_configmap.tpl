@@ -7,9 +7,10 @@ Renders the configmap objects required by the chart.
     {{- if $configmap.enabled -}}
       {{- $configmapValues := $configmap -}}
 
-      {{- $_ := set $ "ObjectValues" (dict "values" $configmapValues) -}}
+      {{- $_ := set $.ObjectValues "configmapValues" $configmapValues -}}
 
       {{- include "replicated-library.classes.configmap" $ | nindent 0 }}
+      {{- $_ := unset $.ObjectValues "configmapValues" -}}
     {{- end }}
   {{- end }}
 {{- end }}
