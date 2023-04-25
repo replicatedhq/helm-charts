@@ -29,7 +29,7 @@ spec:
   revisionHistoryLimit: {{ $values.revisionHistoryLimit }}
   replicas: {{ $values.replicas }}
   {{- $strategy := default $.Values.defaults.strategy $values.strategy }}
-  {{- if and (ne $strategy "Recreate") (ne $strategy "RollingUpdate") }}
+  {{- if and (ne $strategy "OnDelete") (ne $strategy "RollingUpdate") }}
     {{- fail (printf "Not a valid strategy type for DaemonSet (%s)" $strategy) }}
   {{- end }}
   updateStrategy:
