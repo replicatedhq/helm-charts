@@ -2,10 +2,8 @@
 Renders the app objects into Deployments, DaemonSets, and StatefulSets as required by the chart.
 */}}
 {{- define "replicated-library.apps" -}}
-  {{- range $name, $app := .Values.apps }}
-    {{- if $app.enabled -}}
-      {{- $appValues := $app -}}
-
+  {{- range $name, $appValues := .Values.apps }}
+    {{- if $appValues.enabled -}}
       {{- $_ := set $ "ObjectName" $name -}}
       {{- $_ := set $ "ObjectValues" (dict "values" $appValues) -}}
 
