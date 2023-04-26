@@ -1,8 +1,8 @@
 {{/*
-This template serves as the blueprint for the DaemonSet objects that are created
+This template serves as the blueprint for the Deployment objects that are created
 within the replicated-library library.
 */}}
-{{- define "replicated-library.classes.daemonset" }}
+{{- define "replicated-library.deployment" }}
   {{- $name := .Values.global.nameOverride -}}
   {{- if hasKey . "ObjectName" -}}
     {{- $name = .ObjectName -}}
@@ -16,7 +16,7 @@ within the replicated-library library.
   {{ end -}}
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
@@ -27,11 +27,12 @@ metadata:
   {{- end }}
 spec:
   revisionHistoryLimit: {{ $values.revisionHistoryLimit }}
+  replicas: {{ $values.replicas }}
   {{- $strategy := default $.Values.defaults.strategy $values.strategy }}
-  {{- if and (ne $strategy "OnDelete") (ne $strategy "RollingUpdate") }}
-    {{- fail (printf "Not a valid strategy type for DaemonSet (%s)" $strategy) }}
+  {{- if and (ne $strategy "Recreate") (ne $strategy "RollingUpdate") }}
+    {{- fail (printf "Not a valid strategy type for Deployment (%s)" $strategy) }}
   {{- end }}
-  updateStrategy:
+  strategy:
     type: {{ $strategy }}
     {{- with $values.rollingUpdate }}
       {{- if and (eq $strategy "RollingUpdate") (or .surge .unavailable) }}

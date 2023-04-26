@@ -10,11 +10,11 @@ Renders the app objects into Deployments, DaemonSets, and StatefulSets as requir
       {{- $_ := set $ "ObjectValues" (dict "values" $appValues) -}}
 
       {{- if eq $appValues.type "deployment" }}
-        {{- include "replicated-library.classes.deployment" $ | nindent 0 }}
+        {{- include "replicated-library.deployment" $ | nindent 0 }}
       {{ else if eq $appValues.type "daemonset" }}
-        {{- include "replicated-library.classes.daemonset" $ | nindent 0 }}
+        {{- include "replicated-library.daemonset" $ | nindent 0 }}
       {{ else if eq $appValues.type "statefulset"  }}
-        {{- include "replicated-library.classes.statefulset" $ | nindent 0 }}
+        {{- include "replicated-library.statefulset" $ | nindent 0 }}
       {{ else }}
         {{- fail (printf "Type of (%s) for app - (%s) is not valid" $appValues.type $name) }}
       {{ end -}}

@@ -24,7 +24,7 @@ within the replicated library.
     {{- first $matchingServices }}
   {{- end }}
 {{- end }}
-{{- define "replicated-library.classes.statefulset" }}
+{{- define "replicated-library.statefulset" }}
   {{- $values := . -}}
   {{- if hasKey . "ObjectValues" -}}
     {{- with .ObjectValues.values -}}
