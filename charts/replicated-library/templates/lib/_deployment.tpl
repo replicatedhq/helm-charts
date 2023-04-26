@@ -3,17 +3,12 @@ This template serves as the blueprint for the Deployment objects that are create
 within the replicated-library library.
 */}}
 {{- define "replicated-library.deployment" }}
-  {{- $name := .Values.global.nameOverride -}}
-  {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
-  {{ end -}}
-
-  {{- $values := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
+    {{- $values = .ContextValues.app -}}
+  {{- else -}}
+    {{- fail "_deployment.tpl requires the 'app' ContextValues to be set" -}}
+  {{- end -}}
 ---
 apiVersion: apps/v1
 kind: Deployment

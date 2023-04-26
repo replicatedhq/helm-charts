@@ -19,4 +19,12 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
 
   {{- include "replicated-library.pvc" . }}
 
+  {{- if len $.ContextNames -}}
+  {{- fail "$.ContextNames is not empty" -}}
+  {{- end -}}
+
+  {{- if len $.ContextValues -}}
+  {{- fail "$.ContextValues is not empty" -}}
+  {{- end -}}
+
 {{- end -}}
