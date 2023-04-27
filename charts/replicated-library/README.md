@@ -48,7 +48,7 @@ You can see an example of this library chart in use [here](https://github.com/re
 
 ## Configuration
 
-Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
+Read through the [values-example.yaml](./values-example.yaml) file. It has several commented out suggested values.
 
 ## Values
 
