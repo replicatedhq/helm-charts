@@ -1,5 +1,5 @@
-#values.yaml
-#For values.yaml configuration options and examples, refer to the values-example.yaml file.
+# values.yaml
+# For values.yaml configuration options and examples, refer to the values-example.yaml file.
 
 global:
   # -- Set additional global labels.
