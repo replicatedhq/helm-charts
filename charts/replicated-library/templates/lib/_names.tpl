@@ -36,14 +36,21 @@ If fullNameOverride is provided on the object it will take precedence over the n
 */}}
 {{- define "replicated-library.names.fullname" -}}
   {{- $objectName := "" -}}
-  {{- if hasKey . "ObjectName" -}}
-    {{- $objectName = .ObjectName -}}
-  {{- end -}}
-
   {{- $values := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
+  {{- if and (hasKey .ContextValues "names") (hasKey .ContextValues.names "context") -}}
+    {{- $contextKey := .ContextValues.names.context -}}
+    {{- $objectName = get .ContextNames $contextKey -}}
+    {{- $values = get .ContextValues $contextKey -}}
+  {{- else -}}
+    {{/* Backwards compatible use of Object fields until Context is used everywhere */}}
+    {{- if hasKey . "ObjectName" -}}
+      {{- $objectName = .ObjectName -}}
+    {{- end -}}
+
+    {{- if hasKey . "ObjectValues" -}}
+      {{- with .ObjectValues.values -}}
+        {{- $values = . -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 

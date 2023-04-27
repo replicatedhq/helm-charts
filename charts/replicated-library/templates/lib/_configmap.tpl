@@ -9,6 +9,7 @@ within the replicated-library library.
   {{- else -}}
     {{- fail "_configmap.tpl requires the 'configmap' ContextValues to be set" -}}
   {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "configmap") -}}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -24,4 +25,5 @@ data:
 {{- with $values.data }}
   {{- tpl (toYaml .) $ | nindent 2 }}
 {{- end }}
+{{- $_ := unset $.ContextValues "names"  -}}
 {{- end }}
