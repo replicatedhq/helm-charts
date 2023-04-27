@@ -29,7 +29,7 @@ https://github.com/replicatedhq/replicated-library-chart
 We use [Helm Docs](https://github.com/norwoodj/helm-docs)
 
 ```
-helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl
+helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl -f values-example.yaml
 ```
 {{- end -}}
 
@@ -60,7 +60,7 @@ This is a [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm)
 {{- end -}}
 
 {{- define "custom.configuration.readValues" -}}
-Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
+Read through the [values-example.yaml](./values-example.yaml) file. It has several commented out suggested values.
 {{- end -}}
 
 {{- define "custom.valuesSection" -}}
