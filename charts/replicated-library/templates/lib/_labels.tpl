@@ -21,17 +21,17 @@ app.kubernetes.io/name: {{ include "replicated-library.names.appname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- define "replicated-library.labels.serviceSelectorLabels" -}}
-  {{- $serviceValues := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $serviceValues = . -}}
-    {{- end -}}
-  {{ end -}}
-  {{- if $serviceValues.selector -}}
-{{ toYaml $serviceValues.selector }}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "service") -}}
+    {{- $values = .ContextValues.service -}}
   {{- else -}}
-    {{- if $serviceValues.appName }}
-      {{- range $serviceValues.appName }}
+    {{- fail "_labels.tpl requires the 'service' ContextValues to be set" -}}
+  {{- end -}}
+  {{- if $values.selector -}}
+{{ toYaml $values.selector }}
+  {{- else -}}
+    {{- if $values.appName }}
+      {{- range $values.appName }}
         {{- $name := . -}}
         {{- $matchingAppFound := false -}}
         {{- range $appName, $appValues := $.Values.apps }}
@@ -41,12 +41,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
           {{- end -}}
         {{- end -}}
         {{- if (ne $matchingAppFound true) -}}
-          {{- fail (printf "Matching app for AppName (%s) was not found" $serviceValues.appName) }}
+          {{- fail (printf "Matching app for AppName (%s) was not found" $values.appName) }}
         {{- end -}}
       {{- end -}}
 app.kubernetes.io/instance: {{ $.Release.Name }}
     {{- else -}}
-
       {{/* if no appName or selector is set on the service, check if there's an app that matches the service name to use instead */}}
       {{- $name := .ObjectName -}}
       {{- $matchingAppFound := false -}}
@@ -60,9 +59,6 @@ app.kubernetes.io/instance: {{ $.Release.Name }}
       {{- if (ne $matchingAppFound true) -}}
         {{- fail (printf "Service (%s) has no selectors or matching apps" $name ) }}
       {{- end -}}
-
-
     {{- end }}
   {{- end -}}
-
 {{- end -}}

@@ -2,12 +2,13 @@
 The pod definition included in the main.
 */ -}}
 {{- define "replicated-library.pod" -}}
-  {{- $values := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
+    {{- $values = .ContextValues.app -}}
+  {{- else -}}
+    {{- fail "_pod.tpl requires the 'app' ContextValues to be set" -}}
+  {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 
   {{- with $values.imagePullSecrets }}
 imagePullSecrets:
@@ -58,12 +59,6 @@ initContainers:
       {{- $container := get $.Values.initContainers $key }}
       {{- if not $container.name -}}
         {{- $_ := set $container "name" $key }}
-      {{- end }}
-      {{- if $container.env -}}
-        {{- $_ := set $ "ObjectValues" (dict "env" $container.env) -}}
-        {{- $newEnv := fromYaml (include "replicated-library.env_vars" $) -}}
-        {{- $_ := unset $.ObjectValues "env" -}}
-        {{- $_ := set $container "env" $newEnv.env }}
       {{- end }}
       {{- $initContainers = append $initContainers $container }}
     {{- end }}

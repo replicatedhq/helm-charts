@@ -4,11 +4,8 @@ Renders the app objects into Deployments, DaemonSets, and StatefulSets as requir
 {{- define "replicated-library.apps" -}}
   {{- range $name, $appValues := .Values.apps }}
     {{- if $appValues.enabled -}}
-      {{- $_ := set $ "ObjectName" $name -}}
-      {{- $_ := set $ "ObjectValues" (dict "values" $appValues) -}}
-
-      {{- $_ := set $.ContextNames "app" $name -}}
-      {{- $_ := set $.ContextValues "app" $appValues -}}
+      {{- $_ := set $ "ContextNames" (dict "app" $name) -}}
+      {{- $_ := set $ "ContextValues" (dict "app" $appValues) -}}
 
       {{- if eq $appValues.type "deployment" }}
         {{- include "replicated-library.deployment" $ | nindent 0 }}

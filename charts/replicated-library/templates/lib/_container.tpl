@@ -1,11 +1,11 @@
 {{- /* The main container included in the main */ -}}
 {{- define "replicated-library.container" -}}
-  {{- $values := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
+    {{- $values = .ContextValues.app -}}
+  {{- else -}}
+    {{- fail "_container.tpl requires the 'app' ContextValues to be set" -}}
+  {{- end -}}
 {{- range $containerName, $containerValues := $values.containers -}}
 - name: {{ default "container" $containerName }}
   image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion ($containerValues.image.tag | toString)) | quote }}

@@ -1,20 +1,29 @@
 {{/*
-Renders the Persistent Volume Claim objects required by the chart.
+This template serves as a blueprint for all PersistentVolumeClaim objects that are created
+within the replicated-library library.
 */}}
-{{- define "replicated-library.pvc" -}}
-  {{- /* Generate pvc as required */ -}}
-  {{- range $name, $persistenceValues := .Values.persistence }}
-    {{- if and $persistenceValues.enabled (eq (default "persistentVolumeClaim" $persistenceValues.type) "persistentVolumeClaim") (not $persistenceValues.persistentVolumeClaim.existingClaim) -}}
-      {{- $values := $persistenceValues -}}
-
-      {{- $_ := set $ "ObjectName" $name -}}
-      {{- if $persistenceValues.nameOverride -}}
-        {{- $_ := set $ "ObjectName" $persistenceValues.nameOverride -}}
-      {{ end -}}
-
-      {{- $_ := set $ "ObjectValues" (dict "values" $values) -}}
-
-      {{- include "replicated-library.classes.pvc" $ | nindent 0 -}}
-    {{- end }}
+{{- define "replicated-library.classes.pvc" -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "persistence") -}}
+    {{- $values = .ContextValues.persistence -}}
+  {{- else -}}
+    {{- fail "_persistence.tpl requires the 'persistence' ContextValues to be set" -}}
+  {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "persistence") -}}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "replicated-library.names.fullname" . }}
+  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
+  labels: {{- toYaml . | nindent 4 }}
   {{- end }}
+  annotations:
+    {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- with $values.persistentVolumeClaim.spec }}
+spec:
+    {{- toYaml . | nindent 4 }}
 {{- end }}
+{{- end -}}

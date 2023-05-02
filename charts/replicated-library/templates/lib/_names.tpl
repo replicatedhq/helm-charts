@@ -41,17 +41,6 @@ If fullNameOverride is provided on the object it will take precedence over the n
     {{- $contextKey := .ContextValues.names.context -}}
     {{- $objectName = get .ContextNames $contextKey -}}
     {{- $values = get .ContextValues $contextKey -}}
-  {{- else -}}
-    {{/* Backwards compatible use of Object fields until Context is used everywhere */}}
-    {{- if hasKey . "ObjectName" -}}
-      {{- $objectName = .ObjectName -}}
-    {{- end -}}
-
-    {{- if hasKey . "ObjectValues" -}}
-      {{- with .ObjectValues.values -}}
-        {{- $values = . -}}
-      {{- end -}}
-    {{- end -}}
   {{- end -}}
 
   {{- if $values.fullNameOverride -}}
@@ -69,17 +58,10 @@ If fullNameOverride is provided on the object it will take precedence over the n
 
 {{/* Create the name of the ServiceAccount to use */}}
 {{- define "replicated-library.names.serviceAccountName" -}}
-  {{- $name := "default" }}
-  {{- $values := .Values.serviceAccount -}}
-  {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
-  {{ end -}}
-
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.app -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := . -}}
+  {{- if and (hasKey .ContextValues "names") (hasKey .ContextValues.names "context") -}}
+    {{- $values = get .ContextValues .ContextValues.names.context -}}
+  {{- end -}}
 
   {{- if $values.serviceAccount -}}
     {{- if $values.serviceAccount.create -}}
@@ -92,20 +74,22 @@ If fullNameOverride is provided on the object it will take precedence over the n
 
 {{/* Get name of current app */}}
 {{- define "replicated-library.names.appname" -}}
-  {{- $name := include "replicated-library.names.name" . -}}
-  {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
-  {{ end -}}
-  {{- trunc 63 $name | trimSuffix "-" -}}
+  {{- $objectName := "" -}}
+  {{- if and (hasKey .ContextValues "names") (hasKey .ContextValues.names "context") -}}
+    {{- $contextKey := .ContextValues.names.context -}}
+    {{- $objectName = get .ContextNames .ContextValues.names.context -}}
+  {{- end -}}
+  {{- trunc 63 $objectName | trimSuffix "-" -}}
 {{- end -}}
 
 {{/* Get name of current service */}}
 {{- define "replicated-library.names.servicename" -}}
-  {{- $name := "default" -}}
-  {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
+  {{- $objectName := "" -}}
+  {{- if and (hasKey .ContextValues "names") (hasKey .ContextValues.names "context") -}}
+    {{- $contextKey := .ContextValues.names.context -}}
+    {{- $objectName = get .ContextNames .ContextValues.names.context -}}
   {{- else -}}
-    {{- fail (printf "not found (%s)" .ObjectName) }}
+    {{- fail (print "not found .ContextValues.names.context") }}
   {{ end -}}
-  {{- trunc 63 $name | trimSuffix "-" -}}
+  {{- trunc 63 $objectName | trimSuffix "-" -}}
 {{- end -}}

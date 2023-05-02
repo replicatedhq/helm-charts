@@ -3,17 +3,13 @@ This template serves as the blueprint for the DaemonSet objects that are created
 within the replicated-library library.
 */}}
 {{- define "replicated-library.daemonset" }}
-  {{- $name := .Values.global.nameOverride -}}
-  {{- if hasKey . "ObjectName" -}}
-    {{- $name = .ObjectName -}}
-  {{ end -}}
-
-  {{- $values := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
+    {{- $values = .ContextValues.app -}}
+  {{- else -}}
+    {{- fail "_daemonset.tpl requires the 'app' ContextValues to be set" -}}
+  {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 ---
 apiVersion: apps/v1
 kind: DaemonSet

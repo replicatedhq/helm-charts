@@ -5,8 +5,8 @@ Renders the configmap objects required by the chart.
   {{- /* Generate named configmaps as required */ -}}
   {{- range $name, $configmapValues := .Values.configmaps }}
     {{- if $configmapValues.enabled -}}
-      {{- $_ := set $.ContextNames "configmap" $name -}}
-      {{- $_ := set $.ContextValues "configmap" $configmapValues -}}
+      {{- $_ := set $ "ContextNames" (dict "configmap" $name) -}}
+      {{- $_ := set $ "ContextValues" (dict "configmap" $configmapValues) -}}
 
       {{- include "replicated-library.configmap" $ | nindent 0 }}
       {{- $_ := unset $.ContextNames "configmap"  -}}

@@ -2,12 +2,13 @@
 The ServiceAccount object to be created.
 */}}
 {{- define "replicated-library.serviceAccount" }}
-  {{- $values := .Values.serviceAccount -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
+    {{- $values = .ContextValues.app -}}
+  {{- else -}}
+    {{- fail "_serviceaccount.tpl requires the 'app' ContextValues to be set" -}}
+  {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 ---
 apiVersion: v1
 kind: ServiceAccount
