@@ -5,8 +5,8 @@ Renders the Persistent Volume Claim objects required by the chart.
   {{- /* Generate pvc as required */ -}}
   {{- range $name, $persistenceValues := .Values.persistence }}
     {{- if and $persistenceValues.enabled (eq (default "persistentVolumeClaim" $persistenceValues.type) "persistentVolumeClaim") (not $persistenceValues.persistentVolumeClaim.existingClaim) -}}
-      {{- $_ := set $ "ContextNames" (dict "persistence" $name) -}}
-      {{- $_ := set $ "ContextValues" (dict "persistence" $persistenceValues) -}}
+      {{- $_ := set $.ContextNames "persistence" $name -}}
+      {{- $_ := set $.ContextValues "persistence" $persistenceValues -}}
 
       {{- include "replicated-library.classes.pvc" $ | nindent 0 -}}
 

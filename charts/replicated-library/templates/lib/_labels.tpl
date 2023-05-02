@@ -17,6 +17,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 {{/* Selector labels shared across objects */}}
 {{- define "replicated-library.labels.selectorLabels" -}}
+{{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 app.kubernetes.io/name: {{ include "replicated-library.names.appname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

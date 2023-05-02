@@ -5,8 +5,8 @@ Renders the Service objects required by the chart.
   {{- /* Generate named ingresses as required */ -}}
   {{- range $name, $ingressValues := .Values.ingresses }}
     {{- if $ingressValues.enabled -}}
-      {{- $_ := set $ "ContextNames" (dict "ingress" $name) -}}
-      {{- $_ := set $ "ContextValues" (dict "ingress" $ingressValues) -}}
+      {{- $_ := set $.ContextNames "ingress" $name -}}
+      {{- $_ := set $.ContextValues "ingress" $ingressValues -}}
 
       {{- if $ingressValues.serviceName }}
         {{- $matchingAppFound := false -}}

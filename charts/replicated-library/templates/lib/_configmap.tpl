@@ -25,5 +25,4 @@ data:
 {{- with $values.data }}
   {{- tpl (toYaml .) $ | nindent 2 }}
 {{- end }}
-{{- $_ := unset $.ContextValues "names"  -}}
 {{- end }}

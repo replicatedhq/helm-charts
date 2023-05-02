@@ -31,7 +31,6 @@ within the replicated library.
   {{- else -}}
     {{- fail "_statefulset.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 ---
 apiVersion: apps/v1
 kind: StatefulSet

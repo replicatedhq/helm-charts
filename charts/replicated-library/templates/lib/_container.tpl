@@ -6,6 +6,7 @@
   {{- else -}}
     {{- fail "_container.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 {{- range $containerName, $containerValues := $values.containers -}}
 - name: {{ default "container" $containerName }}
   image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion ($containerValues.image.tag | toString)) | quote }}

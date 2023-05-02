@@ -5,8 +5,8 @@ Renders the Secret objects required by the chart.
   {{- /* Generate named secrets as required */ -}}
   {{- range $name, $secretValues := .Values.secrets }}
     {{- if $secretValues.enabled -}}
-      {{- $_ := set $ "ContextNames" (dict "secret" $name) -}}
-      {{- $_ := set $ "ContextValues" (dict "secret" $secretValues) -}}
+      {{- $_ := set $.ContextNames "secret" $name -}}
+      {{- $_ := set $.ContextValues "secret" $secretValues -}}
 
       {{- include "replicated-library.classes.secret" $ | nindent 0 }}
 

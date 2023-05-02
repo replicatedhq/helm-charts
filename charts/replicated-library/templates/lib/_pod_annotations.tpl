@@ -6,7 +6,6 @@
   {{- else -}}
     {{- fail "_pod_annotations.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 
   {{- if $values.podAnnotations }}
     {{- tpl (toYaml $values.podAnnotations) . | nindent 0 }}
@@ -19,6 +18,6 @@
     {{- end -}}
   {{- end -}}
   {{- if $configMapsFound -}}
-    {{- printf "checksum/config: %v" (include ("replicated-library.configmaps") $ | sha256sum) | nindent 0 -}}
+    {{- printf "checksum/config: %v" (include ("replicated-library.configmaps") . | sha256sum) | nindent 0 -}}
   {{- end -}}
 {{- end -}}
