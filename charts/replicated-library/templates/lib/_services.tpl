@@ -2,8 +2,6 @@
 Renders the Service objects required by the chart.
 */}}
 {{- define "replicated-library.services" -}}
-  {{- $_ := set $ "ContextNames" dict -}}
-  {{- $_ := set $ "ContextValues" dict -}}
   {{- /* Generate named services as required */ -}}
   {{- range $name, $serviceValues := .Values.services }}
     {{- if $serviceValues.enabled -}}
