@@ -2,6 +2,24 @@ apiVersion: v1
 entries:
   replicated-library:
   - apiVersion: v2
+    created: "2023-05-03T21:36:21.7894521Z"
+    description: Replicated library chart
+    digest: d8ee67b19d89754c2188ecb5ba4c2cdfbe2d4e1e59b4d900450abb0ee5bf5ace
+    home: https://github.com/replicatedhq/helm-charts/tree/main/charts/replicated-library
+    keywords:
+    - replicated-library
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: diamon@replicated.com
+      name: diamonwiggins
+    - email: chriss@replicated.com
+      name: chris-sanders
+    name: replicated-library
+    type: library
+    urls:
+    - https://github.com/replicatedhq/helm-charts/releases/download/replicated-library-0.9.0/replicated-library-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
     created: "2023-04-26T22:40:07.402567642Z"
     description: Replicated library chart
     digest: 05a743259eba939e9bceeaf6be76afb9c140cc89aebba062d62ecc6dacd946cf
@@ -288,4 +306,4 @@ entries:
     urls:
     - https://github.com/replicatedhq/helm-charts/releases/download/wg-easy-0.0.1/wg-easy-0.0.1.tgz
     version: 0.0.1
-generated: "2023-04-26T22:40:07.402663241Z"
+generated: "2023-05-03T21:36:21.789704696Z"
