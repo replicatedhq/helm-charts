@@ -15,6 +15,6 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
   {{ include "replicated-library.ingresses" .  | nindent 0 }}
   {{ include "replicated-library.configmaps" . | nindent 0 }}
   {{ include "replicated-library.secrets" .  | nindent 0 }}
-  {{ include "replicated-library.pvc" . }}
+  {{ include "replicated-library.pvc" . | nindent 0 }}
 
 {{- end -}}
