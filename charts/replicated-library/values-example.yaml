@@ -402,28 +402,6 @@ roles:
       #     - "list"
     ]
 
-# clusterRoles:
-#   example:
-#     # -- Enables or disables the clusterRole
-#     enabled: false
-#     # -- Labels to add to the clusterRole
-#     labels: {}
-#     # -- Annotations to add to the clusterRole
-#     annotations: {}
-#     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
-#     fullNameOverride:
-#     # -- Configure the rules for the role
-#     rules: [
-#       # - apiGroups:
-#       #     - ""
-#       #   resources:
-#       #     - "pods"
-#       #   verbs:
-#       #     - "get"
-#       #     - "watch"
-#       #     - "list"
-#     ]
-
 # -- Configure the roleBindings for the chart here.
 # RoleBindings can be added by adding a dictionary key similar to the 'example' roleBinding.
 # By default the name of the roleBinding will be the name of the dictionary key unless overridden with roleBindings.*.nameOverride
@@ -441,11 +419,14 @@ roleBindings:
     kind: RoleBinding
     # -- Name of the service account to bind to the role
     subjects: [
-      #   name: example
+      # -- Must be the name of one or more ServiceAccounts
+      # - kind: ServiceAccount
+      # - name: example
     ]
-    # -- Name of the role to bind to the service account
+    # -- Name of the Role to bind to the ServiceAccount
     roleRef: {
       # -- kind: may be a Role or ClusterRole
       # kind: Role
+      # -- name: the name of the Role or ClusterRole to bind to.  If kind: is set to ClusterRoleBinding, then a ClusterRole is required
       # name: example
     }
