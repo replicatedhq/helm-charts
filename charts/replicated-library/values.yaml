@@ -30,3 +30,6 @@ defaults:
       successThreshold: 1
       failureThreshold: 5
     startupProbe: {}
+supportBundle:
+  enabled: true
+  installDefaultSpec: true

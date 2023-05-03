@@ -156,6 +156,7 @@ Read through the [values-example.yaml](./values-example.yaml) file. It has sever
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
 | services.example.selector | object | `{}` | Label sleector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
+| supportBundle | object | See below | Configure the supportBundle for the chart here. supportBundle can be enabled by setting supportBundle.enabled to true By default the supportBundle will be enabled and the default spec will be installed |
 
 ## Changelog
 

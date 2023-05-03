@@ -352,3 +352,10 @@ persistence:
           requests:
             storage: 8Gi
         storageClassName: slow
+# -- Configure the supportBundle for the chart here.
+# supportBundle can be enabled by setting supportBundle.enabled to true
+# By default the supportBundle will be enabled and the default spec will be installed
+# @default -- See below
+supportBundle:
+  enabled: true
+  installDefaultSpec: true
