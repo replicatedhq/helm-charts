@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.7.1](https://img.shields.io/badge/Version-0.7.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -19,7 +19,7 @@ Kubernetes: `>=1.16.0-0`
 We use [Helm Docs](https://github.com/norwoodj/helm-docs)
 
 ```
-helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl
+helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl -f values-example.yaml
 ```
 
 ## Installing the Chart
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.7.1
+  version: 0.9.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -48,7 +48,7 @@ You can see an example of this library chart in use [here](https://github.com/re
 
 ## Configuration
 
-Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
+Read through the [values-example.yaml](./values-example.yaml) file. It has several commented out suggested values.
 
 ## Values
 
@@ -114,24 +114,6 @@ Read through the [values.yaml](./values.yaml) file. It has several commented out
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
 | configmaps.exampleConfig.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
-| defaults.image.pullPolicy | string | `"IfNotPresent"` |  |
-| defaults.probes.livenessProbe.failureThreshold | int | `5` |  |
-| defaults.probes.livenessProbe.initialDelaySeconds | int | `0` |  |
-| defaults.probes.livenessProbe.periodSeconds | int | `10` |  |
-| defaults.probes.livenessProbe.successThreshold | int | `1` |  |
-| defaults.probes.livenessProbe.terminationGracePeriodSeconds | int | `30` |  |
-| defaults.probes.livenessProbe.timeoutSeconds | int | `5` |  |
-| defaults.probes.readinessProbe.failureThreshold | int | `5` |  |
-| defaults.probes.readinessProbe.initialDelaySeconds | int | `0` |  |
-| defaults.probes.readinessProbe.periodSeconds | int | `10` |  |
-| defaults.probes.readinessProbe.successThreshold | int | `1` |  |
-| defaults.probes.readinessProbe.timeoutSeconds | int | `1` |  |
-| defaults.probes.startupProbe | object | `{}` |  |
-| defaults.strategy | string | `"RollingUpdate"` |  |
-| global.annotations | object | `{}` | Set additional global annotations. |
-| global.fullNameOverride | string | `nil` | Set the full object prefix, defaults to releasName-ChartName if not set. This value takes precedence over nameOverride. |
-| global.labels | object | `{}` | Set additional global labels. |
-| global.nameOverride | string | `nil` | Set an override for the ChartName, defaults to ChartName if not set. |
 | ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key |
 | ingresses.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | ingresses.example.enabled | bool | `false` | Enables or disables the ingress |
@@ -183,6 +165,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
+
+### [0.9.0]
+
+### Changed
+
+- Adding Global "Context" dictionaries for values and names with unique subkeys per object type to prevent collisions
+- Removing class directory and collapsing all templates into a single directory
+- Altered helm-docs to generate documentation from values-example.yaml file.
 
 ### [0.8.0]
 
