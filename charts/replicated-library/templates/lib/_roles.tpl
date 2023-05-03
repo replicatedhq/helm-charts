@@ -6,6 +6,8 @@
       {{- $_ := set $.ContextValues "role" $roleValues -}}
 
       {{- include "replicated-library.role" $ | nindent 0 }}
+      {{- $_ := unset $.ContextNames "role" -}}
+      {{- $_ := unset $.ContextValues "role" -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

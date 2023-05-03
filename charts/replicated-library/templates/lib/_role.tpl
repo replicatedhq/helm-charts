@@ -9,16 +9,16 @@ within the replicated-library library.
   {{- else -}}
     {{- fail "_role.tpl requires the 'role' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "roles" (dict "context" "role") -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "role") -}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-{{- $kind := $values.kind | default "Role" -}}
+{{- $kind := default "Role" $values.kind -}}
 {{- if and (ne $kind "Role") (ne $kind "ClusterRole") -}}
   {{- fail (printf "Not a valid kind of Role (%s); must be Role or ClusterRole" $kind ) -}}
-{{- end -}}
+{{- end }}
 kind: {{ $kind }}
 metadata:
-  name: foo #{{ include "replicated-library.names.fullname" . }}
+  name: {{ include "replicated-library.names.fullname" . }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
