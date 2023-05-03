@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.8.0](https://img.shields.io/badge/Version-0.8.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.8.0
+  version: 0.9.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -166,9 +166,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+### [0.9.0]
+
 ### Changed
 
-- altered helm-docs to generate documentation from values-example.yaml file.
+- Adding Global "Context" dictionaries for values and names with unique subkeys per object type to prevent collisions
+- Removing class directory and collapsing all templates into a single directory
+- Altered helm-docs to generate documentation from values-example.yaml file.
 
 ### [0.8.0]
 

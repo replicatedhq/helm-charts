@@ -1,37 +1,72 @@
 {{/*
-Renders the Service objects required by the chart.
+This template serves as a blueprint for all Ingress objects that are created
+within the replicated-library library.
 */}}
-{{- define "replicated-library.ingresses" -}}
-  {{- /* Generate named ingresses as required */ -}}
-  {{- range $name, $ingress := .Values.ingresses }}
-    {{- if $ingress.enabled -}}
-      {{- $ingressValues := $ingress -}}
+{{- define "replicated-library.classes.ingress" -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "ingress") -}}
+    {{- $values = .ContextValues.ingress -}}
+  {{- else -}}
+    {{- fail "_ingress.tpl requires the 'ingress' ContextValues to be set" -}}
+  {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "ingress") -}}
 
-      {{- $_ := set $ "ObjectName" $name -}}
-      {{- if $ingressValues.nameOverride -}}
-        {{- $_ := set $ "ObjectName" $ingressValues.nameOverride -}}
-      {{ end -}}
+  {{- $isStable := include "replicated-library.capabilities.ingress.isStable" . }}
 
-      {{- $_ := set $ "ObjectValues" (dict "values" $ingressValues) -}}
-
-      {{- if $ingress.serviceName }}
-        {{- $matchingAppFound := false -}}
-
-        {{- range $serviceName, $serviceValues := $.Values.services }}
-          {{- if and $serviceValues.enabled (eq $serviceName $ingressValues.serviceName) (ne $matchingAppFound true) -}}
-            {{- $matchingAppFound = true -}}
-            {{- include "replicated-library.classes.ingress" $ | nindent 0 }}
-          {{- end }}
+  {{- $serviceName := $values.serviceName }}
+---
+apiVersion: {{ include "replicated-library.capabilities.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ include "replicated-library.names.fullname" . }}
+  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
+  labels: {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if and $isStable $values.ingressClassName }}
+  ingressClassName: {{ $values.ingressClassName }}
+  {{- end }}
+  {{- if $values.tls }}
+  tls:
+    {{- range $values.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ tpl . $ | quote }}
         {{- end }}
-
-        {{- if (ne $matchingAppFound true) -}}
-          {{- fail (printf "Matching service for ServiceName (%s) was not found" $ingressValues.serviceName) }}
-        {{- end }}
-
-      {{- else }}
-        {{- include "replicated-library.classes.ingress" $ | nindent 0 }}
+      {{- if .secretName }}
+      secretName: {{ tpl .secretName $ | quote}}
       {{- end }}
-
     {{- end }}
+  {{- end }}
+  rules:
+  {{- range $values.hosts }}
+    - host: {{ tpl .host $ | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          {{- $service := $serviceName -}}
+          {{- $port := 80 -}}
+          {{- if .service -}}
+            {{- $service = default $service .service.name -}}
+            {{- $port = default $port .service.port -}}
+          {{- end }}
+          - path: {{ tpl .path $ | quote }}
+            {{- if $isStable }}
+            pathType: {{ default "Prefix" .pathType }}
+            {{- end }}
+            backend:
+              {{- if $isStable }}
+              service:
+                name: {{ $service }}
+                port:
+                  number: {{ $port }}
+              {{- else }}
+              serviceName: {{ $service }}
+              servicePort: {{ $port }}
+              {{- end }}
+          {{- end }}
   {{- end }}
 {{- end }}

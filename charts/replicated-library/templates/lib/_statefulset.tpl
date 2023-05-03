@@ -25,12 +25,12 @@ within the replicated library.
   {{- end }}
 {{- end }}
 {{- define "replicated-library.statefulset" }}
-  {{- $values := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
+    {{- $values = .ContextValues.app -}}
+  {{- else -}}
+    {{- fail "_statefulset.tpl requires the 'app' ContextValues to be set" -}}
+  {{- end -}}
 ---
 apiVersion: apps/v1
 kind: StatefulSet

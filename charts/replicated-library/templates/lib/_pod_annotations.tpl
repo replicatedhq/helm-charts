@@ -1,11 +1,11 @@
 {{/* Determine the Pod annotations used in the main */}}
 {{- define "replicated-library.podAnnotations" -}}
-  {{- $values := . -}}
-  {{- if hasKey . "ObjectValues" -}}
-    {{- with .ObjectValues.values -}}
-      {{- $values = . -}}
-    {{- end -}}
-  {{ end -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
+    {{- $values = .ContextValues.app -}}
+  {{- else -}}
+    {{- fail "_pod_annotations.tpl requires the 'app' ContextValues to be set" -}}
+  {{- end -}}
 
   {{- if $values.podAnnotations }}
     {{- tpl (toYaml $values.podAnnotations) . | nindent 0 }}
