@@ -32,6 +32,7 @@ apps:
     # -- Specify one or more image pull secrets for the app
     imagePullSecrets: []
 
+    # -- Specify any initContainers here as dictionary items. Each initContainer should have its own key.
     containers:
       example:
         image:
@@ -91,6 +92,7 @@ apps:
 
     # -- Specify any initContainers here as dictionary items. Each initContainer should have its own key.
     # The dictionary item key will determine the order.
+    # All of the same values from .Values.apps.example.containers are valid here with the exception of probes.
     initContainers: {}
 
     # -- Specify a list of volumes that get mounted to the app.

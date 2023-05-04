@@ -58,6 +58,7 @@ Read through the [values-example.yaml](./values-example.yaml) file. It has sever
 | apps.example.affinity | object | `{}` | Defines affinity constraint rules. [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) |
 | apps.example.annotations | object | `{}` | Set annotations on the deployment/statefulset/daemonset |
 | apps.example.automountServiceAccountToken | bool | `true` | Specifies whether a service account token should be automatically mounted. |
+| apps.example.containers | object | `{"example":{"args":[],"command":[],"env":null,"envFrom":[],"image":{"pullPolicy":null,"repository":"nginx","tag":"latest"},"lifecycle":{},"ports":[],"probes":{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}},"resources":{},"securityContext":{},"termination":{"gracePeriodSeconds":null,"messagePath":null,"messagePolicy":null},"volumeMounts":[]}}` | Specify any initContainers here as dictionary items. Each initContainer should have its own key. |
 | apps.example.containers.example.args | list | `[]` | Override the arguments for the container |
 | apps.example.containers.example.command | list | `[]` | Override the command for the container |
 | apps.example.containers.example.env | string | `nil` | Environment variables. Template enabled. Syntax options: DATABASE_USER: USERNAME |
@@ -84,7 +85,7 @@ Read through the [values-example.yaml](./values-example.yaml) file. It has sever
 | apps.example.hostNetwork | bool | `false` | When using hostNetwork make sure you set dnsPolicy to `ClusterFirstWithHostNet` |
 | apps.example.hostname | string | `nil` | Allows specifying explicit hostname setting |
 | apps.example.imagePullSecrets | list | `[]` | Specify one or more image pull secrets for the app |
-| apps.example.initContainers | object | `{}` | Specify any initContainers here as dictionary items. Each initContainer should have its own key. The dictionary item key will determine the order. |
+| apps.example.initContainers | object | `{}` | Specify any initContainers here as dictionary items. Each initContainer should have its own key. The dictionary item key will determine the order. All of the same values from .Values.apps.example.containers are valid here with the exception of probes. |
 | apps.example.labels | object | `{}` | Set labels on the deployment/statefulset/daemonset |
 | apps.example.nodeSelector | object | `{}` | Node selection constraint [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) |
 | apps.example.podAnnotations | object | `{}` | Set annotations on the pod |
