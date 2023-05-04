@@ -177,7 +177,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Fixed
 
-- Init containers now work as aspected and follow the same format as containers
+- Init containers now work as expected and follow the same format as containers
 
 ### [0.9.0]
 
