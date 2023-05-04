@@ -114,6 +114,10 @@ Read through the [values-example.yaml](./values-example.yaml) file. It has sever
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
 | configmaps.exampleConfig.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
+| global.annotations | object | `{}` | Set additional global annotations. |
+| global.fullNameOverride | string | `nil` | Set the full object prefix, defaults to releasName-ChartName if not set. This value takes precedence over nameOverride. Set to "-" to disable object name prefixing. |
+| global.labels | object | `{}` | Set additional global labels. |
+| global.nameOverride | string | `nil` | Set an override for the ChartName, defaults to ChartName if not set. |
 | ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key |
 | ingresses.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | ingresses.example.enabled | bool | `false` | Enables or disables the ingress |
@@ -166,9 +170,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+#### Changed
+
+- The `replicated-library.names.fullname` template will now trim a leading or trailing hyphen to prevent invalid names when the prefix is empty
+
+#### Fixed
+
+- Init containers now work as aspected and follow the same format as containers
+
 ### [0.9.0]
 
-### Changed
+#### Changed
 
 - Adding Global "Context" dictionaries for values and names with unique subkeys per object type to prevent collisions
 - Removing class directory and collapsing all templates into a single directory
@@ -176,19 +188,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [0.8.0]
 
-### Changed
+#### Changed
 
 - Fixed volumeClaimTemplate loop in lib/_statefulset.tpl so metadata.name is rendered correctly.
 - Added daemonset templates
 
 ### [0.7.1]
-### Changed
+#### Changed
 
 - Fix fullNameOverride to work with a null input rather than just an empty string.
 - Remove configmap name override, fixes label errors when configmaps are included.
 
 ### [0.7.0]
-### Changed
+#### Changed
 
 - BREAKING: The `appName` key for services is now an optional list instead of a string. Charts using the previous implementation will need to convert the string into a single entry list which will work as before.
 - Services `selector` now overrides selectors set by `appName`.

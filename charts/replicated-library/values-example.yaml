@@ -1,3 +1,13 @@
+global:
+  # -- Set additional global labels.
+  labels: {}
+  # -- Set additional global annotations.
+  annotations: {}
+  # -- Set the full object prefix, defaults to releasName-ChartName if not set. This value takes precedence over nameOverride.
+  # Set to "-" to disable object name prefixing.
+  fullNameOverride:
+  # -- Set an override for the ChartName, defaults to ChartName if not set.
+  nameOverride:
 
 # -- Configure the apps for the chart here.
 # Apps can be added by adding a dictionary key similar to the 'example' app.

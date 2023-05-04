@@ -47,7 +47,7 @@ If fullNameOverride is provided on the object it will take precedence over the n
     {{- trunc 63 $values.fullNameOverride | trimSuffix "-" -}}
   {{- else -}}
     {{- $prefix := include "replicated-library.names.prefix" . -}}
-    {{- printf "%s-%s" $prefix $objectName | trunc 63 | trimSuffix "-" -}}
+    {{- printf "%s-%s" $prefix $objectName | trunc 63 | trimAll "-" -}}
   {{- end -}}
 {{- end -}}
 
