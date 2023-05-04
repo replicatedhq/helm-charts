@@ -3,17 +3,24 @@ This template serves as a blueprint for all support bundle spec secret objects t
 within the replicated-library library.
 */}}
 {{- define "replicated-library.support-bundle.spec" -}}
+  {{- $values := "" -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "supportBundle") -}}
+    {{- $values = .ContextValues.supportBundle -}}
+  {{- else -}}
+    {{- fail "_support_bundle_specs.tpl requires the 'secret' ContextValues to be set" -}}
+  {{- end -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "supportBundle") -}}
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "replicated-library.names.fullname" . }}-support-bundle
+  name: {{ include "replicated-library.names.prefix" . }}-support-bundle
   labels:
     troubleshoot.io/kind: support-bundle
   data:
     support-bundle-spec: 
-    {{- if .Values.supportBundle.installDefaultSpec -}}
-      {{ include "replicated-library.support-bundle.spec.default" . | b64enc }}
+    {{- if $values.installDefaultSpec -}}
+      {{ include "replicated-library.support-bundle.spec.default" . | b64enc | indent 1}}
     {{- end }}
 {{- end }}
 
