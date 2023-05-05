@@ -4,7 +4,7 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
 {{- define "replicated-library.all" -}}
   {{- /* Merge the local chart values and the replicated-library chart defaults */ -}}
   {{ include "replicated-library.values.setup" . }}
-  
+
   {{- /* Create global context dicts */ -}}
   {{- $_ := set $ "ContextNames" dict -}}
   {{- $_ := set $ "ContextValues" dict -}}
@@ -16,5 +16,6 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
   {{ include "replicated-library.configmaps" . | nindent 0 }}
   {{ include "replicated-library.secrets" .  | nindent 0 }}
   {{ include "replicated-library.pvc" . | nindent 0 }}
-
+  {{ include "replicated-library.roles" . | nindent 0 }}
+  {{ include "replicated-library.roleBindings" . | nindent 0 }}
 {{- end -}}
