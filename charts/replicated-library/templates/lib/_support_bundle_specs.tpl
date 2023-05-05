@@ -28,7 +28,7 @@ stringData:
 apiVersion: troubleshoot.sh/v1beta2
 kind: SupportBundle
 metadata:
-  name: {{ include "replicated-library.names.prefix" . }}-support-bundle
+  name: {{ include "replicated-library.names.prefix" . }}-support-bundle-default
 spec:
   uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
 {{- end }}

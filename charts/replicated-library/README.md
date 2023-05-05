@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.9.0
+  version: 0.10.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -156,7 +156,9 @@ Read through the [values-example.yaml](./values-example.yaml) file. It has sever
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
 | services.example.selector | object | `{}` | Label sleector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
-| supportBundle | object | See below | Configure the supportBundle for the chart here. supportBundle can be enabled by setting supportBundle.enabled to true By default the supportBundle will be enabled and the default spec will be installed |
+| supportBundle | object | See below | Configure the support bundle for the chart here. supportBundle can be enabled by setting supportBundle.enabled to true By default the supportBundle will be enabled and the default spec will be installed |
+| supportBundle.enabled | bool | `true` | Enables or disables the support bundle |
+| supportBundle.installDefaultSpec | bool | `true` | Default Spec: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml |
 
 ## Changelog
 
