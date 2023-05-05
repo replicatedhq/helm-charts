@@ -1,13 +1,13 @@
 {{- /* The main container included in the main */ -}}
-{{- define "replicated-library.container" -}}
+{{- define "replicated-library.initContainer" -}}
   {{- $values := "" -}}
   {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
     {{- $values = .ContextValues.app -}}
   {{- else -}}
-    {{- fail "_container.tpl requires the 'app' ContextValues to be set" -}}
+    {{- fail "_init_container.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
   {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
-{{- range $containerName, $containerValues := $values.containers -}}
+{{- range $containerName, $containerValues := $values.initContainers -}}
 - name: {{ printf "%s" $containerName | trunc 63 | trimAll "-" }}
   image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion ($containerValues.image.tag | toString)) | quote }}
   imagePullPolicy: {{ default $.Values.defaults.image.pullPolicy $containerValues.image.pullPolicy }}
@@ -65,37 +65,5 @@
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- if $containerValues.livenessProbe -}}
-  {{- with (mergeOverwrite $.Values.defaults.probes.livenessProbe $containerValues.livenessProbe) }}
-  livenessProbe:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- else if hasKey $containerValues "livenessProbe" -}}
-  {{- else if and $containerValues.ports (first $containerValues.ports).containerPort -}}
-  {{- $_ := set $.Values.defaults.probes.livenessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
-  {{- with $.Values.defaults.probes.livenessProbe }}
-  livenessProbe:
-    {{- toYaml . | nindent 4 }}
-  {{- end -}}
-  {{- end -}}
-  {{- if $containerValues.readinessProbe -}}
-  {{- with (mergeOverwrite $.Values.defaults.probes.readinessProbe $containerValues.readinessProbe) }}
-  readinessProbe:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- else if hasKey $containerValues "readinessProbe" -}}
-  {{- else if and $containerValues.ports (first $containerValues.ports).containerPort -}}
-  {{- $_ := set $.Values.defaults.probes.readinessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
-  {{- with $.Values.defaults.probes.readinessProbe }}
-  readinessProbe:
-    {{- toYaml . | nindent 4 }}
-  {{- end -}}
-  {{- end -}}
-  {{- if $containerValues.startupProbe -}}
-  {{- with (mergeOverwrite $.Values.defaults.probes.startupProbe $containerValues.startupProbe) }}
-  startupProbe:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- end -}}
 {{- end -}}
 {{- end -}}

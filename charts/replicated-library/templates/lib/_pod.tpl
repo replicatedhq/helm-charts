@@ -52,18 +52,10 @@ enableServiceLinks: {{ $values.enableServiceLinks }}
 terminationGracePeriodSeconds: {{ . }}
   {{- end }}
 {{- end }}
-  {{- if $values.initContainers }}
+{{- if $values.initContainers }}
 initContainers:
-    {{- $initContainers := list }}
-    {{- range $index, $key := (keys $values.initContainers | uniq | sortAlpha) }}
-      {{- $container := get $.Values.initContainers $key }}
-      {{- if not $container.name -}}
-        {{- $_ := set $container "name" $key }}
-      {{- end }}
-      {{- $initContainers = append $initContainers $container }}
-    {{- end }}
-    {{- tpl (toYaml $initContainers) $ | nindent 2 }}
-  {{- end }}
+  {{- include "replicated-library.initContainer" . | nindent 2 }}
+{{- end }}
 containers:
   {{- include "replicated-library.container" . | nindent 2 }}
   {{- with $values.volumes }}
@@ -72,7 +64,7 @@ volumes:
       {{- /* Add the prefix to the claimName if the claim is in the persistence dict and is enabled */}}
       {{- if and .persistentVolumeClaim .persistentVolumeClaim.claimName }}
         {{- if and (hasKey $.Values.persistence .persistentVolumeClaim.claimName) (get (get $.Values.persistence .persistentVolumeClaim.claimName) "enabled") }}
-          {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName) }}
+          {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName | trimAll "-") }}
         {{- end }}
       {{- end }}
     {{- end }}
