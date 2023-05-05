@@ -9,13 +9,10 @@ This template serves as the blueprint for a RoleBinding object created within th
     {{- fail "_rolebinding.tpl requires the 'roleBinding' ContextValues to be set" -}}
   {{- end -}}
   {{- $_ := set $.ContextValues "names" (dict "context" "roleBinding") -}}
-
-
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 {{- $kind := default "RoleBinding" $values.kind -}}
-{{- $roleKind := default "Role" -}}
+{{- $roleKind := default "Role" $values.roleRef.kind -}}
 {{- if and (eq $kind "ClusterRoleBinding") (ne $roleKind "ClusterRole") -}}
   {{- fail (printf "Not a valid Role in roleRef (%s); if a ClusterRoleBinding is created, roleRef must be a ClusterRole" $kind) -}}
 {{- end }}
@@ -34,11 +31,12 @@ subjects:
   - apiGroup: ""
     kind: ServiceAccount
     name: {{ .name }}
-    namespace: {{ $.Release.Namespace }}
+    namespace: {{ default $.Release.Namespace .namespace }}
     {{- end }}
   {{- end }}
 roleRef:
   apigroup: rbac.authorization.k8s.io
   kind: {{ $roleKind }}
   name: {{ $values.roleRef.name }}
+
 {{- end }}

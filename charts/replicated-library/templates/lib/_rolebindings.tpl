@@ -1,6 +1,6 @@
 {{/* Renders RoleBinding objects required by the chart */}}
 {{- define "replicated-library.roleBindings" -}}
-  {{- range $key, $roleBindingValues := .Values.roleBindings -}}
+  {{- range $name, $roleBindingValues := .Values.roleBindings -}}
     {{- if $roleBindingValues.enabled  -}}
       {{- $_ := set $.ContextNames "roleBinding" $name -}}
       {{- $_ := set $.ContextValues "roleBinding" $roleBindingValues -}}

@@ -17,5 +17,5 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
   {{ include "replicated-library.secrets" .  | nindent 0 }}
   {{ include "replicated-library.pvc" . }}
   {{ include "replicated-library.roles" . | nindent 0 }}
-
+  {{ include "replicated-library.roleBindings" . | nindent 0 }}
 {{- end -}}
