@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.9.0
+  version: 0.10.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -171,13 +171,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+### [0.10.0]
+
 #### Changed
 
 - The `replicated-library.names.fullname` template will now trim a leading or trailing hyphen to prevent invalid names when the prefix is empty
 
 #### Fixed
 
-- Init containers now work as expected and follow the same format as containers
+- Init containers now work as aspected and follow the same format as containers
 
 ### [0.9.0]
 
