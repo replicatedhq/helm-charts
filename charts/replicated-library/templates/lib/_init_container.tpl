@@ -8,7 +8,7 @@
   {{- end -}}
   {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 {{- range $containerName, $containerValues := $values.initContainers -}}
-- name: {{ default "container" $containerName }}
+- name: {{ printf "%s" $containerName | trunc 63 | trimAll "-" }}
   image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion ($containerValues.image.tag | toString)) | quote }}
   imagePullPolicy: {{ default $.Values.defaults.image.pullPolicy $containerValues.image.pullPolicy }}
   {{- with $containerValues.command }}
