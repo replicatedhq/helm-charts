@@ -392,6 +392,7 @@ roles:
     kind: Role
     # -- Configure the rules for the role
     rules: [
+      # -- A rule must be express in the Kubernetes RBAC rule format
       # - apiGroups:
       #     - ""
       #   resources:
@@ -418,15 +419,13 @@ roleBindings:
     # -- Type of roleBinding. Must be either: ["RoleBinding", "ClusterRoleBinding"]
     kind: RoleBinding
     # -- Name of the service account to bind to the role
-    subjects: [
-      # -- Must be the name of one or more ServiceAccounts
-      # - kind: ServiceAccount
-      # - name: example
-    ]
+    subjects:
+    # -- Must be the name of one or more ServiceAccounts
+      - kind: ServiceAccount
+        name: example
     # -- Name of the Role to bind to the ServiceAccount
-    roleRef: {
-      # -- kind: may be a Role or ClusterRole
-      # kind: Role
+    roleRef:
+      # -- kind: may be a Role or ClusterRole.  If kind: is set to ClusterRoleBinding, then a ClusterRole is required
+      kind: Role
       # -- name: the name of the Role or ClusterRole to bind to.  If kind: is set to ClusterRoleBinding, then a ClusterRole is required
-      # name: example
-    }
+      name: example

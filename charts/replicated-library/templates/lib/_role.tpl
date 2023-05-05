@@ -14,7 +14,7 @@ within the replicated-library library.
 apiVersion: rbac.authorization.k8s.io/v1
 {{- $kind := default "Role" $values.kind -}}
 {{- if and (ne $kind "Role") (ne $kind "ClusterRole") -}}
-  {{- fail (printf "Not a valid kind of Role (%s); must be Role or ClusterRole" $kind ) -}}
+  {{- fail (printf "Not a valid kind of Role (%s); must be Role or ClusterRole" $kind) -}}
 {{- end }}
 kind: {{ $kind }}
 metadata:
