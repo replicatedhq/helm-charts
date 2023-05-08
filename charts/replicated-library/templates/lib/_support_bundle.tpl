@@ -27,8 +27,12 @@ kind: SupportBundle
 metadata:
   name: {{ include "replicated-library.names.prefix" . }}-support-bundle-default
 spec:
-  uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
+  {{- if (hasKey .ContextValues.supportBundle "uri") -}}
+  uri: {{ .ContextValues.supportBundle.uri }}
+  {{- end }}
+  {{- if (hasKey .ContextValues.supportBundle "collectors") -}}
   collectors:
     {{- include "replicated-library.supportBundle.spec.collectors" .ContextValues.supportBundle.collectors | indent 4 -}}
+  {{- end }}
 {{- end }}
 

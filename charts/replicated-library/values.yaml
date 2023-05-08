@@ -35,10 +35,8 @@ supportBundles:
   replicated:
     enabled: true # off by default
     uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
-    collectors:
-      - clusterInfo
   my-custom-bundle: # each bundle can be specified
     enabled: true
     collectors:
-      - clusterInfo
       - kotsadm-postgres-db
+      - clusterInfo
