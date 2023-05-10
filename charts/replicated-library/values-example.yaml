@@ -8,6 +8,8 @@ global:
   fullNameOverride:
   # -- Set an override for the ChartName, defaults to ChartName if not set.
   nameOverride:
+  # -- When `true`, the feature to automatically re-deploy an Apps pod when a ConfigMap or Secret changes is enabled.
+  appReload: true
 
 # -- Configure the apps for the chart here.
 # Apps can be added by adding a dictionary key similar to the 'example' app.
@@ -210,6 +212,8 @@ secrets:
     # option to select secret type; default is Opaque
     # example: set type: kubernetes.io/tls for secrets that contain tls data.
     type:
+    # -- When `true`, the feature to automatically re-deploy an App's pod when the Secret changes is enabled.
+    appReload: true
 
 # -- Configure the configmaps for the chart here.
 # Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap.
@@ -230,6 +234,8 @@ configmaps:
       # foo: bar
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
+    # -- When `true`, the feature to automatically re-deploy an App's pod when the ConfigMap changes is enabled.
+    appReload: true
 
 # -- Configure the services for the chart here.
 # Services can be added by adding a dictionary key similar to the 'example' service.

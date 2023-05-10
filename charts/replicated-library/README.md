@@ -116,11 +116,13 @@ The below table represents the full API available via the Replicated Library Cha
 | apps.example.volumes | list | `[]` | Specify a list of volumes that get mounted to the app. persistentVolumeClaims which are present and enabled in the persistence configuraiton will have the prefix added automatically. |
 | configmaps | object | See below | Configure the configmaps for the chart here. Configmaps can be added by adding a dictionary key similar to the 'exampleConfig' configmap. By default the name of the configmap will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | configmaps.exampleConfig.annotations | object | `{}` | Annotations to add to the configMap |
+| configmaps.exampleConfig.appReload | bool | `true` | When `true`, the feature to automatically re-deploy an App's pod when the ConfigMap changes is enabled. |
 | configmaps.exampleConfig.data | object | `{}` | configMap data content. Helm template enabled. |
 | configmaps.exampleConfig.enabled | bool | `false` | Enables or disables the configMap |
 | configmaps.exampleConfig.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
 | global.annotations | object | `{}` | Set additional global annotations. |
+| global.appReload | bool | `true` | When `true`, the feature to automatically re-deploy an Apps pod when a ConfigMap or Secret changes is enabled. |
 | global.fullNameOverride | string | `nil` | Set the full object prefix, defaults to releasName-ChartName if not set. This value takes precedence over nameOverride. Set to "-" to disable object name prefixing. |
 | global.labels | object | `{}` | Set additional global labels. |
 | global.nameOverride | string | `nil` | Set an override for the ChartName, defaults to ChartName if not set. |
@@ -144,6 +146,7 @@ The below table represents the full API available via the Replicated Library Cha
 | persistence.example.type | string | `"persistentVolumeClaim"` | Volume type. Available options are ["persistentVolume," "persistentVolumeClaim"] type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app TODO: type.persistentVolume not implemented |
 | secrets | object | See below | Configure the secrets for the chart here. Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. By default the name of the secret will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
+| secrets.exampleSecret.appReload | bool | `true` | When `true`, the feature to automatically re-deploy an App's pod when the Secret changes is enabled. |
 | secrets.exampleSecret.data | object | `{}` | configMap data content. Helm template enabled. |
 | secrets.exampleSecret.enabled | bool | `false` | Enables or disables the secret |
 | secrets.exampleSecret.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |

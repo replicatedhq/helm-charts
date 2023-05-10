@@ -54,6 +54,34 @@ Annotations:      checksum/config-vaultwarden: some-hash
 
 **NOTE**: This feature is not yet supported when a configmap or secret is referenced in `env`.
 
+#### Disabling App Reloads
+
+You can disable App reloads when a ConfigMap or Secret changes with the `appReload` key globally or at the Secret/ConfigMap level. `appReload` when set on a ConfigMap or Secret takes precedence over `.Values.global.appReload`.
+
+```yaml
+global:
+  labels: {}
+  annotations: {}
+  fullNameOverride: "-"
+  appReload: true
+
+secrets:
+  vaultwarden:
+    enabled: true
+    appReload: false
+    data:
+      TEST_VAR: "some-value"
+
+configmaps:
+  sample-configmap:
+    enabled: true
+    appReload: true
+    data:
+      file.yaml: "file contents go here"
+```
+
+With the above configuration, App reloads would only take place for anything using the `sample-configmap` ConfigMap.
+
 ### App, Service, and Ingress Association 
 
 The Replicated library allows you to easily associate a Service object to an App or a Ingress object to a Service.

@@ -62,9 +62,13 @@
     {{- end -}}
   {{- end -}}
 
+  {{- $appReload := .Values.global.appReload -}}
   {{- range $configMapFound, $v := $configMapsFound -}}
     {{- range $configMapName, $configMapValues := $.Values.configmaps -}}
-      {{- if $configMapValues.enabled -}}
+      {{- if (hasKey $configMapValues "appReload") -}}
+        {{- $appReload = $configMapValues.appReload -}}
+      {{- end -}}
+      {{- if and $configMapValues.enabled $appReload -}}
         {{- $configMapFullName := (printf "%s-%s" $prefix $configMapName | trunc 63 | trimAll "-") -}}
         {{- if eq $configMapFound $configMapFullName -}}
           {{- printf "checksum/config-%v: %v" $configMapFullName (printf "%v" ($configMapValues.data) | sha256sum) | nindent 0 -}}
@@ -75,7 +79,10 @@
 
   {{- range $secretFound, $v := $secretsFound -}}
     {{- range $secretName, $secretValues := $.Values.secrets -}}
-      {{- if $secretValues.enabled -}}
+      {{- if (hasKey $secretValues "appReload") -}}
+        {{- $appReload = $secretValues.appReload -}}
+      {{- end -}}
+      {{- if and $secretValues.enabled $appReload -}}
         {{- $secretFullName := (printf "%s-%s" $prefix $secretName | trunc 63 | trimAll "-") -}}
         {{- if eq $secretFound $secretFullName -}}
           {{- printf "checksum/secret-%v: %v" $secretFullName (printf "%v" ($secretValues.data) | sha256sum) | nindent 0 -}}
