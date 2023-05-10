@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.11.0](https://img.shields.io/badge/Version-0.11.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.10.0
+  version: 0.11.0
 ```
 
 You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
@@ -46,11 +46,9 @@ You can see an example of this library chart in use [here](https://github.com/re
 
 [Examples of how you can advanced templating and build on top of this library chart](ADVANCED_TEMPLATING.md)
 
-## Configuration
-
-Read through the [values-example.yaml](./values-example.yaml) file. It has several commented out suggested values.
-
 ## Values
+
+The below table represents the full API available via the Replicated Library Chart with `example` being a placeholder for your own configuration. Source is [values-example.yaml](./values-example.yaml) file.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -170,6 +168,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
+
+### [0.11.0]
+
+#### Changed
+
+- Apps using ConfigMaps and Secrets as volumes or env vars will now have their pods automatically re-deployed whenever the data in the configmap or secret changes
+- **NOTE**: This only applies to `volumes` and `envFrom`. This feature has not yet been implementd for `env`
 
 ### [0.10.0]
 

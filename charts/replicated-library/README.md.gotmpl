@@ -46,25 +46,10 @@ This is a [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm)
 **WARNING: THIS CHART IS NOT MEANT TO BE INSTALLED DIRECTLY**
 {{- end -}}
 
-{{- define "custom.usage" -}}
-{{- end -}}
-
-{{- define "custom.advancedTemplating" }}
-## Advanced Templating
-
-[Examples of how you can advanced templating and build on top of this library chart](ADVANCED_TEMPLATING.md)
-{{- end -}}
-
-{{- define "custom.configuration.header" -}}
-## Configuration
-{{- end -}}
-
-{{- define "custom.configuration.readValues" -}}
-Read through the [values-example.yaml](./values-example.yaml) file. It has several commented out suggested values.
-{{- end -}}
-
 {{- define "custom.valuesSection" -}}
 ## Values
+
+The below table represents the full API available via the Replicated Library Chart with `example` being a placeholder for your own configuration. Source is [values-example.yaml](./values-example.yaml) file.
 
 {{ template "chart.valuesTable" . }}
 {{- end -}}
@@ -95,10 +80,6 @@ Read through the [values-example.yaml](./values-example.yaml) file. It has sever
 {{ template "custom.usage" . }}
 
 {{ template "custom.advancedTemplating" . }}
-
-{{ template "custom.configuration.header" . }}
-
-{{ template "custom.configuration.readValues" . }}
 
 {{ template "custom.valuesSection" . }}
 
