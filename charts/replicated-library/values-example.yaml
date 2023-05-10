@@ -450,8 +450,7 @@ roleBindings:
     # -- Name of the service account to bind to the role
     subjects:
     # -- A list of one or more ServiceAccounts
-      - kind: ServiceAccount
-        name: example
+      - example
     # -- The Role to bind to the ServiceAccount
     roleRef:
       # -- Type of roleBinding. Must be either: ["RoleBinding", "ClusterRoleBinding"].  If the roleBinding is a ClusterRoleBinding, then roleRef.kind must be set to ClusterRole

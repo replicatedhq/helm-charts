@@ -26,17 +26,14 @@ metadata:
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 subjects:
-  {{- with $values.subjects -}}
-    {{- range . }}
+  {{- range $values.subjects }}
   - apiGroup: ""
     kind: ServiceAccount
-    name: {{ .name }}
-    namespace: {{ default $.Release.Namespace .namespace }}
-    {{- end }}
+    name: {{ . }}
+    namespace: {{ $.Release.Namespace }}
   {{- end }}
 roleRef:
-  apigroup: rbac.authorization.k8s.io
+  apiGroup: rbac.authorization.k8s.io
   kind: {{ $roleKind }}
   name: {{ $values.roleRef.name }}
-
 {{- end }}
