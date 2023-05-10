@@ -52,9 +52,7 @@ Annotations:      checksum/config-vaultwarden: some-hash
                   checksum/secret-sample-configmap: some-hash
 ```
 
-#### Known Limitations
-
-This feature is not yet supported when a configmap or secret is referenced in `env`.
+**NOTE**: This feature is not yet supported when a configmap or secret is referenced in `env`.
 
 ### App, Service, and Ingress Association 
 
@@ -62,8 +60,7 @@ The Replicated library allows you to easily associate a Service object to an App
 
 #### Associating a Service to an App
 
-When you use `appName` to associate a service to an App, the library will automatically configure the labelSelector for both the service and the app to match the app name. 
-This allows you to easily associate a service to an app without having to manually configure the labelSelector.
+When you use `appName` to associate a service to an App, the library will automatically configure the `labelSelector` for both the service and the app to match the App name. This allows you to easily associate a service to an App without having to manually configure the labelSelector.
 
 ```yaml
 global:
@@ -96,6 +93,29 @@ services:
         targetPort: 80
 ```
 
+The result is a Service object that automatically sets `spec.selector` to one or more labels matching the apps in `appName`.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  ...
+  labels:
+  ...
+  name: vaultwarden
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app.kubernetes.io/instance: vaultwarden
+    app.kubernetes.io/name: vaultwarden
+  type: ClusterIP
+```
+
 #### Associating a Service to an Ingress
 
 Similiar to `appName` for services, you can use `serviceName` to associate an ingress to a service.
@@ -123,4 +143,33 @@ ingresses:
             pathType: Prefix
             service:
               port: 8080
+```
+
+The result is an Ingress object that automatically configures  `backend.service.name` to what was specified in `serviceName`.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+  ...
+  labels:
+  ...
+  name: vaultwarden
+spec:
+  rules:
+  - host: vaultwarden.example.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: vaultwarden
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - vaultwarden.example.com
+    secretName: vaultwarden-tls-secret
 ```
