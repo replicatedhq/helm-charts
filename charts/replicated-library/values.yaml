@@ -11,7 +11,7 @@ global:
   fullNameOverride:
   # -- Set an override for the ChartName, defaults to ChartName if not set.
   nameOverride:
-  # -- When `true``, the feature to automatically re-deploy an Apps pods when a ConfigMap or Secret changes is enabled.
+  # -- When `true``, the feature to automatically re-deploy an App's pods when a ConfigMap or Secret changes is enabled.
   appReload: true
 
 defaults:

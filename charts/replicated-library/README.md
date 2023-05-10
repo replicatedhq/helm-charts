@@ -122,7 +122,7 @@ The below table represents the full API available via the Replicated Library Cha
 | configmaps.exampleConfig.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | configmaps.exampleConfig.labels | object | `{}` | Labels to add to the configMap |
 | global.annotations | object | `{}` | Set additional global annotations. |
-| global.appReload | bool | `true` | When `true`, the feature to automatically re-deploy an Apps pod when a ConfigMap or Secret changes is enabled. |
+| global.appReload | bool | `true` | When `true`, the feature to automatically re-deploy an App's pod when a ConfigMap or Secret changes is enabled. |
 | global.fullNameOverride | string | `nil` | Set the full object prefix, defaults to releasName-ChartName if not set. This value takes precedence over nameOverride. Set to "-" to disable object name prefixing. |
 | global.labels | object | `{}` | Set additional global labels. |
 | global.nameOverride | string | `nil` | Set an override for the ChartName, defaults to ChartName if not set. |
