@@ -40,7 +40,7 @@ dependencies:
   version: 0.11.0
 ```
 
-You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
+You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
 
 ## Features
 
