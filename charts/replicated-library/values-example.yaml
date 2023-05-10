@@ -310,9 +310,9 @@ ingresses:
     serviceName: example
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
-    # -- Provide additional annotations which may be required.
+    # -- Provide additional annotations
     annotations: {}
-    # -- Provide additional labels which may be required.
+    # -- Provide additional labels
     labels: {}
     # -- Set the ingressClass that is used for this ingress.
     # Requires Kubernetes >=1.19
@@ -398,7 +398,7 @@ serviceAccounts:
 # -- Configure the roles for the chart here.
 # Roles can be added by adding a dictionary key similar to the 'example' role.
 # By default the name of the role will be the name of the dictionary key unless overridden with roles.*.nameOverride
-# TODO: aggregated ClusterRoles
+# TODO: implement aggregated ClusterRoles
 # @default -- See below
 roles:
   example:
@@ -412,12 +412,12 @@ roles:
     fullNameOverride:
     # -- Type of role. Must be either: ["Role", "ClusterRole"]
     kind: Role
-    # -- TODO: Define the selectors used for aggregated ClusterRoles
-    # aggregationRule: {
-    #   # clusterRoleSelectors:
-    #   #   - matchLabels:
-    #   #       rbac.example.com/aggregate-to-admin: "true"
-    # }
+    # -- Define the selectors used for aggregated ClusterRoles
+    aggregationRule: {
+      # clusterRoleSelectors:
+      #   - matchLabels:
+      #       rbac.example.com/aggregate-to-admin: "true"
+    }
     # -- Configure the rules for the role
     rules: [
       # -- A rule must be express in the Kubernetes RBAC rule format
