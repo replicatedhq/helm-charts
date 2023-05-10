@@ -34,8 +34,8 @@
   {{- $configMapsFound := dict -}}
   {{- $secretsFound := dict -}}
 
-  {{- if hasKey . "volumes" -}}
-    {{- range $i, $v := .volumes -}}
+  {{- if hasKey $values "volumes" -}}
+    {{- range $i, $v := $values.volumes -}}
       {{- if hasKey $v "configMap" -}}
         {{- $fullName := (printf "%s-%s" $prefix $v.configMap.name | trunc 63 | trimAll "-") -}}
         {{- $_ := set $configMapsFound $fullName true -}}
