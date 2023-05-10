@@ -50,7 +50,10 @@ spec:
           {{- $service := $serviceName -}}
           {{- $port := 80 -}}
           {{- if .service -}}
-            {{- $service = default $service .service.name -}}
+            {{- $service = default $.ContextNames.ingress $values.serviceName -}}
+              {{- if .service.name -}}
+             {{- $service = .service.name -}}
+            {{- end }}
             {{- $port = default $port .service.port -}}
           {{- end }}
           - path: {{ tpl .path $ | quote }}
