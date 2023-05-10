@@ -108,20 +108,21 @@ apps:
 
     # -- Specifies whether a service account token should be automatically mounted.
     automountServiceAccountToken: true
-    serviceAccount:
-      # -- Specifies whether a service account should be created
-      create: false
-      # -- Annotations to add to the service account
-      annotations: {}
-      # -- The name of the service account to use.
-      # If not set and create is true, a name is generated using the fullname template
-      name: ""
-      # -- If rules are specified, a matching Role and RoleBinding is created for the service account
-      rules: [
-        # - apiGroups: [""]
-        #   resources: ["pods"]
-        #   verbs: ["get", "watch", "list"]
-      ]
+    # TODO: apps.*.serviceAccount template
+    # serviceAccount:
+    #   # -- Specifies whether a service account should be created
+    #   create: false
+    #   # -- Annotations to add to the service account
+    #   annotations: {}
+    #   # -- The name of the service account to use.
+    #   # If not set and create is true, a name is generated using the fullname template
+    #   name: ""
+    #   # -- If rules are specified, a matching Role and RoleBinding is created for the service account
+    #   rules: [
+    #     # - apiGroups: [""]
+    #     #   resources: ["pods"]
+    #     #   verbs: ["get", "watch", "list"]
+    #   ]
 
 
     # -- Set statefulset podManagementPolicy, valid values are Parallel and OrderedReady (default).
@@ -382,6 +383,7 @@ persistence:
 # -- Configure the serviceAccounts for the chart here.
 # ServiceAccounts can be added by adding a dictionary key similar to the 'example' serviceAccount.
 # By default the name of the serviceAccount will be the name of the dictionary key unless overridden with serviceAccounts.*.nameOverride
+# @default -- See below
 serviceAccounts:
   example:
     # -- Enables or disables the service account
@@ -396,6 +398,8 @@ serviceAccounts:
 # -- Configure the roles for the chart here.
 # Roles can be added by adding a dictionary key similar to the 'example' role.
 # By default the name of the role will be the name of the dictionary key unless overridden with roles.*.nameOverride
+# TODO: aggregated ClusterRoles
+# @default -- See below
 roles:
   example:
     # -- Enables or disables the role
@@ -408,6 +412,12 @@ roles:
     fullNameOverride:
     # -- Type of role. Must be either: ["Role", "ClusterRole"]
     kind: Role
+    # -- TODO: Define the selectors used for aggregated ClusterRoles
+    # aggregationRule: {
+    #   # clusterRoleSelectors:
+    #   #   - matchLabels:
+    #   #       rbac.example.com/aggregate-to-admin: "true"
+    # }
     # -- Configure the rules for the role
     rules: [
       # -- A rule must be express in the Kubernetes RBAC rule format
@@ -424,6 +434,7 @@ roles:
 # -- Configure the roleBindings for the chart here.
 # RoleBindings can be added by adding a dictionary key similar to the 'example' roleBinding.
 # By default the name of the roleBinding will be the name of the dictionary key unless overridden with roleBindings.*.nameOverride
+# @default -- See below
 roleBindings:
   example:
     # -- Enables or disables the roleBinding
