@@ -186,6 +186,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Apps using ConfigMaps and Secrets as volumes or env vars will now have their pods automatically re-deployed whenever the data in the configmap or secret changes
 - **NOTE**: This only applies to `volumes` and `envFrom`. This feature has not yet been implementd for `env`
 
+#### Added
+- Added capability to override service name for Ingress hosts (shortcut story - 71019)
+
 ### [0.10.0]
 
 #### Changed
