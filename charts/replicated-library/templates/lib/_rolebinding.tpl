@@ -28,7 +28,7 @@ metadata:
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 subjects:
-  {{- range $s := $values.subjects -}}
+  {{- range $s := $values.subjects }}
   - apiGroup: ""
     {{- $subjectKind := default "ServiceAcount" $s.kind }}
     {{- if ne $subjectKind "ServiceAccount" }}

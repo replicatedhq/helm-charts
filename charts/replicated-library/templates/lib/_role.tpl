@@ -12,10 +12,10 @@ within the replicated-library library.
   {{- $_ := set $.ContextValues "names" (dict "context" "role") -}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-{{- $kind := default "Role" $values.kind -}}
-{{- if and (ne $kind "Role") (ne $kind "ClusterRole") -}}
-  {{- fail (printf "Not a valid kind of Role (%s); must be Role or ClusterRole" $kind) -}}
-{{- end }}
+  {{- $kind := default "Role" $values.kind -}}
+  {{- if and (ne $kind "Role") (ne $kind "ClusterRole") -}}
+    {{- fail (printf "Not a valid kind of Role (%s); must be Role or ClusterRole" $kind) -}}
+  {{- end }}
 kind: {{ $kind }}
 metadata:
   name: {{ include "replicated-library.names.fullname" . }}
@@ -25,21 +25,21 @@ metadata:
   {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
-{{- if $values.aggregationRule }}
-  {{- if ne $kind "ClusterRole" }}
-    {{- fail (printf "If aggregation rules are set, role must be a ClusterRole")-}}
-  {{- end }}
-aggregationRule:
-  clusterRoleSelectors:
-  {{- range $values.aggregationRule.clusterRoleSelectors }}
-  - matchLabels:
-    {{- range $key, $value := .matchLabels }}
-      {{ $key }}: {{ $value }}
+  {{- if $values.aggregationRule }}
+    {{- if ne $kind "ClusterRole" }}
+      {{- fail (printf "If aggregation rules are set, role must be a ClusterRole") -}}
+    {{- end }}
+  aggregationRule:
+    clusterRoleSelectors:
+    {{- range $values.aggregationRule.clusterRoleSelectors }}
+    - matchLabels:
+      {{- range $key, $value := .matchLabels }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
     {{- end }}
   {{- end }}
-{{- end }}
 rules:
   {{- with $values.rules -}}
     {{- toYaml . | nindent 2 }}
   {{- end }}
-{{- end -}}
+{{- end }}
