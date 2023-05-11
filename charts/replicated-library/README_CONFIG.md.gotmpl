@@ -25,6 +25,21 @@ dependencies:
   version: {{ template "chart.version" . }}
 ```
 
-You can see an example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
+You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
 
+{{- end -}}
+
+{{- define "custom.features" -}}
+## Features
+
+Below highlights some of the useful features available in this library
+
+* [Dynamic App Reload on Configuration Changes](FEATURES.md#dynamic-app-reload-on-configuration-changes)
+* [App, Service, and Ingress Association](FEATURES.md#app-service-and-ingress-association)
+{{- end -}}
+
+{{- define "custom.advancedTemplating" -}}
+## Advanced Templating
+
+[Examples of how you can advanced templating and build on top of this library chart](ADVANCED_TEMPLATING.md)
 {{- end -}}

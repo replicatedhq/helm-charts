@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+### [0.11.0]
+
+#### Changed
+
+- Apps using ConfigMaps and Secrets as volumes or env vars will now have their pods automatically re-deployed whenever the data in the configmap or secret changes
+- **NOTE**: This only applies to `volumes` and `envFrom`. This feature has not yet been implementd for `env`
+
 ### [0.10.0]
 
 #### Changed
