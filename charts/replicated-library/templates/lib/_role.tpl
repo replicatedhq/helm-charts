@@ -25,6 +25,19 @@ metadata:
   {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
+{{- if $values.aggregationRule }}
+  {{- if ne $kind "ClusterRole" }}
+    {{- fail (printf "If aggregation rules are set, role must be a ClusterRole")-}}
+  {{- end }}
+aggregationRule:
+  clusterRoleSelectors:
+  {{- range $values.aggregationRule.clusterRoleSelectors }}
+  - matchLabels:
+    {{- range $key, $value := .matchLabels }}
+      {{ $key }}: {{ $value }}
+    {{- end }}
+  {{- end }}
+{{- end }}
 rules:
   {{- with $values.rules -}}
     {{- toYaml . | nindent 2 }}

@@ -1,5 +1,7 @@
 {{/*
 This template serves as the blueprint for a RoleBinding object created within the replicated-library library.
+
+TODO: implement support for subjects other than ServiceAccounts
 */}}
 {{- define "replicated-library.roleBinding" }}
   {{- $values := "" -}}
@@ -26,11 +28,18 @@ metadata:
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 subjects:
-  {{- range $values.subjects }}
+  {{- range $s := $values.subjects -}}
   - apiGroup: ""
-    kind: ServiceAccount
-    name: {{ . }}
-    namespace: {{ $.Release.Namespace }}
+    {{- $subjectKind := default "ServiceAcount" $s.kind }}
+    {{- if ne $subjectKind "ServiceAccount" }}
+      {{- fail (printf "Currently, only ServiceAccounts are supported as subjects in RoleBindings. Found: %s" $subjectKind) }}
+    {{- end }}
+    {{- if and (and (ne $subjectKind "ServiceAccount"  ) (ne $subjectKind "User")) (ne $subjectKind "Group") }}
+      {{- fail (printf "Not a valid Kind in subject: (%s); must be one of ServiceAccount, User, or Group")}}
+    {{- end }}
+    kind: {{ $subjectKind }}
+    name: {{ $s.name }}
+    namespace: {{ default $.Release.Namespace $s.namespace }}
   {{- end }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io

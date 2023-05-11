@@ -412,7 +412,7 @@ roles:
     fullNameOverride:
     # -- Type of role. Must be either: ["Role", "ClusterRole"]
     kind: Role
-    # -- Define the selectors used for aggregated ClusterRoles
+    # -- Define the selectors used for aggregated ClusterRoles.  Only used with ClusterRoles.
     aggregationRule: {
       # clusterRoleSelectors:
       #   - matchLabels:
@@ -449,8 +449,13 @@ roleBindings:
     kind: RoleBinding
     # -- Name of the service account to bind to the role
     subjects:
-    # -- A list of one or more ServiceAccounts
-      - example
+    # -- A list of one or more ServiceAccount descriptions.
+        # -- Name of the service account to bind to the role
+      - name: example
+        # The namespace of the service account subject.  Optional.  If no namespace is provided, then the namespace of the chart will be used.
+        namespace:
+        # -- Kind of the service account to bind to the role.  Optional.  Defaults to ServiceAccount.  Must be one of: ["ServiceAccount", "User", "Group"].  Currently, only ServiceAccount is supported.
+        kind: ServiceAccount
     # -- The Role to bind to the ServiceAccount
     roleRef:
       # -- Type of roleBinding. Must be either: ["RoleBinding", "ClusterRoleBinding"].  If the roleBinding is a ClusterRoleBinding, then roleRef.kind must be set to ClusterRole
