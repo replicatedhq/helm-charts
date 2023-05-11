@@ -31,15 +31,14 @@ metadata:
     {{- end }}
   aggregationRule:
     clusterRoleSelectors:
-    {{- range $values.aggregationRule.clusterRoleSelectors }}
-    - matchLabels:
-      {{- range $key, $value := .matchLabels }}
-        {{ $key }}: {{ $value }}
-      {{- end }}
+    {{- with $values.aggregationRule.clusterRoleSelectors }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
+  {{- if $values.rules }}
 rules:
-  {{- with $values.rules -}}
-    {{- toYaml . | nindent 2 }}
+    {{- with $values.rules -}}
+      {{- toYaml . | nindent 2 }}
+    {{- end }}
   {{- end }}
 {{- end }}
