@@ -70,26 +70,30 @@
   livenessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- else if hasKey $containerValues "livenessProbe" -}}
-  {{- else if and $containerValues.ports (first $containerValues.ports).containerPort -}}
-  {{- $_ := set $.Values.defaults.probes.livenessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
-  {{- with $.Values.defaults.probes.livenessProbe }}
+  {{- else if and (hasKey $containerValues "ports") $containerValues.ports -}}
+    {{ $firstPort := first $containerValues.ports }}
+    {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort -}}
+      {{- $_ := set $.Values.defaults.probes.livenessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
+      {{- with $.Values.defaults.probes.livenessProbe }}
   livenessProbe:
-    {{- toYaml . | nindent 4 }}
-  {{- end -}}
+      {{- toYaml . | nindent 4 }}
+      {{- end -}}
+    {{- end -}}
   {{- end -}}
   {{- if $containerValues.readinessProbe -}}
   {{- with (mergeOverwrite $.Values.defaults.probes.readinessProbe $containerValues.readinessProbe) }}
   readinessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- else if hasKey $containerValues "readinessProbe" -}}
-  {{- else if and $containerValues.ports (first $containerValues.ports).containerPort -}}
-  {{- $_ := set $.Values.defaults.probes.readinessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
-  {{- with $.Values.defaults.probes.readinessProbe }}
+  {{- else if and (hasKey $containerValues "ports") $containerValues.ports -}}
+    {{ $firstPort := first $containerValues.ports }}
+    {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort -}}
+      {{- $_ := set $.Values.defaults.probes.readinessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
+      {{- with $.Values.defaults.probes.readinessProbe }}
   readinessProbe:
-    {{- toYaml . | nindent 4 }}
-  {{- end -}}
+      {{- toYaml . | nindent 4 }}
+      {{- end -}}
+    {{- end -}}
   {{- end -}}
   {{- if $containerValues.startupProbe -}}
   {{- with (mergeOverwrite $.Values.defaults.probes.startupProbe $containerValues.startupProbe) }}
