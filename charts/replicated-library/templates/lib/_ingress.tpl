@@ -54,7 +54,7 @@ spec:
               {{- if .service.name -}}
              {{- $service = .service.name -}}
             {{- end }}
-             {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service -}}
+             {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
             {{- $port = default $port .service.port -}}
           {{- end }}
           - path: {{ tpl .path $ | quote }}
