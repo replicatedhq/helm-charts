@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+### [0.11.1]
+
+#### Fixed
+
+- Fixed an issue in YAML formatting that was causing `imagePullSecrets` not to render properly in Pod spec
+- Fixed an issue with the logic to automatically set Readiness and Liveness probes if ports.containerPort is defined
+
 ### [0.11.0]
 
 #### Changed
