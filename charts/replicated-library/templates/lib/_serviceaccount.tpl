@@ -3,19 +3,21 @@ The ServiceAccount object to be created.
 */}}
 {{- define "replicated-library.serviceAccount" }}
   {{- $values := "" -}}
-  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "app") -}}
-    {{- $values = .ContextValues.app -}}
+  {{- if and (hasKey . "ContextValues") (hasKey .ContextValues "serviceAccount") -}}
+    {{- $values = .ContextValues.serviceAccount -}}
   {{- else -}}
-    {{- fail "_serviceaccount.tpl requires the 'app' ContextValues to be set" -}}
+    {{- fail "_serviceaccount.tpl requires the 'serviceAccount' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "serviceAccount") -}}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "replicated-library.names.serviceAccountName" . }}
-  labels: {{- include "replicated-library.labels" $ | nindent 4 }}
-  {{- with (merge ($values.serviceAccount.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
+  name: {{ include "replicated-library.names.fullname" . }}
+  {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
+  labels: {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with (merge ($values.annotations | default dict) (include "replicated-library.annotations" $ | fromYaml)) }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 {{- end }}
