@@ -51,10 +51,16 @@ spec:
           {{- $port := 80 -}}
           {{- if .service -}}
             {{- $service = default $.ContextNames.ingress $values.serviceName -}}
-              {{- if .service.name -}}
-             {{- $service = .service.name -}}
-            {{- end }}
              {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+              {{- if .service.name -}}
+                {{- $service = .service.name -}}
+                {{- range $key, $val := $.Values.services }}
+                {{- if and $val.enabled (eq $key $service) -}}
+                    {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+               {{- end }}
+       {{- end }}
+          {{- end }}
+
             {{- $port = default $port .service.port -}}
           {{- end }}
           - path: {{ tpl .path $ | quote }}
@@ -73,4 +79,5 @@ spec:
               {{- end }}
           {{- end }}
   {{- end }}
+  
 {{- end }}
