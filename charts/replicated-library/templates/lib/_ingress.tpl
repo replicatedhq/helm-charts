@@ -57,9 +57,9 @@ spec:
                 {{- range $key, $val := $.Values.services }}
                 {{- if and $val.enabled (eq $key $service) -}}
                     {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-               {{- end }}
-       {{- end }}
+                {{- end }}
           {{- end }}
+        {{- end }}
 
             {{- $port = default $port .service.port -}}
           {{- end }}
