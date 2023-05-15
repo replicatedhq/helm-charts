@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.12.0](https://img.shields.io/badge/Version-0.12.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.13.0](https://img.shields.io/badge/Version-0.13.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.12.0
+  version: 0.13.0
 ```
 
 You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm)
@@ -191,6 +191,11 @@ The below table represents the full API available via the Replicated Library Cha
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
 | services.example.selector | object | `{}` | Label sleector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
+| troubleshoot | object | See below | Configure the troubleshoot for the chart here. troubleshoot can be added by adding a dictionary key similar to the 'example' roleBinding. By default the supportBundle will be enabled and the default spec will be installed |
+| troubleshoot.my-custom-bundle | object | `{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"appName":"wg-easy"}},{"logs":{"appName":"kotsadm-postgres"}}],"enabled":true,"type":"SupportBundle"}` | Add custom support bundles here |
+| troubleshoot.replicated.enabled | bool | `true` | Enables or disables the support bundle |
+| troubleshoot.replicated.type | string | `"SupportBundle"` | Specify the type of troubleshoot, Preflight or SupportBundle |
+| troubleshoot.replicated.uri | string | `"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"` | Default spec to install |
 
 ## Changelog
 
