@@ -47,20 +47,21 @@ spec:
       http:
         paths:
           {{- range .paths }}
-          {{- $service := default $.ContextNames.ingress $values.serviceName -}}
-          {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+          {{- $service := "" -}}
           {{- $port := 80 -}}
           {{- if .service -}}
-              {{- if .service.name -}}
-                {{- $service = .service.name -}}
-                {{- range $key, $val := $.Values.services }}
+              {{- $service = default $.ContextNames.ingress $values.serviceName -}}
+              {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+          {{- if .service.name -}}
+              {{- $service = .service.name -}}
+              {{- range $key, $val := $.Values.services }}
                   {{- if and $val.enabled (eq $key $service) -}}
                     {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
                   {{- end }}
-                {{- if and (not $val.enabled) (eq $key $service)  }}
-                  {{- $service = default $.ContextNames.ingress $values.serviceName -}}
-                  {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-                {{- end }}
+                  {{- if and (not $val.enabled) (eq $key $service)  }}
+                      {{- $service = default $.ContextNames.ingress $values.serviceName -}}
+                      {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+                  {{- end }}
           {{- end }}
         {{- end }}
             {{- $port = default $port .service.port -}}
