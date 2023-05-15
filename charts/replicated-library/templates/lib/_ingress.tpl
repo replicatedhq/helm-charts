@@ -59,8 +59,7 @@ spec:
                     {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
                   {{- end }}
                   {{- if and (not $val.enabled) (eq $key $service)  }}
-                      {{- $service = default $.ContextNames.ingress $values.serviceName -}}
-                      {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+                      {{- $service = required (printf "%s is disabled, in order to utilize thie service, it must be enabled" $service) "" }}
                   {{- end }}
           {{- end }}
         {{- end }}
