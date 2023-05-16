@@ -61,13 +61,10 @@ spec:
              {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
           {{- end -}}
           {{- if .service.name -}}
-              {{- $hostServiceName := .service.name -}}
+              {{- $service = .service.name }}
               {{- range $key, $val := $.Values.services }}
-                  {{- if and $val.enabled (eq $key $hostServiceName) -}}
-                   {{- $service = $hostServiceName  }}
+                  {{- if and $val.enabled (eq $key $service) -}}
                     {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-                  {{- else }}
-                    {{- $service = $hostServiceName  }}
                   {{- end }}
                {{- end }}
             {{- end }}
