@@ -39,15 +39,3 @@ troubleshoot:
     type: SupportBundle
     enabled: true
     uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
-  my-custom-bundle:
-    type: SupportBundle
-    enabled: true
-    collectors:
-      - clusterInfo: {}
-      - clusterResources: {}
-      - ceph: {}
-      - longhorn: {}
-      - logs:
-          collectorName: kotsadm-postgres
-          selector:
-            app: kotsadm-postgres
