@@ -54,7 +54,7 @@ spec:
             {{- if and $val.enabled (eq $key $.ContextNames.ingress) -}}
                  {{- $service = $.ContextNames.ingress -}}
                  {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-          {{- end }}
+            {{- end }}
           {{- end }}
           {{- if $values.serviceName -}}
             {{- $service = $values.serviceName -}}
@@ -66,12 +66,11 @@ spec:
                   {{- if and $val.enabled (eq $key $hostServiceName) -}}
                    {{- $service = $hostServiceName  }}
                     {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-                  {{- end }}
-                  {{- if and (not $val.enabled) (ne $key $hostServiceName) -}}
+                  {{- else }}
                     {{- $service = $hostServiceName  }}
                   {{- end }}
-                  {{- end }}
-          {{- end }}
+               {{- end }}
+            {{- end }}
           {{- end }}
          {{- if not $service -}}
               {{ $service = required "a service name is required for the ingress host" $serviceName }}
