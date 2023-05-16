@@ -201,6 +201,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+#### Added
+
+- Added capability to override service name for ingress hosts (shortcut story - 71019)
+
 ### [0.12.1]
 
 #### Fixed
