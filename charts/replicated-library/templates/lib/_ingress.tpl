@@ -50,25 +50,22 @@ spec:
           {{- $service := "" -}}
           {{- $port := 80 -}}
           {{- if .service -}}
-          {{- range $key, $val := $.Values.services }}
-            {{- if and $val.enabled (eq $key $.ContextNames.ingress) -}}
-                 {{- $service = $.ContextNames.ingress -}}
-                 {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-            {{- end }}
-          {{- end }}
-          {{- if $values.serviceName -}}
-            {{- $service = $values.serviceName -}}
-             {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-          {{- end -}}
-          {{- if .service.name -}}
+          {{- if .service.name }}
               {{- $service = .service.name }}
-              {{- range $key, $val := $.Values.services }}
-                  {{- if and $val.enabled (eq $key $service) -}}
-                    {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
-                  {{- end }}
+           {{- else if $values.serviceName }}
+               {{- $service = $values.serviceName }}
+           {{- else }}     
+               {{- range $key, $val := $.Values.services }}
+                   {{- if and $val.enabled (eq $key $.ContextNames.ingress) }}
+                       {{- $service = $.ContextNames.ingress }}
+                   {{- end }}
+           {{- end }}
+           {{- range $key, $val := $.Values.services }}
+               {{- if and $val.enabled (eq $key $service) -}}
+                   {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
                {{- end }}
-            {{- end }}
-          {{- end }}
+           {{- end }}
+      {{- end }}
          {{- if not $service -}}
               {{ $service = required "a service name is required for the ingress host" $serviceName }}
             {{- $port = default $port .service.port -}}
