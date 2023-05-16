@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.11.0](https://img.shields.io/badge/Version-0.11.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.12.1](https://img.shields.io/badge/Version-0.12.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,10 +37,10 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.11.0
+  version: 0.12.1
 ```
 
-You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm/tree/replicated-library-chart)
+You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm)
 
 ## Features
 
@@ -105,9 +105,6 @@ The below table represents the full API available via the Replicated Library Cha
 | apps.example.rollingUpdate.unavailable | string | `nil` | Set deployment RollingUpdate max unavailable |
 | apps.example.runtimeClassName | string | `nil` | Allow specifying a runtimeClassName other than the default one (ie: nvidia) |
 | apps.example.schedulerName | string | `nil` | Allows specifying a custom scheduler name |
-| apps.example.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
-| apps.example.serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
-| apps.example.serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | apps.example.strategy | string | `nil` | Set the controller upgrade strategy For Deployments, valid values are Recreate and RollingUpdate. For StatefulSets, valid values are OnDelete and RollingUpdate. For Daemonsets, valid values are OnDelete and RollingUpdate. |
 | apps.example.tolerations | list | `[]` | Specify taint tolerations [[ref]](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) |
 | apps.example.topologySpreadConstraints | list | `[]` | Defines topologySpreadConstraint rules. [[ref]](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) |
@@ -127,13 +124,13 @@ The below table represents the full API available via the Replicated Library Cha
 | global.labels | object | `{}` | Set additional global labels. |
 | global.nameOverride | string | `nil` | Set an override for the ChartName, defaults to ChartName if not set. |
 | ingresses | object | See below | Configure the ingresses for the chart here. Ingresses can be added by adding a dictionary key similar to the 'example' ingress. Name of the ingress object will be the name of the dictionary key |
-| ingresses.example.annotations | object | `{}` | Provide additional annotations which may be required. |
+| ingresses.example.annotations | object | `{}` | Provide additional annotations |
 | ingresses.example.enabled | bool | `false` | Enables or disables the ingress |
 | ingresses.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | ingresses.example.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"Prefix","service":{"name":null,"port":null}}]}]` | Configure the hosts for the ingress |
 | ingresses.example.hosts[0].paths[0].service.name | string | `nil` | Service Name for the path. By default this is ingresses.example.serviceName if not overwritten TODO: NOT IMPLEMENTED |
 | ingresses.example.ingressClassName | string | `nil` | Set the ingressClass that is used for this ingress. Requires Kubernetes >=1.19 |
-| ingresses.example.labels | object | `{}` | Provide additional labels which may be required. |
+| ingresses.example.labels | object | `{}` | Provide additional labels |
 | ingresses.example.serviceName | string | `"example"` | Name of the service to attach this ingress. This corresponds to an service configured un the `services` key |
 | persistence | object | See below | Configure volumes for the chart here. Persistence items can be added by adding a dictionary key similar to the 'example' key. Name of the persistence object will be the name of the dictionary key unless overwritten with persistence.*.nameOverride |
 | persistence.example.enabled | bool | `false` | Enables or disables the volume |
@@ -144,6 +141,26 @@ The below table represents the full API available via the Replicated Library Cha
 | persistence.example.persistentVolumeClaim.existingClaimName | string | `nil` | Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec |
 | persistence.example.persistentVolumeClaim.spec | object | `{"accessModes":["ReadWriteOnce"],"persistentVolumeReclaimPolicy":"Retain","resources":{"requests":{"storage":"8Gi"}},"storageClassName":"slow","volumeMode":"Filesystem"}` | PersistentVolumeClaim spec [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) |
 | persistence.example.type | string | `"persistentVolumeClaim"` | Volume type. Available options are ["persistentVolume," "persistentVolumeClaim"] type.persistentVolume creates a PV and a PVC pair and uses the PVC as a volume on the app type.persistentVolumeClaim creates a new PVC or uses an existing PVC as a volume on the app TODO: type.persistentVolume not implemented |
+| roleBindings | object | See below | Configure the roleBindings for the chart here. RoleBindings can be added by adding a dictionary key similar to the 'example' roleBinding. By default the name of the roleBinding will be the name of the dictionary key unless overridden with roleBindings.*.nameOverride |
+| roleBindings.example.annotations | object | `{}` | Annotations to add to the clusterRole |
+| roleBindings.example.enabled | bool | `false` | Enables or disables the roleBinding |
+| roleBindings.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
+| roleBindings.example.kind | string | `"RoleBinding"` | Type of roleBinding. Must be either: ["RoleBinding", "ClusterRoleBinding"] |
+| roleBindings.example.labels | object | `{}` | Labels to add to the clusterRole |
+| roleBindings.example.roleRef | object | `{"kind":"Role","name":"example"}` | The Role to bind to the ServiceAccount |
+| roleBindings.example.roleRef.kind | string | `"Role"` | Type of roleBinding. Must be either: ["RoleBinding", "ClusterRoleBinding"].  If the roleBinding is a ClusterRoleBinding, then roleRef.kind must be set to ClusterRole |
+| roleBindings.example.roleRef.name | string | `"example"` | Name of the Role to bind to subjects.  If roleRef.kind: is set to ClusterRoleBinding, then name must be the name of a ClusterRole |
+| roleBindings.example.subjects | list | `[{"kind":"ServiceAccount","name":"example","namespace":null}]` | Name of the service account to bind to the role |
+| roleBindings.example.subjects[0] | object | `{"kind":"ServiceAccount","name":"example","namespace":null}` | Name of the service account to bind to the role |
+| roleBindings.example.subjects[0].kind | string | `"ServiceAccount"` | Kind of the service account to bind to the role.  Optional.  Defaults to ServiceAccount.  Must be one of: ["ServiceAccount", "User", "Group"].  Currently, only ServiceAccount is supported. |
+| roles | object | See below | Configure the roles for the chart here. Roles can be added by adding a dictionary key similar to the 'example' role. By default the name of the role will be the name of the dictionary key unless overridden with roles.*.nameOverride TODO: implement aggregated ClusterRoles |
+| roles.example.aggregationRule | object | `{}` | Define the selectors used for aggregated ClusterRoles.  Only used with ClusterRoles. |
+| roles.example.annotations | object | `{}` | Annotations to add to the role |
+| roles.example.enabled | bool | `false` | Enables or disables the role |
+| roles.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
+| roles.example.kind | string | `"Role"` | Type of role. Must be either: ["Role", "ClusterRole"] |
+| roles.example.labels | object | `{}` | Labels to add to the role |
+| roles.example.rules | list | `[]` | Configure the rules for the role |
 | secrets | object | See below | Configure the secrets for the chart here. Secrets can be added by adding a dictionary key similar to the 'exampleSecret' secret. By default the name of the secret will be the name of the dictionary key TODO: nameOverride TODO: Ensure sha annotations on app are working |
 | secrets.exampleSecret.annotations | object | `{}` | Annotations to add to the secret |
 | secrets.exampleSecret.appReload | bool | `true` | When `true`, the feature to automatically re-deploy an App's pod when the Secret changes is enabled. |
@@ -151,6 +168,11 @@ The below table represents the full API available via the Replicated Library Cha
 | secrets.exampleSecret.enabled | bool | `false` | Enables or disables the secret |
 | secrets.exampleSecret.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
 | secrets.exampleSecret.labels | object | `{}` | Labels to add to the secret |
+| serviceAccounts | object | See below | Configure the serviceAccounts for the chart here. ServiceAccounts can be added by adding a dictionary key similar to the 'example' serviceAccount. By default the name of the serviceAccount will be the name of the dictionary key unless overridden with serviceAccounts.*.nameOverride |
+| serviceAccounts.example.annotations | object | `{}` | Annotations to add to the service account |
+| serviceAccounts.example.enabled | bool | `false` | Enables or disables the service account |
+| serviceAccounts.example.fullNameOverride | string | `nil` | Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName |
+| serviceAccounts.example.labels | object | `{}` | Labels to add to the service account |
 | services | object | See below | Configure the services for the chart here. Services can be added by adding a dictionary key similar to the 'example' service. By default the name of the service will be the name of the dictionary key TODO: nameOverride |
 | services.example.annotations | object | `{}` | Provide additional annotations which may be required. |
 | services.example.appName | list | `["example"]` | Optional list of apps to attach this service. This corresponds to apps configured in the `apps` key |
@@ -178,6 +200,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
+
+### [0.12.1]
+
+#### Fixed
+
+- Fixed an issue when specifying multiple containers in a single app caused the chart to fail to render
+
+### [0.12.0]
+
+#### Added
+
+- Added support for RBAC objects
+
+### [0.11.1]
+
+#### Fixed
+
+- Fixed an issue in YAML formatting that was causing `imagePullSecrets` not to render properly in Pod spec
+- Fixed an issue with the logic to automatically set Readiness and Liveness probes if ports.containerPort is defined
 
 ### [0.11.0]
 

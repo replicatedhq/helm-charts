@@ -12,6 +12,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+### [0.12.1]
+
+#### Fixed
+
+- Fixed an issue when specifying multiple containers in a single app caused the chart to fail to render
+
+### [0.12.0]
+
+#### Added
+
+- Added support for RBAC objects
+
+### [0.11.1]
+
+#### Fixed
+
+- Fixed an issue in YAML formatting that was causing `imagePullSecrets` not to render properly in Pod spec
+- Fixed an issue with the logic to automatically set Readiness and Liveness probes if ports.containerPort is defined
+
 ### [0.11.0]
 
 #### Changed
@@ -34,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [0.9.0]
 
-#### Changed 
+#### Changed
 
 - Adding Global "Context" dictionaries for values and names with unique subkeys per object type to prevent collisions
 - Removing class directory and collapsing all templates into a single directory
@@ -42,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [0.8.0]
 
-#### Changed 
+#### Changed
 
 - Fixed volumeClaimTemplate loop in lib/_statefulset.tpl so metadata.name is rendered correctly.
 - Added daemonset templates

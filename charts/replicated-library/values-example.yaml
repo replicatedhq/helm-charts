@@ -108,14 +108,22 @@ apps:
 
     # -- Specifies whether a service account token should be automatically mounted.
     automountServiceAccountToken: true
-    serviceAccount:
-      # -- Specifies whether a service account should be created
-      create: false
-      # -- Annotations to add to the service account
-      annotations: {}
-      # -- The name of the service account to use.
-      # If not set and create is true, a name is generated using the fullname template
-      name: ""
+    # TODO: apps.*.serviceAccount template
+    # serviceAccount:
+    #   # -- Specifies whether a service account should be created
+    #   create: false
+    #   # -- Annotations to add to the service account
+    #   annotations: {}
+    #   # -- The name of the service account to use.
+    #   # If not set and create is true, a name is generated using the fullname template
+    #   name: ""
+    #   # -- If rules are specified, a matching Role and RoleBinding is created for the service account
+    #   rules: [
+    #     # - apiGroups: [""]
+    #     #   resources: ["pods"]
+    #     #   verbs: ["get", "watch", "list"]
+    #   ]
+
 
     # -- Set statefulset podManagementPolicy, valid values are Parallel and OrderedReady (default).
     podManagementPolicy:
@@ -302,9 +310,9 @@ ingresses:
     serviceName: example
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
-    # -- Provide additional annotations which may be required.
+    # -- Provide additional annotations
     annotations: {}
-    # -- Provide additional labels which may be required.
+    # -- Provide additional labels
     labels: {}
     # -- Set the ingressClass that is used for this ingress.
     # Requires Kubernetes >=1.19
@@ -370,3 +378,87 @@ persistence:
           requests:
             storage: 8Gi
         storageClassName: slow
+
+
+# -- Configure the serviceAccounts for the chart here.
+# ServiceAccounts can be added by adding a dictionary key similar to the 'example' serviceAccount.
+# By default the name of the serviceAccount will be the name of the dictionary key unless overridden with serviceAccounts.*.nameOverride
+# @default -- See below
+serviceAccounts:
+  example:
+    # -- Enables or disables the service account
+    enabled: false
+    # -- Labels to add to the service account
+    labels: {}
+    # -- Annotations to add to the service account
+    annotations: {}
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
+
+# -- Configure the roles for the chart here.
+# Roles can be added by adding a dictionary key similar to the 'example' role.
+# By default the name of the role will be the name of the dictionary key unless overridden with roles.*.nameOverride
+# TODO: implement aggregated ClusterRoles
+# @default -- See below
+roles:
+  example:
+    # -- Enables or disables the role
+    enabled: false
+    # -- Labels to add to the role
+    labels: {}
+    # -- Annotations to add to the role
+    annotations: {}
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
+    # -- Type of role. Must be either: ["Role", "ClusterRole"]
+    kind: Role
+    # -- Define the selectors used for aggregated ClusterRoles.  Only used with ClusterRoles.
+    aggregationRule: {
+      # clusterRoleSelectors:
+      #   - matchLabels:
+      #       rbac.example.com/aggregate-to-admin: "true"
+    }
+    # -- Configure the rules for the role
+    rules: [
+      # -- A rule must be express in the Kubernetes RBAC rule format
+      # - apiGroups:
+      #     - ""
+      #   resources:
+      #     - "pods"
+      #   verbs:
+      #     - "get"
+      #     - "watch"
+      #     - "list"
+    ]
+
+# -- Configure the roleBindings for the chart here.
+# RoleBindings can be added by adding a dictionary key similar to the 'example' roleBinding.
+# By default the name of the roleBinding will be the name of the dictionary key unless overridden with roleBindings.*.nameOverride
+# @default -- See below
+roleBindings:
+  example:
+    # -- Enables or disables the roleBinding
+    enabled: false
+    # -- Labels to add to the clusterRole
+    labels: {}
+    # -- Annotations to add to the clusterRole
+    annotations: {}
+    # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
+    fullNameOverride:
+    # -- Type of roleBinding. Must be either: ["RoleBinding", "ClusterRoleBinding"]
+    kind: RoleBinding
+    # -- Name of the service account to bind to the role
+    subjects:
+    # -- A list of one or more ServiceAccount descriptions.
+        # -- Name of the service account to bind to the role
+      - name: example
+        # The namespace of the service account subject.  Optional.  If no namespace is provided, then the namespace of the chart will be used.
+        namespace:
+        # -- Kind of the service account to bind to the role.  Optional.  Defaults to ServiceAccount.  Must be one of: ["ServiceAccount", "User", "Group"].  Currently, only ServiceAccount is supported.
+        kind: ServiceAccount
+    # -- The Role to bind to the ServiceAccount
+    roleRef:
+      # -- Type of roleBinding. Must be either: ["RoleBinding", "ClusterRoleBinding"].  If the roleBinding is a ClusterRoleBinding, then roleRef.kind must be set to ClusterRole
+      kind: Role
+      # -- Name of the Role to bind to subjects.  If roleRef.kind: is set to ClusterRoleBinding, then name must be the name of a ClusterRole
+      name: example
