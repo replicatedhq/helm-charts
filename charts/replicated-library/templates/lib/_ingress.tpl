@@ -59,15 +59,16 @@ spec:
                    {{- if and $val.enabled (eq $key $.ContextNames.ingress) }}
                        {{- $service = $.ContextNames.ingress }}
                    {{- end }}
-           {{- end }}
+                {{- end }}
+            {{- end }}
            {{- range $key, $val := $.Values.services }}
                {{- if and $val.enabled (eq $key $service) -}}
                    {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
                {{- end }}
            {{- end }}
-      {{- end }}
          {{- if not $service -}}
-              {{ $service = required "a service name is required for the ingress host" $serviceName }}
+              {{- fail  "a service name is required for the ingress host"  }}
+         {{- end }}
             {{- $port = default $port .service.port -}}
           {{- end }}
           - path: {{ tpl .path $ | quote }}
@@ -86,5 +87,4 @@ spec:
               {{- end }}
           {{- end }}
   {{- end }}
-  
-{{- end }}
+  {{- end }}
