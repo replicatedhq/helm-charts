@@ -70,11 +70,11 @@ spec:
                   {{- if and (not $val.enabled) (ne $key $hostServiceName) -}}
                     {{- $service = $hostServiceName  }}
                   {{- end }}
-
-
-
+                  {{- end }}
           {{- end }}
-        {{- end }}
+          {{- end }}
+         {{- if not $service -}}
+              {{ $service = required "a service name is required for the ingress host" $serviceName }}
             {{- $port = default $port .service.port -}}
           {{- end }}
           - path: {{ tpl .path $ | quote }}
