@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.12.0](https://img.shields.io/badge/Version-0.12.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.12.1](https://img.shields.io/badge/Version-0.12.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.12.0
+  version: 0.12.1
 ```
 
 You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm)
@@ -200,6 +200,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
+
+### [0.12.1]
+
+#### Fixed
+
+- Fixed an issue when specifying multiple containers in a single app caused the chart to fail to render
 
 ### [0.12.0]
 
