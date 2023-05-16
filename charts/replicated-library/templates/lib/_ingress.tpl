@@ -50,17 +50,29 @@ spec:
           {{- $service := "" -}}
           {{- $port := 80 -}}
           {{- if .service -}}
-              {{- $service = default $.ContextNames.ingress $values.serviceName -}}
-              {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+          {{- range $key, $val := $.Values.services }}
+            {{- if and $val.enabled (eq $key $.ContextNames.ingress) -}}
+                 {{- $service = $.ContextNames.ingress -}}
+                 {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+          {{- end }}
+          {{- end }}
+          {{- if $values.serviceName -}}
+            {{- $service = $values.serviceName -}}
+             {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
+          {{- end -}}
           {{- if .service.name -}}
-              {{- $service = .service.name -}}
+              {{- $hostServiceName := .service.name -}}
               {{- range $key, $val := $.Values.services }}
-                  {{- if and $val.enabled (eq $key $service) -}}
+                  {{- if and $val.enabled (eq $key $hostServiceName) -}}
+                   {{- $service = $hostServiceName  }}
                     {{- $service = printf "%s-%s" (include "replicated-library.names.prefix" $) $service | trunc 63 | trimAll "-"  -}}
                   {{- end }}
-                  {{- if and (not $val.enabled) (eq $key $service)  }}
-                      {{- $service = "" }}
+                  {{- if and (not $val.enabled) (ne $key $hostServiceName) -}}
+                    {{- $service = $hostServiceName  }}
                   {{- end }}
+
+
+
           {{- end }}
         {{- end }}
             {{- $port = default $port .service.port -}}
