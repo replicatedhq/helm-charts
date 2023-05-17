@@ -29,4 +29,8 @@ stringData:
       collectors:
         {{- include "replicated-library.troubleshoot.collectors" . | indent 6 }}
       {{- end }}
+      {{- if $values.analyzers }}
+      analyzers:
+       {{- include "replicated-library.troubleshoot.analyzers" . | indent 6 }}
+      {{- end }}
 {{- end }}
