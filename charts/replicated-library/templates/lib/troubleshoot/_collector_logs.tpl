@@ -24,8 +24,14 @@
     collectorName: {{ .ContextValues.collector.collectorName }}
     {{- end }}
 
-    {{- if .ContextValues.collector.namespace }}
-    namespace: {{ .ContextValues.collector.namespace }}
+    {{- if .ContextValues.collector.collectorName }}
+    collectorName: {{ .ContextValues.collector.collectorName }}
+    {{- end }}
+
+    {{- if .ContextValues.collector.name }}
+    name: {{ .ContextValues.collector.name }}
+    {{- else -}}
+      {{- fail (printf "name in (%s) was required" .ContextNames.collector) }}
     {{- end }}
 
     {{- if .ContextValues.collector.containerNames }}
