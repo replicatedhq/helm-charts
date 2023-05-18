@@ -89,21 +89,11 @@ troubleshoot:
           selector:
             app: kotsadm-operator
           timeout: 10s
-      - logs: # this is removable when we don't need to support kots <= 1.87
-          collectorName: kotsadm-postgres-db
-          name: kots/admin_console
-          selector:
-            app: kotsadm-postgres
       - logs:
           collectorName: kotsadm-rqlite-db
           name: kots/admin_console
           selector:
             app: kotsadm-rqlite
-      - logs: # this is removable when we don't need to support kots <= 1.19
-          collectorName: kotsadm-api
-          name: kots/admin_console
-          selector:
-            app: kotsadm-api
       - logs:
           collectorName: kotsadm-operator
           name: kots/admin_console

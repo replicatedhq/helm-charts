@@ -8,7 +8,6 @@ Renders the Support Bundle objects required by the chart.
   {{- else -}}
     {{- fail "_support_bundle.tpl requires the 'troubleshoot' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "troubleshoot") -}}
 ---
 apiVersion: v1
 kind: Secret
