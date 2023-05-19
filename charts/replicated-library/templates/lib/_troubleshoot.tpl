@@ -3,7 +3,7 @@ Renders the Troubleshoot objects required by the chart.
 */}}
 {{- define "replicated-library.troubleshoot" -}}
   {{- range $name, $troubleshootValues := .Values.troubleshoot }}
-    {{- if eq $name "support-bundle" -}}
+    {{- if eq $name "support-bundles" -}}
       {{- range $supportBundleName, $supportBundleValues := $troubleshootValues }}
         {{- if $supportBundleValues.enabled -}}
           {{- $_ := set $.ContextNames "troubleshoot" $supportBundleName -}}

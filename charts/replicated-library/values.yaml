@@ -35,7 +35,7 @@ defaults:
     startupProbe: {}
 
 troubleshoot:
-  support-bundle:
+  support-bundles:
     replicated:
       enabled: false
       collectors:
