@@ -466,8 +466,8 @@ roleBindings:
 # @default -- See below
 troubleshoot:
   # -- Specify the type of troubleshoot, Preflight or SupportBundle
-  support-bundle:
-    relicated:
+  support-bundles:
+    replicated:
       # -- Enables or disables the support bundle
       enabled: true
       # -- Default spec to install
