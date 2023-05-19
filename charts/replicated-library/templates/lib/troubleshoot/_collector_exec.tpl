@@ -1,58 +1,71 @@
 {{- define "replicated-library.troubleshoot.collector.exec" -}}
 - {{ .ContextNames.collector }}:
-    {{ if eq .ContextValues.collector.appName "*" -}}
+  {{- with .ContextValues.collector }}
+  {{- if eq .appName "*" }}
     selector:
-      - app.kubernetes.io/name={{ include "replicated-library.names.name" . }}
-      - app.kubernetes.io/instance={{ .Release.Name }}
-    {{ else if .ContextValues.collector.appName -}}
+      - app.kubernetes.io/name={{ include "replicated-library.names.name" $ }}
+      - app.kubernetes.io/instance={{ $.Release.Name }}
+  {{- else if .appName }}
+    {{- if index $.Values.apps .appName }}
+      {{- $_ := set $.ContextNames "app" .appName }}
     selector:
-      {{- if index $.Values.apps .ContextValues.collector.appName }}
-        {{- $_ := set $.ContextNames "app" .ContextValues.collector.appName -}}
-          {{- range (include "replicated-library.labels.selectorLabels" $ | splitList "\n" ) -}}
-          {{ printf "- %s" . | replace ": " "=" | nindent 6 }}
-          {{- end }}
-        {{- $_ := unset $.ContextNames "app"  -}}
-      {{- else -}}
-        {{- fail (printf "Matching app for AppName (%s) was not found" .ContextValues.collector.appName) }}
+      {{- range (include "replicated-library.labels.selectorLabels" $ | splitList "\n" ) }}
+      {{- printf "- %s" . | replace ": " "=" | nindent 6 }}
       {{- end }}
-    {{- else if .ContextValues.collector.selector -}}
-    selector:
-      {{- .ContextValues.collector.selector | toYaml | nindent 6}}
+      {{- $_ := unset $.ContextNames "app" }}
+    {{- else }}
+      {{- fail (printf "Matching app for AppName (%s) was not found" .appName) }}
     {{- end }}
-    command:
-      {{- range .ContextValues.collector.command }}
+  {{- else if .selector }}
+    selector:
+      {{- .selector | toYaml | nindent 6}}
+  {{- else }}
+    {{- fail (printf "Either 'selector', or 'appName' were found for the 'exec' collector.") }}
+  {{- end }}
+
+  {{- if .command }}
+    {{- range .command }}
       - {{ . }}
-      {{- end }}
-
-    {{- if .ContextValues.collector.collectorName }}
-    collectorName: {{ .ContextValues.collector.collectorName }}
     {{- end }}
+  {{- else -}}
+    {{- fail (printf "The 'command' for the 'exec' collector was not found.") }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.containerName }}
-    containerName: {{ .ContextValues.collector.containerName }}
-    {{- end }}
+  {{- if .collectorName }}
+    collectorName: {{ .collectorName }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.name }}
-    name: {{ .ContextValues.collector.name }}
-    {{- end }}
+  {{- if .name }}
+    name: {{ .name }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.namespace }}
-    namespace: {{ .ContextValues.collector.namespace }}
-    {{- end }}
+  {{- if .containerName }}
+    containerName: {{ .containerName }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.exclude }}
-    exclude: {{ .ContextValues.collector.exclude }}
-    {{- end }}
+  {{- if .name }}
+    name: {{ .name }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.timeout }}
-    timeout: {{ .ContextValues.collector.timeout }}
-    {{- end }}
+  {{- if .namespace }}
+    namespace: {{ .namespace }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.args }}
+  {{- if .exclude }}
+    exclude: {{ .exclude }}
+  {{- end }}
+
+  {{- if .timeout }}
+    timeout: {{ .timeout }}
+  {{- end }}
+
+  {{- if .args }}
     args:
-      {{- range .ContextValues.collector.args }}
+      {{- range .args }}
       - {{ . }}
       {{- end }}
-    {{- end }}
+  {{- end }}
+
+  {{- end }}
 
 {{- end }}

@@ -1,31 +1,44 @@
 {{- define "replicated-library.troubleshoot.collector.copyFromHost" -}}
 - {{ .ContextNames.collector }}:
-    name: {{ default "" .ContextValues.collector.name }}
-    hostPath: {{ default "" .ContextValues.collector.hostPath }}
-    image: {{ default "" .ContextValues.collector.image }}
-
-    {{- if .ContextValues.collector.collectorName }}
-    collectorName: {{ .ContextValues.collector.collectorName }}
+  {{- with .ContextValues.collector }}
+    {{- if .hostPath }}
+    hostPath: {{ .hostPath }}
+    {{- else }}
+      {{- fail (printf "The 'hostPath' for the 'copyFromHost' collector was not found." ) }}
     {{- end }}
 
-    {{- if .ContextValues.collector.timeout }}
-    timeout: {{ .ContextValues.collector.timeout }}
+    {{- if .image }}
+    image: {{ .image }}
+    {{- else }}
+      {{- fail (printf "The 'image' for the 'copyFromHost' collector was not found." ) }}
     {{- end }}
 
-    {{- if .ContextValues.collector.namespace }}
-    namespace: {{ .ContextValues.collector.namespace }}
+    {{- if .name }}
+    name: {{ .name }}
     {{- end }}
 
-    {{- if .ContextValues.collector.extractArchive }}
-    extractArchive: {{ .ContextValues.collector.extractArchive }}
+    {{- if .collectorName }}
+    collectorName: {{ .collectorName }}
     {{- end }}
 
-    {{- if .ContextValues.collector.imagePullPolicy }}
-    imagePullPolicy: {{ .ContextValues.collector.imagePullPolicy }}
+    {{- if .timeout }}
+    timeout: {{ .timeout }}
     {{- end }}
 
-    {{- if .ContextValues.collector.imagePullSecret }}
-    imagePullSecret: {{ .ContextValues.collector.imagePullSecret }}
+    {{- if .namespace }}
+    namespace: {{ .namespace }}
     {{- end }}
 
+    {{- if .extractArchive }}
+    extractArchive: {{ .extractArchive }}
+    {{- end }}
+
+    {{- if .imagePullPolicy }}
+    imagePullPolicy: {{ .imagePullPolicy }}
+    {{- end }}
+
+    {{- if .imagePullSecret }}
+    imagePullSecret: {{ .imagePullSecret }}
+    {{- end }}
+  {{- end }}
 {{- end }}

@@ -1,40 +1,45 @@
 {{- define "replicated-library.troubleshoot.collector.configMap" -}}
 - {{ .ContextNames.collector }}:
-    {{ if eq .ContextValues.collector.configMapName "*" -}}
+  {{- with .ContextValues.collector }}
+  {{- if eq .configMapName "*" }}
     selector:
-      - app.kubernetes.io/name={{ include "replicated-library.names.name" . }}
-      - app.kubernetes.io/instance={{ .Release.Name }}
-    {{ else if .ContextValues.collector.configMapName -}}
-    name: {{ .ContextValues.collector.configMapName }}
-    {{- else if .ContextValues.collector.selector -}}
+      - app.kubernetes.io/name={{ include "replicated-library.names.name" $ }}
+      - app.kubernetes.io/instance={{ $.Release.Name }}
+  {{- else if .configMapName }}
+    name: {{ .configMapName }}
+  {{- else if .selector }}
     selector:
-      {{- .ContextValues.collector.selector | toYaml | nindent 6}}
-    {{ else if .ContextValues.collector.name }}
-    name: {{ .ContextValues.collector.name }}
-    {{- else -}}
-        {{- fail (printf "Both name and selector of (%s) was not found" .ContextNames.collector) }}
-    {{- end }}
+      {{- .selector | toYaml | nindent 6}}
+  {{- else if .name }}
+    name: {{ .name }}
+  {{- else }}
+    {{- fail (printf "Neither 'selector', 'name', nor 'configMapName' were found for the 'configMap' collector." .) }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.collectorName }}
-    collectorName: {{ .ContextValues.collector.collectorName }}
-    {{- end }}
+  {{- if .collectorName }}
+    collectorName: {{ .collectorName }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.namespace }}
-    namespace: {{ .ContextValues.collector.namespace }}
-    {{ else if eq .ContextValues.collector.configMapName "*"}}
+  {{- if .namespace }}
+    namespace: {{ .namespace }}
+  {{- else if eq .configMapName "*"}}
     namespace: {{ $.Release.Namespace }}
-    {{- end }}
+  {{- else }}
+      {{- fail (printf "The 'namespace' for the 'configMap' collector was not found." ) }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.includeValue }}
-    includeValue: {{ .ContextValues.collector.includeValue }}
-    {{- end }}
+  {{- if .includeValue }}
+    includeValue: {{ .includeValue }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.key }}
-    key: {{ .ContextValues.collector.key }}
-    {{- end }}
+  {{- if .key }}
+    key: {{ .key }}
+  {{- end }}
 
-    {{- if .ContextValues.collector.includeAllData }}
-    includeAllData: {{ .ContextValues.collector.includeAllData }}
-    {{- end }}
+  {{- if .includeAllData }}
+    includeAllData: {{ .includeAllData }}
+  {{- end }}
+  
+  {{- end }}
 
 {{- end }}
