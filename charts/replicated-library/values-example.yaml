@@ -488,6 +488,6 @@ troubleshoot:
               containerNames:
                 - wg-easy
           - logs:
-              collectorName: kotsadm-postgres
+              collectorName: some-postgres-db
               selector:
-                app: kotsadm-postgres
+                app: some-postgres-db
