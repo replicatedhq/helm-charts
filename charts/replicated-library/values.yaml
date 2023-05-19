@@ -44,18 +44,6 @@ troubleshoot:
         - clusterResources: {}
         - ceph: {}
         - longhorn: {}
-        - exec: # this is removable when we don't need to support kots <= 1.87
-            args:
-              - "-U"
-              - kotsadm
-            collectorName: kotsadm-postgres-db
-            command:
-              - pg_dump
-            containerName: kotsadm-postgres
-            name: kots/admin_console
-            selector:
-              app: kotsadm-postgres
-            timeout: 10s
         - exec:
             collectorName: kotsadm-rqlite-db
             name: kots/admin_console
@@ -197,12 +185,12 @@ troubleshoot:
             timeout: 1m
         - configMap:
             collectorName: kurl-current-config
-            name: kurl-current-config # NOTE: this will not live under the kots/ directory like other collectors
+            name: kurl-current-config
             namespace: kurl
             includeAllData: true
         - configMap:
             collectorName: kurl-last-config
-            name: kurl-last-config # NOTE: this will not live under the kots/ directory like other collectors
+            name: kurl-last-config
             namespace: kurl
             includeAllData: true
         - collectd:
