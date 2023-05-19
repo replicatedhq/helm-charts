@@ -461,34 +461,33 @@ roleBindings:
       # -- Name of the Role to bind to subjects.  If roleRef.kind: is set to ClusterRoleBinding, then name must be the name of a ClusterRole
       name: example
 # -- Configure the troubleshoot for the chart here.
-# troubleshoot can be added by adding a dictionary key similar to the 'example' roleBinding.
-# By default the supportBundle will be enabled and the default spec will be installed
+# troubleshoot can be added by adding a dictionary key.
+# By default the supportBundle default spec from replicated will be disabled and not installed
 # @default -- See below
 troubleshoot:
-  replicated:
-    # -- Specify the type of troubleshoot, Preflight or SupportBundle
-    type: SupportBundle
-    # -- Enables or disables the support bundle
-    enabled: true
-    # -- Default spec to install
-    uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
-  # -- Add custom support bundles here
-  my-custom-bundle:
-    type: SupportBundle
-    enabled: true
-    collectors:
-      - clusterInfo: {}
-      - clusterResources: {}
-      - ceph: {}
-      - longhorn: {}
-      - logs:
-          collectorName: wg-easy
-          selector:
-            app: wg-easy
-          namespace: default
-          containerNames:
-            - wg-easy
-      - logs:
-          collectorName: kotsadm-postgres
-          selector:
-            app: kotsadm-postgres
+  # -- Specify the type of troubleshoot, Preflight or SupportBundle
+  support-bundle:
+    relicated:
+      # -- Enables or disables the support bundle
+      enabled: true
+      # -- Default spec to install
+      uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
+      # -- Add custom support bundles here
+      my-custom-bundle:
+        enabled: true
+        collectors:
+          - clusterInfo: {}
+          - clusterResources: {}
+          - ceph: {}
+          - longhorn: {}
+          - logs:
+              collectorName: wg-easy
+              selector:
+                app: wg-easy
+              namespace: default
+              containerNames:
+                - wg-easy
+          - logs:
+              collectorName: kotsadm-postgres
+              selector:
+                app: kotsadm-postgres

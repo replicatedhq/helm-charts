@@ -1,10 +1,6 @@
 # replicated-library
 
-<<<<<<< HEAD
 ![Version: 0.13.0](https://img.shields.io/badge/Version-0.13.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
-=======
-![Version: 0.12.1](https://img.shields.io/badge/Version-0.12.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
->>>>>>> main
 
 Replicated library chart
 
@@ -195,11 +191,11 @@ The below table represents the full API available via the Replicated Library Cha
 | services.example.ports.http.targetPort | string | `nil` | Specify a service targetPort if you wish to differ the service port from the application port. If `targetPort` is specified, this port number is used in the container definition instead of the `port` value. Therefore named ports are not supported for this field. |
 | services.example.selector | object | `{}` | Label sleector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
-| troubleshoot | object | See below | Configure the troubleshoot for the chart here. troubleshoot can be added by adding a dictionary key similar to the 'example' roleBinding. By default the supportBundle will be enabled and the default spec will be installed |
-| troubleshoot.my-custom-bundle | object | `{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"appName":"wg-easy"}},{"logs":{"appName":"kotsadm-postgres"}}],"enabled":true,"type":"SupportBundle"}` | Add custom support bundles here |
-| troubleshoot.replicated.enabled | bool | `true` | Enables or disables the support bundle |
-| troubleshoot.replicated.type | string | `"SupportBundle"` | Specify the type of troubleshoot, Preflight or SupportBundle |
-| troubleshoot.replicated.uri | string | `"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"` | Default spec to install |
+| troubleshoot | object | See below | Configure the troubleshoot for the chart here. troubleshoot can be added by adding a dictionary key. By default the supportBundle default spec from replicated will be disabled and not installed |
+| troubleshoot.support-bundle | object | `{"relicated":{"enabled":true,"my-custom-bundle":{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"collectorName":"wg-easy","containerNames":["wg-easy"],"namespace":"default","selector":{"app":"wg-easy"}}},{"logs":{"collectorName":"kotsadm-postgres","selector":{"app":"kotsadm-postgres"}}}],"enabled":true},"uri":"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"}}` | Specify the type of troubleshoot, Preflight or SupportBundle |
+| troubleshoot.support-bundle.relicated.enabled | bool | `true` | Enables or disables the support bundle |
+| troubleshoot.support-bundle.relicated.my-custom-bundle | object | `{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"collectorName":"wg-easy","containerNames":["wg-easy"],"namespace":"default","selector":{"app":"wg-easy"}}},{"logs":{"collectorName":"kotsadm-postgres","selector":{"app":"kotsadm-postgres"}}}],"enabled":true}` | Add custom support bundles here |
+| troubleshoot.support-bundle.relicated.uri | string | `"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"` | Default spec to install |
 
 ## Changelog
 
@@ -213,6 +209,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 
 - Added capability to override service name for ingress hosts (shortcut story - 71019)
+
+### [0.12.2]
+
+- Tidied up extra whitespace for pod and conatiner templates
 
 ### [0.12.1]
 
