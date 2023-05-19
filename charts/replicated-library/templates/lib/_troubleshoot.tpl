@@ -14,5 +14,17 @@ Renders the Troubleshoot objects required by the chart.
         {{- end }}
       {{- end }}
     {{- end }}
+
+    {{- if eq $name "preflights" -}}
+      {{- range $preflightsName, $preflightsValues := $troubleshootValues }}
+        {{- if $preflightsValues.enabled -}}
+          {{- $_ := set $.ContextNames "troubleshoot" $preflightsName -}}
+          {{- $_ := set $.ContextValues "troubleshoot" $preflightsValues -}}
+            {{- include "replicated-library.preflights" $ | nindent 0 -}}
+          {{- $_ := unset $.ContextNames "troubleshoot"  -}}
+          {{- $_ := unset $.ContextValues "troubleshoot"  -}}
+        {{- end }}
+      {{- end }}
+    {{- end }}
   {{- end }}
 {{- end }}

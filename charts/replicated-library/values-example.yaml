@@ -491,3 +491,12 @@ troubleshoot:
               collectorName: some-postgres-db
               selector:
                 app: some-postgres-db
+  preflights:
+    my-preflights:
+      image: replicated/preflight
+      enabled: true
+      collectors:
+        - clusterInfo: {}
+        - clusterResources: {}
+      analyzers:
+        - cephStatus: {}
