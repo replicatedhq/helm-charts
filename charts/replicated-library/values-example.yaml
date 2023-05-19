@@ -22,8 +22,8 @@ apps:
     # -- Enable the app
     # Each app represents a single controller type (deployment, daemonset, statefulset)
     enabled: false
-     # -- Specify the controller type.
-     # Valid options are deployment, daemonset or statefulset
+    # -- Specify the controller type.
+    # Valid options are deployment, daemonset or statefulset
     type: deployment
     # The serviceName is required for type = statefulset.
     # It can be set manually on the application or will be set automatically to the first service which is mapped to this app.
@@ -124,7 +124,6 @@ apps:
     #     #   verbs: ["get", "watch", "list"]
     #   ]
 
-
     # -- Set statefulset podManagementPolicy, valid values are Parallel and OrderedReady (default).
     podManagementPolicy:
     # -- Set annotations on the pod
@@ -148,17 +147,17 @@ apps:
     revisionHistoryLimit: 3
 
     # -- Custom priority class for different treatment by the scheduler
-    priorityClassName:  # system-node-critical
+    priorityClassName: # system-node-critical
     # -- Allow specifying a runtimeClassName other than the default one (ie: nvidia)
-    runtimeClassName:  # nvidia
+    runtimeClassName: # nvidia
     # -- Allows specifying a custom scheduler name
-    schedulerName:  # awkward-dangerous-scheduler
+    schedulerName: # awkward-dangerous-scheduler
     # -- Allows specifying explicit hostname setting
     hostname:
     # -- When using hostNetwork make sure you set dnsPolicy to `ClusterFirstWithHostNet`
     hostNetwork: false
     # -- Defaults to "ClusterFirst" if hostNetwork is false and "ClusterFirstWithHostNet" if hostNetwork is true.
-    dnsPolicy:  # ClusterFirst
+    dnsPolicy: # ClusterFirst
     # -- Optional DNS settings, configuring the ndots option may resolve nslookup issues on some Kubernetes setups.
     dnsConfig: {}
     # -- Enable/disable the generation of environment variables for services.
@@ -213,7 +212,8 @@ secrets:
     # -- Annotations to add to the secret
     annotations: {}
     # -- configMap data content. Helm template enabled.
-    data: {}
+    data:
+      {}
       # foo: bar
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
@@ -238,7 +238,8 @@ configmaps:
     # -- Annotations to add to the configMap
     annotations: {}
     # -- configMap data content. Helm template enabled.
-    data: {}
+    data:
+      {}
       # foo: bar
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
@@ -256,7 +257,7 @@ services:
     enabled: false
     # -- Optional list of apps to attach this service. This corresponds to apps configured in the `apps` key
     appName:
-    - example
+      - example
     # -- Override the name of this object. Default name if not overwritten will be releaseName-ChartName-objectName
     fullNameOverride:
     # -- Set the service type
@@ -271,7 +272,7 @@ services:
     externalTrafficPolicy:
     # -- Specify the ip policy. Options: SingleStack, PreferDualStack, RequireDualStack
     ipFamilyPolicy:
-     # -- The ip families that should be used. Options: IPv4, IPv6
+      # -- The ip families that should be used. Options: IPv4, IPv6
     ipFamilies: []
     # -- Provide additional annotations which may be required.
     annotations: {}
@@ -316,7 +317,7 @@ ingresses:
     labels: {}
     # -- Set the ingressClass that is used for this ingress.
     # Requires Kubernetes >=1.19
-    ingressClassName:  # "nginx"
+    ingressClassName: # "nginx"
     # -- Configure the hosts for the ingress
     hosts:
       - host: chart-example.local
@@ -379,7 +380,6 @@ persistence:
             storage: 8Gi
         storageClassName: slow
 
-
 # -- Configure the serviceAccounts for the chart here.
 # ServiceAccounts can be added by adding a dictionary key similar to the 'example' serviceAccount.
 # By default the name of the serviceAccount will be the name of the dictionary key unless overridden with serviceAccounts.*.nameOverride
@@ -413,24 +413,22 @@ roles:
     # -- Type of role. Must be either: ["Role", "ClusterRole"]
     kind: Role
     # -- Define the selectors used for aggregated ClusterRoles.  Only used with ClusterRoles.
-    aggregationRule: {
-      # clusterRoleSelectors:
-      #   - matchLabels:
-      #       rbac.example.com/aggregate-to-admin: "true"
-    }
+    aggregationRule: {}
+    # clusterRoleSelectors:
+    #   - matchLabels:
+    #       rbac.example.com/aggregate-to-admin: "true"
     # -- Configure the rules for the role
-    rules: [
-      # -- A rule must be express in the Kubernetes RBAC rule format
-      # - apiGroups:
-      #     - ""
-      #   resources:
-      #     - "pods"
-      #   verbs:
-      #     - "get"
-      #     - "watch"
-      #     - "list"
-    ]
+    rules: []
 
+# -- A rule must be express in the Kubernetes RBAC rule format
+# - apiGroups:
+#     - ""
+#   resources:
+#     - "pods"
+#   verbs:
+#     - "get"
+#     - "watch"
+#     - "list"
 # -- Configure the roleBindings for the chart here.
 # RoleBindings can be added by adding a dictionary key similar to the 'example' roleBinding.
 # By default the name of the roleBinding will be the name of the dictionary key unless overridden with roleBindings.*.nameOverride
@@ -449,8 +447,8 @@ roleBindings:
     kind: RoleBinding
     # -- Name of the service account to bind to the role
     subjects:
-    # -- A list of one or more ServiceAccount descriptions.
-        # -- Name of the service account to bind to the role
+      # -- A list of one or more ServiceAccount descriptions.
+      # -- Name of the service account to bind to the role
       - name: example
         # The namespace of the service account subject.  Optional.  If no namespace is provided, then the namespace of the chart will be used.
         namespace:
@@ -462,3 +460,34 @@ roleBindings:
       kind: Role
       # -- Name of the Role to bind to subjects.  If roleRef.kind: is set to ClusterRoleBinding, then name must be the name of a ClusterRole
       name: example
+# -- Configure the troubleshoot for the chart here.
+# troubleshoot can be added by adding a dictionary key.
+# By default the supportBundle default spec from replicated will be disabled and not installed
+# @default -- See below
+troubleshoot:
+  # -- Specify the type of troubleshoot, Preflight or SupportBundle
+  support-bundle:
+    relicated:
+      # -- Enables or disables the support bundle
+      enabled: true
+      # -- Default spec to install
+      uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
+      # -- Add custom support bundles here
+      my-custom-bundle:
+        enabled: true
+        collectors:
+          - clusterInfo: {}
+          - clusterResources: {}
+          - ceph: {}
+          - longhorn: {}
+          - logs:
+              collectorName: wg-easy
+              selector:
+                app: wg-easy
+              namespace: default
+              containerNames:
+                - wg-easy
+          - logs:
+              collectorName: kotsadm-postgres
+              selector:
+                app: kotsadm-postgres

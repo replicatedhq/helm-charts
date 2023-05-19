@@ -33,3 +33,169 @@ defaults:
       successThreshold: 1
       failureThreshold: 5
     startupProbe: {}
+
+troubleshoot:
+  support-bundle:
+    replicated:
+      enabled: false
+      uri: https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml
+      collectors:
+        - clusterInfo: {}
+        - clusterResources: {}
+        - ceph: {}
+        - longhorn: {}
+        - exec:
+            collectorName: kotsadm-rqlite-db
+            name: kots/admin_console
+            selector:
+              app: kotsadm-rqlite
+            command:
+              - sh
+              - -c
+              - |
+                wget -qO- kotsadm:${RQLITE_PASSWORD}@localhost:4001/db/backup?fmt=sql
+            timeout: 10s
+        - exec:
+            args:
+              - "http://localhost:3030/goroutines"
+            collectorName: kotsadm-goroutines
+            command:
+              - curl
+            containerName: kotsadm
+            name: kots/admin_console
+            selector:
+              app: kotsadm
+            timeout: 10s
+        - exec:
+            args:
+              - "http://localhost:3030/goroutines"
+            collectorName: kotsadm-operator-goroutines
+            command:
+              - curl
+            containerName: kotsadm-operator
+            name: kots/admin_console
+            selector:
+              app: kotsadm-operator
+            timeout: 10s
+        - logs:
+            collectorName: kotsadm-rqlite-db
+            name: kots/admin_console
+            selector:
+              app: kotsadm-rqlite
+        - logs:
+            collectorName: kotsadm-operator
+            name: kots/admin_console
+            selector:
+              app: kotsadm-operator
+        - logs:
+            collectorName: kotsadm
+            name: kots/admin_console
+            selector:
+              app: kotsadm
+        - logs:
+            collectorName: kurl-proxy-kotsadm
+            name: kots/admin_console
+            selector:
+              app: kurl-proxy-kotsadm
+        - logs:
+            collectorName: kotsadm-dex
+            name: kots/admin_console
+            selector:
+              app: kotsadm-dex
+        - logs:
+            collectorName: kotsadm-fs-minio
+            name: kots/admin_console
+            selector:
+              app: kotsadm-fs-minio
+        - logs:
+            collectorName: kotsadm-s3-ops
+            name: kots/admin_console
+            selector:
+              app: kotsadm-s3-ops
+        - logs:
+            collectorName: registry
+            name: kots/kurl
+            selector:
+              app: registry
+            namespace: kurl
+        - logs:
+            collectorName: ekc-operator
+            name: kots/kurl
+            selector:
+              app: ekc-operator
+            namespace: kurl
+        - exec:
+            collectorName: weave-status
+            command:
+              - /home/weave/weave
+            args:
+              - --local
+              - status
+            containerName: weave
+            exclude: ""
+            name: kots/kurl/weave
+            namespace: kube-system
+            selector:
+              name: weave-net
+            timeout: 10s
+        - exec:
+            collectorName: weave-report
+            command:
+              - /home/weave/weave
+            args:
+              - --local
+              - report
+            containerName: weave
+            exclude: ""
+            name: kots/kurl/weave
+            namespace: kube-system
+            selector:
+              name: weave-net
+            timeout: 10s
+        - logs:
+            collectorName: weave-net
+            selector:
+              name: weave-net
+            namespace: kube-system
+            name: kots/kurl/weave
+        - logs:
+            collectorName: kube-flannel
+            selector:
+              app: flannel
+            namespace: kube-flannel
+            name: kots/kurl/flannel
+        - exec:
+            args:
+              - "http://goldpinger.kurl.svc.cluster.local:80/check_all"
+            collectorName: goldpinger-statistics
+            command:
+              - curl
+            containerName: kotsadm
+            name: kots/goldpinger
+            selector:
+              app: kotsadm
+            timeout: 10s
+        - copyFromHost:
+            collectorName: kurl-host-preflights
+            name: kots/kurl/host-preflights
+            hostPath: /var/lib/kurl/host-preflights
+            extractArchive: true
+            image: alpine
+            imagePullPolicy: IfNotPresent
+            timeout: 1m
+        - configMap:
+            collectorName: kurl-current-config
+            name: kurl-current-config
+            namespace: kurl
+            includeAllData: true
+        - configMap:
+            collectorName: kurl-last-config
+            name: kurl-last-config
+            namespace: kurl
+            includeAllData: true
+        - collectd:
+            collectorName: collectd
+            hostPath: /var/lib/collectd/rrd
+            image: alpine
+            imagePullPolicy: IfNotPresent
+            timeout: 5m

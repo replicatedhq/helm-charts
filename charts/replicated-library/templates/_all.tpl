@@ -19,4 +19,5 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
   {{ include "replicated-library.serviceAccounts" . | nindent 0 }}
   {{ include "replicated-library.roles" . | nindent 0 }}
   {{ include "replicated-library.roleBindings" . | nindent 0 }}
+  {{ include "replicated-library.troubleshoot" . | nindent 0 }}
 {{- end -}}
