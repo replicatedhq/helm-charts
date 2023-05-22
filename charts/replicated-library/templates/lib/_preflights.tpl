@@ -128,6 +128,7 @@ metadata:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/show-output": "true"
     "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
     "helm.sh/hook-output-log-policy": hook-failed, hook-succeeded
 spec:
   serviceAccountName: "{{ $.Release.Name }}-preflight"
