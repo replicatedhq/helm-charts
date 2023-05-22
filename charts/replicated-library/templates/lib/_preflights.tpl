@@ -71,7 +71,7 @@ metadata:
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
-    "helm.sh/hook-delete-policy": hook-succeeded, hook-failed
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
 rules:
 - apiGroups: [""]
   resources: ["namespaces"]
@@ -92,18 +92,18 @@ rules:
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
-labels:
-  troubleshoot.io/kind: preflight
-  app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
-  app.kubernetes.io/instance: {{ $.Release.Name }}
-  app.kubernetes.io/managed-by: {{ .Release.Service }}
-  helm.sh/chart: {{ include "replicated-library.names.chart" . }}
-annotations:
-  "helm.sh/hook": pre-install, pre-upgrade
-  "helm.sh/hook-weight": "-6"
-  "helm.sh/hook-delete-policy": hook-succeeded, hook-failed
 metadata:
   name: "{{ $.Release.Name }}-preflight"
+  labels:
+    troubleshoot.io/kind: preflight
+    app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "replicated-library.names.chart" . }}
+  annotations:
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
 subjects:
 - kind: ServiceAccount
   name: "{{ $.Release.Name }}-preflight"
@@ -117,34 +117,26 @@ roleRef:
 apiVersion: v1
 kind: Pod
 metadata:
- name: {{ $.Release.Name }}-preflight-check
- labels:
+  name: {{ $.Release.Name }}-preflight-check
+  labels:
     app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
     app.kubernetes.io/instance: {{ $.Release.Name }}
     helm.sh/chart: {{ include "replicated-library.names.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-annotations:
-   "helm.sh/hook": pre-install, pre-upgrade
-   "helm.sh/show-output": "true"
-   "helm.sh/hook-weight": "-7"
-   "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
-   "helm.sh/hook-output-log-policy": hook-failed, hook-succeeded
+  annotations:
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/show-output": "true"
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-output-log-policy": hook-failed, hook-succeeded
 spec:
- serviceAccountName: "{{ $.Release.Name }}-preflight"
- restartPolicy: Never
- volumes:
+  serviceAccountName: "{{ $.Release.Name }}-preflight"
+  restartPolicy: Never
+  volumes:
   - name: preflights
     secret:
       secretName: {{ include "replicated-library.names.prefix" . }}-preflight-{{ .ContextNames.troubleshoot }}
-  - name: kube-api-token
-    projected:
-      defaultMode: 420
-      sources:
-        - serviceAccountToken:
-          expirationSeconds: 3607
-          path: token
- containers:
+  containers:
   - name: pre-install-job
     image: "{{ $values.image }}"
     command:
