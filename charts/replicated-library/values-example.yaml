@@ -491,3 +491,25 @@ troubleshoot:
               collectorName: some-postgres-db
               selector:
                 app: some-postgres-db
+  preflights:
+    # -- Add custom support preflight spec here
+    my-preflights:
+      # -- Specify the replicated preflight image for the container
+      image: replicated/preflight:latest
+      # -- Enables or disables the preflight
+      enabled: true
+      collectors:
+        - run:
+            collectorName: "static-hi"
+            image: "alpine:3"
+            command: ["echo", "hi static!"]
+      analyzers:
+        - textAnalyze:
+            checkName: Said hi!
+            fileName: /static-hi.log
+            regex: "hi static"
+            outcomes:
+              - fail:
+                  message: Didn't say hi.
+              - pass:
+                  message: Said hi!

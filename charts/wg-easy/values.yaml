@@ -12,7 +12,7 @@ apps:
           allowPrivilegeEscalation: false
           capabilities:
             add:
-            - NET_ADMIN
+              - NET_ADMIN
             drop: []
         ports:
           - containerPort: 51821
@@ -20,20 +20,20 @@ apps:
           - containerPort: 51820
             protocol: UDP
         volumeMounts:
-        - mountPath: /etc/wireguard
-          name: config
+          - mountPath: /etc/wireguard
+            name: config
         resources:
           requests:
             cpu: 50m
             memory: 50Mi
     volumes:
-    - name: config
-      persistentVolumeClaim:
-        claimName: config
+      - name: config
+        persistentVolumeClaim:
+          claimName: config
 services:
   web:
     enabled: true
-    appName: 
+    appName:
       - wg-easy
     type: ClusterIP
     ipFamilyPolicy: SingleStack
@@ -46,7 +46,7 @@ services:
         targetPort: 51821
   vpn:
     enabled: true
-    appName: 
+    appName:
       - wg-easy
     type: LoadBalancer
     ports:
@@ -73,7 +73,7 @@ wireguard:
   # If password is defined will set a password on the web interface
   #password: supersecure
   # See https://github.com/WeeJeWel/wg-easy for configuration options
-  host: vpn.example.com 
+  host: vpn.example.com
   #port:
   #mtu:
   #persistentKeepalive:

@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.13.0](https://img.shields.io/badge/Version-0.13.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.13.2](https://img.shields.io/badge/Version-0.13.2-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -37,7 +37,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.13.0
+  version: 0.13.2
 ```
 
 You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm)
@@ -192,10 +192,13 @@ The below table represents the full API available via the Replicated Library Cha
 | services.example.selector | object | `{}` | Label sleector(s) for the service to associate Pods as Endpoints. This takes precedence over services.*.appName |
 | services.example.type | string | `"ClusterIP"` | Set the service type |
 | troubleshoot | object | See below | Configure the troubleshoot for the chart here. troubleshoot can be added by adding a dictionary key. By default the supportBundle default spec from replicated will be disabled and not installed |
-| troubleshoot.support-bundles | object | `{"relicated":{"enabled":true,"my-custom-bundle":{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"collectorName":"wg-easy","containerNames":["wg-easy"],"namespace":"default","selector":{"app":"wg-easy"}}},{"logs":{"collectorName":"kotsadm-postgres","selector":{"app":"kotsadm-postgres"}}}],"enabled":true},"uri":"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"}}` | Specify the type of troubleshoot, Preflight or SupportBundle |
-| troubleshoot.support-bundles.relicated.enabled | bool | `true` | Enables or disables the support bundle |
-| troubleshoot.support-bundles.relicated.my-custom-bundle | object | `{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"collectorName":"wg-easy","containerNames":["wg-easy"],"namespace":"default","selector":{"app":"wg-easy"}}},{"logs":{"collectorName":"kotsadm-postgres","selector":{"app":"kotsadm-postgres"}}}],"enabled":true}` | Add custom support bundles here |
-| troubleshoot.support-bundles.relicated.uri | string | `"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"` | Default spec to install |
+| troubleshoot.preflights.my-preflights | object | `{"analyzers":[{"textAnalyze":{"checkName":"Said hi!","fileName":"/static-hi.log","outcomes":[{"fail":{"message":"Didn't say hi."}},{"pass":{"message":"Said hi!"}}],"regex":"hi static"}}],"collectors":[{"run":{"collectorName":"static-hi","command":["echo","hi static!"],"image":"alpine:3"}}],"enabled":true,"image":"replicated/preflight:latest"}` | Add custom support preflight spec here |
+| troubleshoot.preflights.my-preflights.enabled | bool | `true` | Enables or disables the preflight |
+| troubleshoot.preflights.my-preflights.image | string | `"replicated/preflight:latest"` | Specify the replicated preflight image for the container |
+| troubleshoot.support-bundles | object | `{"replicated":{"enabled":true,"my-custom-bundle":{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"collectorName":"wg-easy","containerNames":["wg-easy"],"namespace":"default","selector":{"app":"wg-easy"}}},{"logs":{"collectorName":"some-postgres-db","selector":{"app":"some-postgres-db"}}}],"enabled":true},"uri":"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"}}` | Specify the type of troubleshoot, Preflight or SupportBundle |
+| troubleshoot.support-bundles.replicated.enabled | bool | `true` | Enables or disables the support bundle |
+| troubleshoot.support-bundles.replicated.my-custom-bundle | object | `{"collectors":[{"clusterInfo":{}},{"clusterResources":{}},{"ceph":{}},{"longhorn":{}},{"logs":{"collectorName":"wg-easy","containerNames":["wg-easy"],"namespace":"default","selector":{"app":"wg-easy"}}},{"logs":{"collectorName":"some-postgres-db","selector":{"app":"some-postgres-db"}}}],"enabled":true}` | Add custom support bundles here |
+| troubleshoot.support-bundles.replicated.uri | string | `"https://raw.githubusercontent.com/replicatedhq/troubleshoot-specs/main/in-cluster/default.yaml"` | Default spec to install |
 
 ## Changelog
 
@@ -209,6 +212,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 
 - Added capability to override service name for ingress hosts (shortcut story - 71019)
+
+### [0.13.2]
+
+#### Added
+
+- Add support for preflights specs
+
+### [0.13.1]
+
+#### Changed
+
+- Rename `troubleshoot.support-bundle` to `troubleshoot.support-bundles`
+
+### [0.13.0]
+
+#### Added
+
+- Add support for support bundle specs
 
 ### [0.12.2]
 
