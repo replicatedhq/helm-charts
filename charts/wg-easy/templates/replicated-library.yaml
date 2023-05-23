@@ -57,6 +57,7 @@ troubleshoot:
       enabled: true
       collectors:
         - logs:
+            name: wg-easy
             collectorName: wg-easy
             selector:
               - app=wg-easy

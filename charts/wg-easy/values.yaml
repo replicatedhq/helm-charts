@@ -96,32 +96,32 @@ troubleshoot:
       enabled: true
       analyzers:
         - clusterPodStatuses:
-          name: unhealthy
-          outcomes:
-            - fail:
-                when: "== CrashLoopBackOff"
-                message: Pod {{ .Namespace }}/{{ .Name }} is in a CrashLoopBackOff state.
-            - fail:
-                when: "== ImagePullBackOff"
-                message: Pod {{ .Namespace }}/{{ .Name }} is in a ImagePullBackOff state.
-            - fail:
-                when: "== Pending"
-                message: Pod {{ .Namespace }}/{{ .Name }} is in a Pending state.
-            - fail:
-                when: "== Evicted"
-                message: Pod {{ .Namespace }}/{{ .Name }} is in a Evicted state.
-            - fail:
-                when: "== Terminating"
-                message: Pod {{ .Namespace }}/{{ .Name }} is in a Terminating state.
-            - fail:
-                when: "== Init:Error"
-                message: Pod {{ .Namespace }}/{{ .Name }} is in an Init:Error state.
-            - fail:
-                when: "== Init:CrashLoopBackOff"
-                message: Pod {{ .Namespace }}/{{ .Name }} is in an Init:CrashLoopBackOff state.
-            - fail:
-                when: "!= Healthy" # Catch all unhealthy pods. A pod is considered healthy if it has a status of Completed, or Running and all of its containers are ready.
-                message: Pod {{ .Namespace }}/{{ .Name }} is unhealthy with a status of {{ .Status.Reason }}.
+            name: unhealthy-pods
+            outcomes:
+              - fail:
+                  when: "== CrashLoopBackOff"
+                  message: Pod {{ .Namespace }}/{{ .Name }} is in a CrashLoopBackOff state.
+              - fail:
+                  when: "== ImagePullBackOff"
+                  message: Pod {{ .Namespace }}/{{ .Name }} is in a ImagePullBackOff state.
+              - fail:
+                  when: "== Pending"
+                  message: Pod {{ .Namespace }}/{{ .Name }} is in a Pending state.
+              - fail:
+                  when: "== Evicted"
+                  message: Pod {{ .Namespace }}/{{ .Name }} is in a Evicted state.
+              - fail:
+                  when: "== Terminating"
+                  message: Pod {{ .Namespace }}/{{ .Name }} is in a Terminating state.
+              - fail:
+                  when: "== Init:Error"
+                  message: Pod {{ .Namespace }}/{{ .Name }} is in an Init:Error state.
+              - fail:
+                  when: "== Init:CrashLoopBackOff"
+                  message: Pod {{ .Namespace }}/{{ .Name }} is in an Init:CrashLoopBackOff state.
+              - fail:
+                  when: "!= Healthy" # Catch all unhealthy pods. A pod is considered healthy if it has a status of Completed, or Running and all of its containers are ready.
+                  message: Pod {{ .Namespace }}/{{ .Name }} is unhealthy with a status of {{ .Status.Reason }}.
   preflights:
     wg-preflights:  # arbitrary name for your custom spec
       enabled: true
