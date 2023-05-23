@@ -84,24 +84,3 @@ wireguard:
   #postUp:
   #preDown:
   #postDown:
-
-troubleshoot:
-  support-bundle:
-    replicated:
-      enabled: true
-    my-custom-bundle:
-      enabled: true
-      collectors:
-        - clusterInfo: {}
-        - clusterResources: {}
-        - ceph: {}
-        - longhorn: {}
-      analyzers:
-        - cephStatus: {}
-  preflights:
-    my-preflights:
-      image: replicated/preflight:latest
-      enabled: true
-      collectors:
-        - clusterInfo: {}
-        - clusterResources: {}
