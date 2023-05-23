@@ -14,11 +14,8 @@ kind: Secret
 metadata:
   name: {{ include "replicated-library.names.prefix" . }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
+    {{- include "replicated-library.labels" $ | nindent 4 }}
     troubleshoot.io/kind: preflight
-    app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
-    app.kubernetes.io/instance: {{ $.Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "replicated-library.names.chart" . }}
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
@@ -37,83 +34,106 @@ stringData:
       {{- if $values.analyzers }}
       analyzers:
        {{- include "replicated-library.troubleshoot.analyzers" . | indent 6 }}
+      {{- else -}}
+        {{- fail (printf "Preflight %s requires the analyzers to be set" .ContextNames.troubleshoot) }}
       {{- end }}
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: "{{ $.Release.Name }}-preflight"
+  name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
+    {{- include "replicated-library.labels" $ | nindent 4 }}
     troubleshoot.io/kind: preflight
-    app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
-    app.kubernetes.io/instance: {{ $.Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "replicated-library.names.chart" . }}
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
-    "helm.sh/hook-delete-policy": hook-succeeded, hook-failed
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
 secrets:
-- name: {{ include "replicated-library.names.prefix" . }}-preflight-{{ .ContextNames.troubleshoot }}
+  - name: {{ include "replicated-library.names.prefix" . }}-preflight-{{ .ContextNames.troubleshoot }}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: "{{ $.Release.Name }}-preflight"
+  name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
+    {{- include "replicated-library.labels" $ | nindent 4 }}
     troubleshoot.io/kind: preflight
-    app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
-    app.kubernetes.io/instance: {{ $.Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "replicated-library.names.chart" . }}
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
     "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
 rules:
-- apiGroups: [""]
-  resources: ["namespaces"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: [""]
-  resources: ["nodes"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "watch", "list", "create"]
-- apiGroups: ["apiextensions.k8s.io"]
-  resources: ["customresourcedefinitions"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: ["storage.k8s.io"]
-  resources: ["storageclasses"]
-  verbs: ["get", "watch", "list"]
-- apiGroups: [""]
-  resources: ["pods/log"]
-  verbs: ["get", "list"]
+  - apiGroups:
+      - ""
+    resources: 
+      - "namespaces"
+    verbs: 
+      - "get"
+      - "watch"
+      - "list"
+  - apiGroups:
+      - ""
+    resources: 
+      - "nodes"
+    verbs: 
+      - "get"
+      - "watch"
+      - "list"
+  - apiGroups:
+      - ""
+    resources: 
+      - "pods"
+    verbs: 
+      - "get"
+      - "watch"
+      - "list"
+      - "create"
+  - apiGroups: 
+      - "apiextensions.k8s.io"
+    resources: 
+      - "customresourcedefinitions"
+    verbs: 
+      - "get"
+      - "watch"
+      - "list"
+  - apiGroups: 
+      - "storage.k8s.io"
+    resources: 
+      - "storageclasses"
+    verbs: 
+      - "get"
+      - "watch"
+      - "list"
+  - apiGroups:
+      - ""
+    resources: 
+      - "pods/log"
+    verbs: 
+      - "get"
+      - "list"
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: "{{ $.Release.Name }}-preflight"
+  name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
+    {{- include "replicated-library.labels" $ | nindent 4 }}
     troubleshoot.io/kind: preflight
-    app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
-    app.kubernetes.io/instance: {{ $.Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "replicated-library.names.chart" . }}
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
     "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
 subjects:
 - kind: ServiceAccount
-  name: "{{ $.Release.Name }}-preflight"
+  name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   namespace: {{ $.Release.Namespace }}
 roleRef:
   kind: ClusterRole 
-  name: "{{ $.Release.Name }}-preflight" 
+  name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   apiGroup: rbac.authorization.k8s.io
 
 ---
@@ -122,11 +142,8 @@ kind: Pod
 metadata:
   name: {{ $.Release.Name }}-preflight-check
   labels:
-    app.kubernetes.io/name: {{ include "replicated-library.names.name" $ }}
-    app.kubernetes.io/instance: {{ $.Release.Name }}
-    helm.sh/chart: {{ include "replicated-library.names.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    {{- include "replicated-library.labels" $ | nindent 4 }}
+    troubleshoot.io/kind: preflight
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/show-output": "true"
@@ -134,21 +151,21 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
     "helm.sh/hook-output-log-policy": hook-failed, hook-succeeded
 spec:
-  serviceAccountName: "{{ $.Release.Name }}-preflight"
+  serviceAccountName: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   restartPolicy: Never
   volumes:
-  - name: preflights
-    secret:
-      secretName: {{ include "replicated-library.names.prefix" . }}-preflight-{{ .ContextNames.troubleshoot }}
-  containers:
-  - name: pre-install-job
-    image: "{{ $values.image }}"
-    command:
-      - "preflight"
-      - "--interactive=false"
-      - "/preflights/preflight.yaml"
-    volumeMounts:
     - name: preflights
-      mountPath: /preflights
+      secret:
+        secretName: {{ include "replicated-library.names.prefix" . }}-preflight-{{ .ContextNames.troubleshoot }}
+  containers:
+    - name: pre-install-job
+      image:  {{ default "replicated/preflight:latest" $values.image }}
+      command:
+        - "preflight"
+        - "--interactive=false"
+        - "/preflights/preflight.yaml"
+      volumeMounts:
+        - name: preflights
+          mountPath: /preflights
 
 {{- end }}
