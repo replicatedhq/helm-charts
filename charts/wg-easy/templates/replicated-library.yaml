@@ -50,6 +50,20 @@ secrets:
     data:
       PASSWORD: {{ $password }}
 {{- end }}
+
+troubleshoot:
+  support-bundles:
+    wg-easy:  # arbitrary name for your custom spec
+      enabled: true
+      collectors:
+        - logs:
+            name: wg-easy
+            collectorName: wg-easy
+            selector:
+              - app=wg-easy
+            namespace: {{ .Release.Namespace }}
+            containerNames:
+              - wg-easy
 {{- end -}}
 {{- $_ := mergeOverwrite .Values (include "hardcodedValues" . | fromYaml) -}}
 {{- include "replicated-library.all" . }}
