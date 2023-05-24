@@ -23,19 +23,21 @@ https://github.com/replicatedhq/replicated-library-chart
 {{ template "chart.kubeVersionLine" . }}
 {{- end -}}
 
-{{- define "custom.generateREADME" -}}
-## Updating the README
+{{- define "custom.releasing" -}}
+## Releasing
 
-We use [Helm Docs](https://github.com/norwoodj/helm-docs)
+Ensure the version number is set in `Chart.yaml` for the version you want to release. 
+
+Add your changes to the file `README_CHANGELOG.md.gotmpl`. The format for using this file is documented in the file itself.
+
+You need to have [Helm Docs](https://github.com/norwoodj/helm-docs) installed. Then run the following command to update the README and README_CHANGELOG files.
 
 ```
-helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl -f values-example.yaml
+helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.gotmpl
 ```
-{{- end -}}
 
-{{- define "custom.dependencies" -}}
-## Dependencies
-{{ template "chart.requirementsTable" . }}
+Check in the updated files as part of your PR.
+
 {{- end -}}
 
 {{- define "custom.install" -}}
@@ -44,14 +46,6 @@ helm-docs -t README.md.gotmpl -t README_CHANGELOG.md.gotmpl -t README_CONFIG.md.
 This is a [Helm Library Chart](https://helm.sh/docs/topics/library_charts/#helm).
 
 **WARNING: THIS CHART IS NOT MEANT TO BE INSTALLED DIRECTLY**
-{{- end -}}
-
-{{- define "custom.valuesSection" -}}
-## Values
-
-The below table represents the full API available via the Replicated Library Chart with `example` being a placeholder for your own configuration. Source is [values-example.yaml](./values-example.yaml) file.
-
-{{ template "chart.valuesTable" . }}
 {{- end -}}
 
 {{- define "custom.support" -}}
@@ -71,9 +65,7 @@ The below table represents the full API available via the Replicated Library Cha
 
 {{ template "custom.requirements" . }}
 
-{{ template "custom.dependencies" . }}
-
-{{ template "custom.generateREADME" . }}
+{{ template "custom.releasing" . }}
 
 {{ template "custom.install" . }}
 
@@ -82,8 +74,6 @@ The below table represents the full API available via the Replicated Library Cha
 {{ template "custom.features" . }}
 
 {{ template "custom.advancedTemplating" . }}
-
-{{ template "custom.valuesSection" . }}
 
 {{ template "custom.changelog" . }}
 
