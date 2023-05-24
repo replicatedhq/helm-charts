@@ -43,6 +43,7 @@ dependencies:
 ```
 
 You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm)
+To see an example of the available values see [values-example.yaml](values-example.yaml)
 
 ## Features
 
