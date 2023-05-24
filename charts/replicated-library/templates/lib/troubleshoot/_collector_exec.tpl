@@ -43,12 +43,10 @@
     containerName: {{ .containerName }}
   {{- end }}
 
-  {{- if .name }}
-    name: {{ .name }}
-  {{- end }}
-
   {{- if .namespace }}
     namespace: {{ .namespace }}
+  {{- else }}
+    namespace: {{ $.Release.Namespace }}
   {{- end }}
 
   {{- if .exclude }}

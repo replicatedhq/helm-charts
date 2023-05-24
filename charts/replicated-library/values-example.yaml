@@ -474,7 +474,6 @@ roleBindings:
 # -- Configure the troubleshoot for the chart here.
 # troubleshoot can be added by adding a dictionary key.
 # By default the supportBundle default spec from replicated will be disabled and not installed
-# @default -- See below
 troubleshoot:
   # -- Specify the type of troubleshoot, Preflight or SupportBundle
   support-bundles:
