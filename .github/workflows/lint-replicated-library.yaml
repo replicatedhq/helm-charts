@@ -3,7 +3,6 @@ name: lint-replicated-library-chart
 on:
   pull_request:
     types:
-      - converted_to_draft
       - opened
       - reopened
       - synchronize
@@ -44,7 +43,6 @@ jobs:
         with:
           fetch-depth: 0
 
-			# To be able to use the shivjm/helm-kubeconform-action Docker image (saves rebuilding it, faster)
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
