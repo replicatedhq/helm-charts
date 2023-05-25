@@ -3,6 +3,7 @@ name: lint-replicated-library-chart
 on:
   pull_request:
     types:
+      - converted_to_draft
       - opened
       - reopened
       - synchronize
