@@ -1,0 +1,25 @@
+apps:
+  nginx:
+    enabled: true
+    type: deployment
+    replicas: 1
+    containers:
+      nginx:
+        image:
+          repository: nginx
+          tag: 1.25.0-alpine
+        ports:
+          - name: http
+            containerPort: 80
+
+services:
+  nginx:
+    enabled: true
+    appName: ["nginx"]
+    type: ClusterIP
+    ports:
+      http:
+        enabled: true
+        port: 8080
+        protocol: HTTP
+        targetPort: 80
