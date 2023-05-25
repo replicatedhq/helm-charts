@@ -1,0 +1,6 @@
+dependencies:
+- name: replicated-library
+  repository: file://../../charts/replicated-library
+  version: 0.13.2
+digest: sha256:a871ad95abbd0c455b5a5483c80f6a5355aa600c51e8a9df1bd610975c8dee13
+generated: "2023-05-25T22:43:29.346725+10:00"

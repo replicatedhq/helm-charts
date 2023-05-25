@@ -51,6 +51,6 @@ jobs:
       - name: Test replicated-library with values
         uses: docker://ghcr.io/shivjm/helm-kubeconform-action:v0.2.0
         env:
-          CHARTS_DIRECTORY: "charts"
+          CHARTS_DIRECTORY: "test-charts"
           KUBECONFORM_STRICT: "true"
           HELM_UPDATE_DEPENDENCIES: "true"
