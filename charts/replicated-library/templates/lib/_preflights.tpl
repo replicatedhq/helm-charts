@@ -136,6 +136,7 @@ roleRef:
   name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   apiGroup: rbac.authorization.k8s.io
 
+{{- if $values.runHook -}}
 ---
 apiVersion: v1
 kind: Pod
@@ -167,5 +168,6 @@ spec:
       volumeMounts:
         - name: preflights
           mountPath: /preflights
+{{- end -}}
 
 {{- end }}

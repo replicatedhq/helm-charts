@@ -498,6 +498,8 @@ troubleshoot:
       image: replicated/preflight:latest
       # -- Enables or disables the preflight
       enabled: true
+      # -- Enable or disable the preflight running in a pre-install/pre-upgrade hook
+      runHook: false
       collectors:
         - run:
             collectorName: "static-hi"
