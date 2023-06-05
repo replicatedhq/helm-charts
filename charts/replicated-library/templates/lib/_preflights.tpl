@@ -38,6 +38,7 @@ stringData:
         {{- fail (printf "Preflight %s requires the analyzers to be set" .ContextNames.troubleshoot) }}
       {{- end }}
 
+{{ if $values.enableRBAC -}}
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -136,6 +137,7 @@ roleRef:
   name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   apiGroup: rbac.authorization.k8s.io
 
+{{- end -}}
 ---
 apiVersion: v1
 kind: Pod
@@ -151,7 +153,9 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
     "helm.sh/hook-output-log-policy": hook-failed, hook-succeeded
 spec:
+{{- if $values.enableRBAC }}
   serviceAccountName: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
+{{- end }}
   restartPolicy: Never
   volumes:
     - name: preflights
