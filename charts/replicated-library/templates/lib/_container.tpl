@@ -43,11 +43,7 @@
   terminationMessagePolicy: {{ . }}
   {{- end }}
 {{- end }}
-{{- with $containerValues.env }}
-  env:
-    {{- get (fromYaml (include "replicated-library.env_vars" .)) "env" | toYaml | nindent 4 -}}
-{{- end }}
-  {{- with $containerValues.env }}
+{{- if $containerValues.env }}
   env:
     {{- with $containerValues.env}}
       {{- toYaml . | nindent 4 }}
