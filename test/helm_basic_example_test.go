@@ -51,7 +51,6 @@ func TestHelmBasicExampleTemplateRenderedDeployment(t *testing.T) {
 	    helm.UnmarshalK8SYaml(t, doc, &deployment)
 
 	    // Finally, we verify the deployment pod template spec is set to the expected container image value
-        // Switch on i to check the correct deployment is being tested
         var expectedContainerImage string
         if i == 0 {
 	        expectedContainerImage = "nginx:latest"
