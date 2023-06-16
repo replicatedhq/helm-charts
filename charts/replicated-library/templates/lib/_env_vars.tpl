@@ -16,7 +16,7 @@ Environment variables used by containers.
       {{- if kindIs "map" $value -}}
         {{- if hasKey $value "value" -}}
           {{- $envValue := $value.value | toString -}}
-          {{- $result = append $result (dict "name" $name "value" $envValue ) -}} #- name: foo / value bar
+          {{- $result = append $result (dict "name" $name "value" $envValue ) -}}
         {{- else if hasKey $value "valueFrom" -}}
           {{- $result = append $result (dict "name" $name "valueFrom" $value.valueFrom) -}}
         {{- else -}}
@@ -26,7 +26,7 @@ Environment variables used by containers.
       {{- if not (kindIs "map" $value) -}}
       {{- if kindIs "string" $value -}}
       #foo: bar
-          {{- $result = append $result (dict "name" $name "value" $value) -}} #foo: bar
+          {{- $result = append $result (dict "name" $name "value" $value) -}}
       {{- else if or (kindIs "float64" $value) (kindIs "bool" $value) -}}
         {{- $result = append $result (dict "name" $name "value" ($value | toString)) -}}
       {{- else -}}
