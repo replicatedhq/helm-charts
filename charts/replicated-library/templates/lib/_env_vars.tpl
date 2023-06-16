@@ -13,13 +13,26 @@ Environment variables used by containers.
         {{- $name = required "environment variables as a list of maps require a name field" $value.name -}}
       {{- end -}}
 
+      {{- if kindIs "map" $value -}}
+        {{- if hasKey $value "value" -}}
+          {{- $envValue := $value.value | toString -}}
+          {{- $result = append $result (dict "name" $name "value" $envValue) -}}
+        {{- else if hasKey $value "valueFrom" -}}
+          {{- $result = append $result (dict "name" $name "valueFrom" $value.valueFrom) -}}
+        {{- else -}}
+          {{- $result = append $result (dict "name" $name "valueFrom" $value) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- if not (kindIs "map" $value) -}}
       {{- if kindIs "string" $value -}}
-        {{- $result = append $result (dict "name" $name "value" $value) -}}
+        {{- $result = append $result (dict "name" $name "value" "v1") -}}
       {{- else if or (kindIs "float64" $value) (kindIs "bool" $value) -}}
         {{- $result = append $result (dict "name" $name "value" ($value | toString)) -}}
       {{- else -}}
+        {{- $envValue := $value.value | toString -}}
         {{- $result = append $result (dict "name" $name "value" $value) -}}
       {{- end -}}
+    {{- end -}}
     {{- end -}}
     {{- toYaml (dict "env" $result) | nindent 0 -}}
   {{- end -}}
