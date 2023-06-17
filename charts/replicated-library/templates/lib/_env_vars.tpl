@@ -25,7 +25,7 @@ Environment variables used by containers.
           {{- $envValue := $value.value | toString -}}
           {{- $result = append $result (dict "name" $name "value" $envValue) -}}
         {{- else if hasKey $value "valueFrom" -}}
-        # # map in values.yamlwith valueFrom example: 
+        # map in values.yamlwith valueFrom example: 
         #  - name: MYSQL_ROOT_PASSWORD  # Renders & installs statefulset with said environment variable.
         #    valueFrom:
         #    secretKeyRef:
