@@ -20,7 +20,7 @@ Environment variables used by containers.
         {{- else if hasKey $value "valueFrom" -}}
           {{- $result = append $result (dict "name" $name "valueFrom" $value.valueFrom) -}}
         {{- else -}}
-          {{- $result = append $result (dict "name" $name "valueFrom" "2") -}}
+          {{- $result = append $result (dict "name" $name "valueFrom" $value) -}}
         {{- end -}}
       {{- end -}}
       {{- if not (kindIs "map" $value) -}}
