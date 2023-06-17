@@ -12,26 +12,30 @@ Environment variables used by containers.
       {{- if kindIs "int" $name -}}
         {{- $name = required "environment variables as a list of maps require a name field" $value.name -}}
       {{- end -}}
-
-      {{- if kindIs "map" $value -}}
-        {{- if hasKey $value "value" -}}
+      {{- if kindIs "string" $value -}}
+      # string in values.yaml example: foo: bar 
+        {{- $result = append $result (dict "name" $name "value" $value) -}}
+      {{- else if or (kindIs "float64" $value) (kindIs "bool" $value) -}}
+        {{- $result = append $result (dict "name" $name "value" ($value | toString)) -}}
+      {{- else if kindIs "map" $value -}}
+        # map in values.yaml with value example: 
+        # -name: foo
+        #  value: bar 
+        {{- if hasKey $value "value" -}} 
           {{- $envValue := $value.value | toString -}}
-          {{- $result = append $result (dict "name" $name "value" $envValue ) -}}
+          {{- $result = append $result (dict "name" $name "value" $envValue) -}}
         {{- else if hasKey $value "valueFrom" -}}
+        # # map in values.yamlwith valueFrom example: 
+        #  - name: MYSQL_ROOT_PASSWORD  # Renders & installs statefulset with said environment variable.
+        #    valueFrom:
+        #    secretKeyRef:
+        #      name: mysql-auth
+        #      key: MYSQL_ROOT_PASSWORD
           {{- $result = append $result (dict "name" $name "valueFrom" $value.valueFrom) -}}
         {{- else -}}
           {{- $result = append $result (dict "name" $name "valueFrom" $value) -}}
-        {{- end -}}
-      {{- end -}}
-      {{- if not (kindIs "map" $value) -}}
-      {{- if kindIs "string" $value -}}
-      #foo: bar
-          {{- $result = append $result (dict "name" $name "value" $value) -}}
-      {{- else if or (kindIs "float64" $value) (kindIs "bool" $value) -}}
-        {{- $result = append $result (dict "name" $name "value" ($value | toString)) -}}
-      {{- else -}}
+        {{- end -}}      {{- else -}}
         {{- $result = append $result (dict "name" $name "value" $value) -}}
-        {{- end -}}
       {{- end -}}
     {{- end -}}
     {{- toYaml (dict "env" $result) | nindent 0 -}}
