@@ -52,9 +52,20 @@ apps:
 
         # -- Environment variables. Template enabled.
         # Syntax options:
-        # DATABASE_USER: USERNAME
+        # a. DATABASE_USER: USERNAME
+        # b. - name: DATABASE_USER
+        #      USERNAME
+        # c. - name: DATABASE_USER  
+        #      valueFrom:
+        #        secretKeyRef:
+        #          name: db-user
+        #          key: USER
+        # d. - name: DATABASE_USER  
+        #      valueFrom:
+        #        configMapKeyRef:
+        #          name: db_user
+        #          key: DB_USER
         env:
-
         # -- Secrets and/or ConfigMaps that will be loaded as environment variables.
         # [[ref]](https://unofficial-kubernetes.readthedocs.io/en/latest/tasks/configure-pod-container/configmap/#use-case-consume-configmap-in-environment-variables)
         envFrom: []
