@@ -19,8 +19,8 @@ Environment variables used by containers.
         {{- $result = append $result (dict "name" $name "value" ($value | toString)) -}}
       {{- else if kindIs "map" $value -}}
         # map in values.yaml with value example: 
-        # -name: foo
-        #  value: bar 
+        # - name: foo
+        #   value: bar 
         {{- if hasKey $value "value" -}} 
           {{- $envValue := $value.value | toString -}}
           {{- $result = append $result (dict "name" $name "value" $envValue) -}}
@@ -34,7 +34,8 @@ Environment variables used by containers.
           {{- $result = append $result (dict "name" $name "valueFrom" $value.valueFrom) -}}
         {{- else -}}
           {{- $result = append $result (dict "name" $name "valueFrom" $value) -}}
-        {{- end -}}      {{- else -}}
+        {{- end -}}
+      {{- else -}}
         {{- $result = append $result (dict "name" $name "value" $value) -}}
       {{- end -}}
     {{- end -}}
