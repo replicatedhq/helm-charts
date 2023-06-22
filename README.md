@@ -11,3 +11,26 @@ While chart-releaser will release multiple charts at once, pull requests should 
 The Github action will list any reason for failure to release. A common mistake is not updating the Chart.lock file to match the Chart.yaml file. If a lock file is included in a chart, chart-release will verify that it matches the Chart.yaml version to avoid unexpected dependency versions. A failure to release only needs to be fixed in a new PR and merged again to trigger chart-releaser to try again.
 
 At no point should a version ever be re-released. Once released a version is immutable. If a chart needs to be updated, a new version should be created. This is to ensure that the version history of a chart is clear and unambiguous.
+
+## Tests
+
+There are tests in place, that are executed as GitHub Actions + can also be executed locally.
+
+
+For local use, first install `go-task` (if you don't have it already). On MacOS:
+
+```
+brew install go-task
+```
+
+Then:
+
+```
+VALUES=values-nginx-basic task test
+```
+
+Or if you want to use a chart other than `test-replicated-library` (that exists as a directory in `test-charts`):
+
+```
+CHART=somechart VALUES=values-nginx-basic task test
+```

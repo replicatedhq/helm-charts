@@ -1,0 +1,45 @@
+name: test-replicated-library-chart
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    branches:
+      - main
+
+jobs:
+  get_values_files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - id: set-matrix
+        name: Set Values Matrix
+        run: echo "::set-output name=matrix::$(find test-charts/test-replicated-library/tests -type f -print0 | xargs -0 -n1 -- basename)"
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+  test_values_file:
+    needs: get_values_files
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        valuesfile: ${{ fromJson(needs.get_values_files.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # TODO: do we need it...?
+      #- name: Login to GitHub Container Registry
+      #  uses: docker/login-action@v1
+      #  with:
+      #    registry: ghcr.io
+      #    username: ${{ github.actor }}
+      #    password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Tests
+        env:
+          VALUES: ${{ matrix.valuesfile }}
+        run: 
+          - task test

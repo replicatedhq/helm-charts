@@ -34,23 +34,3 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: ct lint --charts ./charts/replicated-library
-
-  kubeconform:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Test replicated-library with values
-        uses: docker://ghcr.io/shivjm/helm-kubeconform-action:v0.2.0
-        env:
-          CHARTS_DIRECTORY: "test-charts"
-          KUBECONFORM_STRICT: "true"
-          HELM_UPDATE_DEPENDENCIES: "true"

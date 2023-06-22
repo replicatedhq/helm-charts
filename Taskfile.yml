@@ -1,0 +1,15 @@
+version: '3'
+
+tasks:
+  test:
+    cmds:
+      - helm template -f tests/{{.VALUES}} testrelease .
+    dir: test-charts/{{.CHART}}
+    vars:
+      CHART: test-replicated-library
+    # TODOLATER: refactor once https://github.com/go-task/task/pull/1204 is merged/released?
+    preconditions:
+      - sh: "[ {{.CHART}} ]"
+        msg: "CHART env var not set, should be the name of a directory in test-charts"
+      - sh: "[ {{.VALUES}} ]"
+        msg: "VALUES env var not set, should be the name of a YAML file in test-charts/CHART/tests/"
