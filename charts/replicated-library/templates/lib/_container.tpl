@@ -45,7 +45,7 @@
 {{- end }}
   {{- with $containerValues.env }}
   env:
-    {{- get (fromYaml (include "replicated-library.env_vars" .)) "env" | toYaml | nindent 4 -}}
+       {{- get (fromYaml (include "replicated-library.env_vars" .)) "env" | toYaml | nindent 4 -}}
   {{- end }}
   {{- if or $containerValues.envFrom $containerValues.secret }}
   envFrom:
