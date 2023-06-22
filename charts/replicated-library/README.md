@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.13.2](https://img.shields.io/badge/Version-0.13.2-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.13.4](https://img.shields.io/badge/Version-0.13.4-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -39,7 +39,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.13.2
+  version: 0.13.4
 ```
 
 You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm)
@@ -65,9 +65,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+### [0.13.4]
+
 #### Added
 
-- Added capability to override service name for ingress hosts (shortcut story - 71019)
+- Make RBAC for preflights optional
+
+### [0.13.3]
+
+#### Fixed
+
+- Fixed issue where whitespace was being chomped and causing formatting issue with imagePullSecrets
 
 ### [0.13.2]
 
@@ -86,6 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 
 - Add support for support bundle specs
+- Added capability to override service name for ingress hosts (shortcut story - 71019)
 
 ### [0.12.2]
 

@@ -497,7 +497,10 @@ troubleshoot:
       # -- Specify the replicated preflight image for the container
       image: replicated/preflight:latest
       # -- Enables or disables the preflight
-      enabled: true
+      enabled: false
+      # -- Enable or disable the creation of RBAC roles to run the preflight
+      enableRBAC: false
+      # -- Add collectors and analyzers here
       collectors:
         - run:
             collectorName: "static-hi"
