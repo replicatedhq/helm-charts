@@ -41,5 +41,4 @@ jobs:
       - name: Run Tests
         env:
           VALUES: ${{ matrix.valuesfile }}
-        run: 
-          - task test
+        run: task test
