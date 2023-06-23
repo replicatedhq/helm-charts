@@ -39,7 +39,10 @@ jobs:
       #    username: ${{ github.actor }}
       #    password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install Task
-        run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.26.0
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Tests
         env:
           VALUES: ${{ matrix.valuesfile }}
