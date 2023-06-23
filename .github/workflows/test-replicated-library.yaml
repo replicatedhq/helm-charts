@@ -18,7 +18,8 @@ jobs:
         uses: actions/checkout@v2
       - id: set-matrix
         name: Set Values Matrix
-        run: python3 -c 'import os, json; print(json.dumps(os.listdir("test-charts/test-replicated-library/tests")));' >> $GITHUB_OUTPUT
+        #run: python3 -c 'import os, json; print(json.dumps(os.listdir("test-charts/test-replicated-library/tests")));' >> $GITHUB_OUTPUT
+        run: echo "::set-output name=matrix::$(python3 -c 'import os, json; print(json.dumps(os.listdir(\'test-charts/test-replicated-library/tests\')));')"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
 
