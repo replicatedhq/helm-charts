@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  get_values_files:
+  values_files:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,12 +22,12 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
 
-  test_values_file:
-    needs: get_values_files
+  test_values:
+    needs: values_files
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        valuesfile: ${{ fromJson(needs.get_values_files.outputs.matrix) }}
+        valuesfile: ${{ fromJson(needs.values_files.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -38,6 +38,8 @@ jobs:
       #    registry: ghcr.io
       #    username: ${{ github.actor }}
       #    password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Task
+        run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d
       - name: Run Tests
         env:
           VALUES: ${{ matrix.valuesfile }}
