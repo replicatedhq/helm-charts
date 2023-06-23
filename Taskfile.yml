@@ -1,6 +1,9 @@
 version: '3'
 
 tasks:
+  macos_install_deps:
+    cmds:
+      - brew install kubeconform kube-score
   update_version:
     cmds:
       - grep version charts/replicated-library/Chart.yaml | cut -d' ' -f2 > ./library_chart_version
@@ -17,7 +20,11 @@ tasks:
       # Render the Helm chart
       - helm template -f tests/{{.VALUES}} testrelease . > rendered.yml
       # Run kubeconform
+      # TODOLATER: -kubernetes-version
+      # TODO: -strict
+      - kubeconform -schema-location default -summary rendered.yml
       # Run kube-score
+      - kube-score score rendered.yml
     deps: [update_version]
     dir: test-charts/{{.CHART}}
     vars:
