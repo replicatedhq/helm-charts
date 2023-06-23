@@ -4,7 +4,8 @@ tasks:
   update_version:
     cmds:
       - grep version charts/replicated-library/Chart.yaml | cut -d' ' -f2 > ./library_chart_version
-      - 'sed -i .bak "s/^  version:.*$/  version: $(cat ./library_chart_version)/" test-charts/test-replicated-library/Chart.yaml'
+      - cp test-charts/test-replicated-library/Chart.yaml.tmpl test-charts/test-replicated-library/Chart.yaml
+      - 'sed -i.bak "s/^  version:.*$/  version: $(cat ./library_chart_version)/" test-charts/test-replicated-library/Chart.yaml'
       - rm -f test-charts/test-replicated-library/Chart.yaml.bak
       - rm -f ./library_chart_version
   test:
@@ -14,7 +15,7 @@ tasks:
       # Update the chart dependencies
       - helm dependency update
       # Render the Helm chart
-      - helm template -f tests/{{.VALUES}} testrelease .
+      - helm template -f tests/{{.VALUES}} testrelease . > rendered.yml
       # Run kubeconform
       # Run kube-score
     deps: [update_version]

@@ -1,9 +1,13 @@
 # Helm resources
 charts/*/Chart.lock
 charts/*/charts
+
 # Test Helm chart resources
 test-charts/*/Chart.lock
+# There's a .yml.tmpl that lives in git
+test-charts/*/Chart.yaml
 test-charts/*/charts
+test-charts/*/rendered.yml
 
 # General files for the project
 pkg/*
