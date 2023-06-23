@@ -24,6 +24,7 @@ tasks:
       # TODO: -strict
       - kubeconform -schema-location default -summary rendered.yml
       # Run kube-score
+      # TODO: get more of these to pass then enable...
       - kube-score score rendered.yml
     deps: [update_version]
     dir: test-charts/{{.CHART}}
