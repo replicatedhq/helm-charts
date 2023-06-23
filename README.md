@@ -17,10 +17,11 @@ At no point should a version ever be re-released. Once released a version is imm
 There are tests in place, that are executed as GitHub Actions + can also be executed locally.
 
 
-For local use, first install `go-task` (if you don't have it already). On MacOS:
+For local use, first install `go-task` (if you don't have it already) and the test suite tools. On MacOS:
 
 ```
 brew install go-task
+task macos_install_deps
 ```
 
 Then:
