@@ -1,9 +1,23 @@
 version: '3'
 
 tasks:
+  update_version:
+    cmds:
+      - grep version charts/replicated-library/Chart.yaml | cut -d' ' -f2 > ./library_chart_version
+      - 'sed -i .bak "s/^  version:.*$/  version: $(cat ./library_chart_version)/" test-charts/test-replicated-library/Chart.yaml'
+      - rm -f test-charts/test-replicated-library/Chart.yaml.bak
+      - rm -f ./library_chart_version
   test:
     cmds:
+      # Make sure we have a clean slate (for local use)
+      - rm -rf charts
+      # Update the chart dependencies
+      - helm dependency update
+      # Render the Helm chart
       - helm template -f tests/{{.VALUES}} testrelease .
+      # Run kubeconform
+      # Run kube-score
+    deps: [update_version]
     dir: test-charts/{{.CHART}}
     vars:
       CHART: test-replicated-library

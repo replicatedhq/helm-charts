@@ -26,4 +26,4 @@ appVersion: "1.16.0"
 dependencies:
 - name: replicated-library
   repository: file://../../charts/replicated-library
-  version: 0.13.2
+  version: __PLACEHOLDER_VERSION__
