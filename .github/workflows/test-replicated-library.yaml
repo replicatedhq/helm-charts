@@ -50,8 +50,7 @@ jobs:
           #kubectl: '1.27.3'
           helm: '${{ matrix.helmversion }}'
           kubeconform: '0.6.2'
-          # TODOLATER: enable if we need it
-          #conftest: '0.43.1'
+          conftest: '0.43.1'
           kube-score: '1.16.1'
       - name: Run Tests
         env:
