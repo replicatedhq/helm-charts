@@ -18,7 +18,7 @@ tasks:
       # Update the chart dependencies
       - helm dependency update
       # Render the Helm chart
-      - helm template -f tests/{{.VALUES}} testrelease . > rendered.yml
+      - helm template -f tests/{{.VALUES}}.yaml testrelease . > rendered.yml
       # Run kubeconform
       # TODOLATER: -kubernetes-version
       # TODO: -strict
@@ -35,4 +35,4 @@ tasks:
       - sh: "[ {{.CHART}} ]"
         msg: "CHART env var not set, should be the name of a directory in test-charts"
       - sh: "[ {{.VALUES}} ]"
-        msg: "VALUES env var not set, should be the name of a YAML file in test-charts/CHART/tests/"
+        msg: "VALUES env var not set, should be the name of a YAML file in test-charts/CHART/tests/ (without the .yaml suffix)"
