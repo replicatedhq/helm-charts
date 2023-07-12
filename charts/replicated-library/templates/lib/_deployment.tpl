@@ -59,5 +59,5 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "replicated-library.pod" . | nindent 6 }}
+      {{- include "replicated-library.pod" . | trim | nindent 6 }}
 {{- end }}
