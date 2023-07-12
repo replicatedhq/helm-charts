@@ -8,7 +8,6 @@ The pod definition included in the main.
   {{- else -}}
     {{- fail "_pod.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
   {{- with $values.imagePullSecrets }}
 imagePullSecrets:
     {{- toYaml . | nindent 2 }}
