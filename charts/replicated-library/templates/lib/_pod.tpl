@@ -13,7 +13,15 @@ The pod definition included in the main.
 imagePullSecrets:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-serviceAccountName: {{ include "replicated-library.names.serviceAccountName" . }}
+  {{- if $values.serviceAccountName }}
+    {{- /* Add the prefix to the serviceAccountName if it is in the serviceAccounts dict and is enabled */}}
+      {{- if $.Values.serviceAccounts }}
+        {{- if and (hasKey $.Values.serviceAccounts $values.serviceAccountName) (get (get $.Values.serviceAccounts $values.serviceAccountName) "enabled") -}}
+          {{- $_ := set $values "serviceAccountName" (printf "%s-%s" (include "replicated-library.names.prefix" $) $values.serviceAccountName | trimAll "-") }}
+        {{- end }}
+      {{- end }}
+serviceAccountName: {{ $values.serviceAccountName }}
+  {{- end }}
 automountServiceAccountToken: {{ $values.automountServiceAccountToken }}
   {{- with $values.podSecurityContext }}
 securityContext:
