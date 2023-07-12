@@ -21,8 +21,12 @@ metadata:
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if $values.revisionHistoryLimit }}
   revisionHistoryLimit: {{ $values.revisionHistoryLimit }}
+  {{- end }}
+  {{- if $values.replicas }}
   replicas: {{ $values.replicas }}
+  {{- end }}
   {{- $strategy := default $.Values.defaults.strategy $values.strategy }}
   {{- if and (ne $strategy "Recreate") (ne $strategy "RollingUpdate") }}
     {{- fail (printf "Not a valid strategy type for Deployment (%s)" $strategy) }}
