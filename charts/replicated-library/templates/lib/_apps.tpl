@@ -20,6 +20,7 @@ Renders the app objects into Deployments, DaemonSets, and StatefulSets as requir
 
       {{- $_ := unset $.ContextNames "app"  -}}
       {{- $_ := unset $.ContextValues "app"  -}}
+      {{- $_ := unset $.ContextValues "names"  -}}
     {{- end }}
   {{- end }}
 {{- end }}
