@@ -25,7 +25,8 @@ tasks:
       - kubeconform -schema-location default -summary rendered.yml
       # Run kube-score
       # TODO: get more of these to pass then enable...
-      # - kube-score score --ignore-container-cpu-limit --ignore-container-memory-limit --ignore-test pod-networkpolicy --ignore-test container-image-pull-policy --ignore-test container-ephemeral-storage-request-and-limit rendered.yml
+      # TODOLATER: do we want to --ignore-test container-security-context-privileged also? whats our stance on privileged containers in these charts?
+      # - kube-score score --ignore-container-cpu-limit --ignore-container-memory-limit --ignore-test pod-networkpolicy --ignore-test container-image-pull-policy --ignore-test container-ephemeral-storage-request-and-limit --ignore-test container-security-context-user-group-id --ignore-test container-security-context-readonlyrootfilesystem rendered.yml
       # Run conftest feeding in the values-specific .rego files subdirectory
       - conftest test --policy policies/{{.VALUES}}/ rendered.yml
     deps: [update_version]
