@@ -63,7 +63,7 @@ initContainers:
   {{- include "replicated-library.initContainer" . | nindent 2 }}
 {{- end }}
 containers:
-  {{- include "replicated-library.container" . | nindent 2 }}
+  {{- include "replicated-library.container" . | trim | nindent 2 }}
   {{- with $values.volumes }}
 volumes:
     {{- range . }} 
