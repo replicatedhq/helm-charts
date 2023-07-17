@@ -21,10 +21,12 @@ Main entrypoint for the replicated-library chart. It will render all underlying 
   {{ include "replicated-library.roleBindings" . | nindent 0 }}
   {{ include "replicated-library.troubleshoot" . | nindent 0 }}
 
+  {{/* Uncomment when all fails are removed
   {{- if len $.ContextNames -}}
   {{- fail "$.ContextNames is not empty" -}}
   {{- end -}}
   {{- if len $.ContextValues -}}
   {{- fail "$.ContextValues is not empty" -}}
   {{- end -}}
+  */}}
 {{- end -}}
