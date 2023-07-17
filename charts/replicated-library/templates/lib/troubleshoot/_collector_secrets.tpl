@@ -22,10 +22,8 @@
 
   {{- if .namespace }}
     namespace: {{ .namespace }}
-  {{- else if eq .configMapName "*"}}
-    namespace: {{ $.Release.Namespace }}
   {{- else }}
-      {{- fail (printf "The 'namespace' for the 'secret' collector was not found." ) }}
+    namespace: {{ $.Release.Namespace }}
   {{- end }}
 
   {{- if .key }}

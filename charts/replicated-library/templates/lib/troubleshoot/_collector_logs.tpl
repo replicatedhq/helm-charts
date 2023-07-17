@@ -47,6 +47,12 @@
       maxBytes: {{ default 5000000 .limits.maxBytes }}
   {{- end }}
 
+  {{- if .namespace }}
+    namespace: {{ .namespace }}
+  {{- else }}
+    namespace: {{ $.Release.Namespace }}
+  {{- end }}
+
   {{- end }}
 
 {{- end }}

@@ -1,6 +1,6 @@
 # replicated-library
 
-![Version: 0.13.4](https://img.shields.io/badge/Version-0.13.4-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.13.7](https://img.shields.io/badge/Version-0.13.7-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 Replicated library chart
 
@@ -39,7 +39,7 @@ Include the chart as a dependency in your `Chart.yaml`
 dependencies:
 - name: replicated-library
   repository: https://replicatedhq.github.io/helm-charts
-  version: 0.13.4
+  version: 0.13.7
 ```
 
 You can see a full example of this library chart in use [here](https://github.com/replicatedhq/replicated-starter-helm)
@@ -64,6 +64,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
+
+### [0.13.7]
+
+#### Added
+
+- Remove unused app.serviceAccount
+- Setup app.serviceAccountName to configure which serviceAccount an app uses
+
+### [0.13.5]
+
+#### Added
+
+- Adding support for native Kubernetes syntax for container environment variables. Supported formats are now:
+    -  string in values.yaml example:
+       foo: bar
+    -  map in values.yaml with value example:
+        - name: foo
+          value: bar
+    -  map in values.yaml with valueFrom example:
+        - name: MYSQL_ROOT_PASSWORD  # Renders & installs statefulset with said environment variable.
+          valueFrom:
+            secretKeyRef:
+              name: mysql-auth
+              key: MYSQL_ROOT_PASSWORD
 
 ### [0.13.4]
 
