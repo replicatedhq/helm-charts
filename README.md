@@ -11,3 +11,7 @@ While chart-releaser will release multiple charts at once, pull requests should 
 The Github action will list any reason for failure to release. A common mistake is not updating the Chart.lock file to match the Chart.yaml file. If a lock file is included in a chart, chart-release will verify that it matches the Chart.yaml version to avoid unexpected dependency versions. A failure to release only needs to be fixed in a new PR and merged again to trigger chart-releaser to try again.
 
 At no point should a version ever be re-released. Once released a version is immutable. If a chart needs to be updated, a new version should be created. This is to ensure that the version history of a chart is clear and unambiguous.
+
+## wg-easy
+
+To make releasing of the library chart easier this repo only intendeds to host this single chart. Examples using the chart can now be found at <https://github.com/replicatedhq/platform-examples>. The previous `wg-easy` chart has been moved to a personal repository of the maintainer at: <https://github.com/chris-sanders/helm-charts/tree/master/charts/wg-easy>
