@@ -9,14 +9,15 @@ within the replicated-library library.
   {{- else -}}
     {{- fail "_service.tpl requires the 'service' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "service") -}}
 
   {{- $svcType := $values.type | default "" -}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
+  {{- $_ := set $.ContextValues "names" (dict "context" "service") }}
   name: {{ include "replicated-library.names.fullname" . }}
+  {{- $_ := unset $.ContextValues "names"  }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}

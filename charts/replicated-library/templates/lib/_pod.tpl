@@ -8,7 +8,6 @@ The pod definition included in the main.
   {{- else -}}
     {{- fail "_pod.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
   {{- with $values.imagePullSecrets }}
 imagePullSecrets:
     {{- toYaml . | nindent 2 }}
@@ -64,7 +63,7 @@ initContainers:
   {{- include "replicated-library.initContainer" . | nindent 2 }}
 {{- end }}
 containers:
-  {{- include "replicated-library.container" . | nindent 2 }}
+  {{- include "replicated-library.container" . | trim | nindent 2 }}
   {{- with $values.volumes }}
 volumes:
     {{- range . }} 

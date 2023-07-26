@@ -14,7 +14,7 @@ kind: Secret
 metadata:
   name: {{ include "replicated-library.names.prefix" . }}-support-bundle-{{ .ContextNames.troubleshoot }}
   labels:
-    troubleshoot.io/kind: support-bundle
+    troubleshoot.sh/kind: support-bundle
 stringData:
   support-bundle-spec: |-
     apiVersion: troubleshoot.sh/v1beta2
