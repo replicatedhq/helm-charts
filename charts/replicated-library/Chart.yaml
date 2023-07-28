@@ -1,7 +1,7 @@
 apiVersion: v2
 name: replicated-library
 description: Replicated library chart
-type: library
+# type: library
 version: 0.13.8
 kubeVersion: ">=1.16.0-0"
 keywords:
