@@ -15,7 +15,7 @@ within the replicated library.
         {{- if $values.fullNameOverride }}
           {{- $serviceName = $values.fullNameOverride }}
         {{- else }}
-          {{- $serviceName = printf "%s-%s" (include "replicated-library.names.prefix" $) $name -}}
+          {{- $serviceName = printf "%s-%s" (include "replicated-library.names.prefix" $) $name | trimAll "-" -}}
         {{- end }}
         {{- $matchingServices = append $matchingServices $serviceName }}
       {{- end }}
