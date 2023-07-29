@@ -3,7 +3,9 @@ This template serves as the blueprint for the StatefulSet objects that are creat
 within the replicated library.
 */}}
 {{- define "replicated-library.firstservice" -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "app") }}
   {{- $appName := include "replicated-library.names.appname" . }}
+  {{- $_ := unset $.ContextValues "names" }}
   {{- $matchingServices := list }}
 
   {{- range $name, $values := .Values.services }}
