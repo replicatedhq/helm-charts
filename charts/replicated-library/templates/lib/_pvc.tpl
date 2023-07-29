@@ -9,12 +9,13 @@ within the replicated-library library.
   {{- else -}}
     {{- fail "_persistence.tpl requires the 'persistence' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "persistence") -}}
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
+  {{- $_ := set $.ContextValues "names" (dict "context" "persistence") }}
   name: {{ include "replicated-library.names.fullname" . }}
+  {{- $_ := unset $.ContextValues "names" }}
   {{- with (merge ($values.labels | default dict) (include "replicated-library.labels" $ | fromYaml)) }}
   labels: {{- toYaml . | nindent 4 }}
   {{- end }}
