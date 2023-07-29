@@ -70,8 +70,15 @@ volumes:
       {{- /* Add the prefix to the persistentVolumes if from this chart */}}
       {{- if (hasKey . "persistentVolumeClaim") -}}
         {{- if (hasKey .persistentVolumeClaim "claimName") -}}
-          {{- if and (hasKey $.Values.persistence .persistentVolumeClaim.claimName) (get (get $.Values.persistence .persistentVolumeClaim.claimName) "enabled") -}}
-            {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName | trimAll "-") }}
+          {{- if (hasKey $.Values.persistence .persistentVolumeClaim.claimName) }}
+            {{- $globalVolume := get (get $.Values.persistence .persistentVolumeClaim.claimName) "persistentVolumeClaim" }}
+            {{- if and (hasKey $globalVolume "existingClaim") $globalVolume.existingClaim -}}
+              {{- /* Volume is an existing claim use that name */}}
+              {{- $_ := set .persistentVolumeClaim "claimName" $globalVolume.existingClaim }}
+            {{- else }}
+              {{- /* Append the prefix */}}
+              {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName | trimAll "-") }}
+            {{- end }}
           {{- end }}
         {{- end }}
       {{- end }}
