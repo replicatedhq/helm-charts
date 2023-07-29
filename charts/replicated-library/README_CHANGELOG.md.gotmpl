@@ -11,7 +11,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### [Unreleased]
-#
+
+### [0.13.9]
+
+#### Fixed
+
+- 110 - Fix examples for existingClaim and implement it in containers
+- 109 - Trim "-" from serviceName
+- 91 - cleaned up white spaces in Statefulset spec
+- fixes serviceName not being set on Statefulsets
+
+#### Added
+
+Adds prefixes to configmaps in volumes like persistentVolumes
+Use existingClaim in pods when set on persistence
+
 ### [0.13.8]
 
 #### Fixed
