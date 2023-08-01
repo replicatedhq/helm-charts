@@ -16,7 +16,7 @@
     {{- if kindIs "string" . }}
     - {{ . }}
     {{- else }}
-      {{ toYaml . | nindent 4 }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
   {{- with $containerValues.args }}
@@ -24,7 +24,7 @@
     {{- if kindIs "string" . }}
     - {{ . }}
     {{- else }}
-    {{ toYaml . | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
   {{- with $containerValues.securityContext }}
@@ -71,7 +71,7 @@
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- else if and (hasKey $containerValues "ports") $containerValues.ports }}
-    {{ $firstPort := first $containerValues.ports }}
+    {{- $firstPort := first $containerValues.ports }}
     {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort }}
       {{- $_ := set $.Values.defaults.probes.livenessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
       {{- with $.Values.defaults.probes.livenessProbe }}
@@ -86,7 +86,7 @@
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- else if and (hasKey $containerValues "ports") $containerValues.ports }}
-    {{ $firstPort := first $containerValues.ports }}
+    {{- $firstPort := first $containerValues.ports }}
     {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort }}
       {{- $_ := set $.Values.defaults.probes.readinessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
       {{- with $.Values.defaults.probes.readinessProbe }}

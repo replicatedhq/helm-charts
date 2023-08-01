@@ -3,7 +3,9 @@ This template serves as the blueprint for the StatefulSet objects that are creat
 within the replicated library.
 */}}
 {{- define "replicated-library.firstservice" -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "app") }}
   {{- $appName := include "replicated-library.names.appname" . }}
+  {{- $_ := unset $.ContextValues "names" }}
   {{- $matchingServices := list }}
 
   {{- range $name, $values := .Values.services }}
@@ -13,7 +15,7 @@ within the replicated library.
         {{- if $values.fullNameOverride }}
           {{- $serviceName = $values.fullNameOverride }}
         {{- else }}
-          {{- $serviceName = printf "%s-%s" (include "replicated-library.names.prefix" $) $name -}}
+          {{- $serviceName = printf "%s-%s" (include "replicated-library.names.prefix" $) $name | trimAll "-" -}}
         {{- end }}
         {{- $matchingServices = append $matchingServices $serviceName }}
       {{- end }}
@@ -78,7 +80,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "replicated-library.pod" . | nindent 6 }}
+      {{- include "replicated-library.pod" . | trim | nindent 6 }}
   {{- if $values.volumeClaimTemplates }}
   volumeClaimTemplates:
   {{- range $index, $vct := $values.volumeClaimTemplates }}

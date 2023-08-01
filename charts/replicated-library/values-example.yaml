@@ -378,7 +378,7 @@ persistence:
     # -- Configure a Persistent Volume Claim to be mounted to the app's primary container
     persistentVolumeClaim:
       # -- Existing Persistent Volume Claim name. Takes precedence over persistentVolumeClaim.spec
-      existingClaimName:
+      existingClaim:
       # -- PersistentVolumeClaim spec
       # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
       spec:

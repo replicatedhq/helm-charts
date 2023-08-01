@@ -67,13 +67,28 @@ containers:
   {{- with $values.volumes }}
 volumes:
     {{- range . }} 
-      {{- /* Add the prefix to the claimName if the claim is in the persistence dict and is enabled */}}
+      {{- /* Add the prefix to the persistentVolumes if from this chart */}}
       {{- if (hasKey . "persistentVolumeClaim") -}}
         {{- if (hasKey .persistentVolumeClaim "claimName") -}}
-          {{- if and (hasKey $.Values.persistence .persistentVolumeClaim.claimName) (get (get $.Values.persistence .persistentVolumeClaim.claimName) "enabled") -}}
-            {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName | trimAll "-") }}
+          {{- if (hasKey $.Values.persistence .persistentVolumeClaim.claimName) }}
+            {{- $globalVolume := get (get $.Values.persistence .persistentVolumeClaim.claimName) "persistentVolumeClaim" }}
+            {{- if and (hasKey $globalVolume "existingClaim") $globalVolume.existingClaim -}}
+              {{- /* Volume is an existing claim use that name */}}
+              {{- $_ := set .persistentVolumeClaim "claimName" $globalVolume.existingClaim }}
+            {{- else }}
+              {{- /* Append the prefix */}}
+              {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName | trimAll "-") }}
+            {{- end }}
           {{- end }}
-        {{- end -}}
+        {{- end }}
+      {{- end }}
+      {{- /* Add the prefix to configMaps if from this chart */}}
+      {{- if (hasKey . "configMap") -}}
+        {{- if (hasKey .configMap "name") -}}
+          {{- if and (hasKey $.Values.configmaps .configMap.name) (get (get $.Values.configmaps .configMap.name) "enabled") -}}
+            {{- $_ := set .configMap "name" (printf "%s-%s" (include "replicated-library.names.prefix" $) .configMap.name | trimAll "-") }}
+          {{- end }}
+        {{- end }}
       {{- end }}
     {{- end }}
   {{- toYaml . | nindent 2}}
