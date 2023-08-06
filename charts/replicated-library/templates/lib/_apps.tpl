@@ -18,13 +18,9 @@ Renders the app objects into Deployments, DaemonSets, and StatefulSets as requir
         {{- fail (printf "Type of (%s) for app - (%s) is not valid" $appValues.type $name) }}
       {{ end -}}
 
-      {{- if $appValues.serviceAccount -}}
-        {{- if $appValues.serviceAccount.create -}}
-          {{- include "replicated-library.serviceAccount" $ }}
-        {{- end }}
-      {{- end }}
       {{- $_ := unset $.ContextNames "app"  -}}
       {{- $_ := unset $.ContextValues "app"  -}}
+      {{- $_ := unset $.ContextValues "names"  -}}
     {{- end }}
   {{- end }}
 {{- end }}

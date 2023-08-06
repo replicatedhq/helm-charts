@@ -8,12 +8,19 @@ The pod definition included in the main.
   {{- else -}}
     {{- fail "_pod.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
   {{- with $values.imagePullSecrets }}
 imagePullSecrets:
     {{- toYaml . | nindent 2 }}
   {{- end }}
-serviceAccountName: {{ include "replicated-library.names.serviceAccountName" . }}
+  {{- if $values.serviceAccountName }}
+    {{- /* Add the prefix to the serviceAccountName if it is in the serviceAccounts dict and is enabled */}}
+      {{- if $.Values.serviceAccounts }}
+        {{- if and (hasKey $.Values.serviceAccounts $values.serviceAccountName) (get (get $.Values.serviceAccounts $values.serviceAccountName) "enabled") -}}
+          {{- $_ := set $values "serviceAccountName" (printf "%s-%s" (include "replicated-library.names.prefix" $) $values.serviceAccountName | trimAll "-") }}
+        {{- end }}
+      {{- end }}
+serviceAccountName: {{ $values.serviceAccountName }}
+  {{- end }}
 automountServiceAccountToken: {{ $values.automountServiceAccountToken }}
   {{- with $values.podSecurityContext }}
 securityContext:
@@ -56,17 +63,32 @@ initContainers:
   {{- include "replicated-library.initContainer" . | nindent 2 }}
 {{- end }}
 containers:
-  {{- include "replicated-library.container" . | nindent 2 }}
+  {{- include "replicated-library.container" . | trim | nindent 2 }}
   {{- with $values.volumes }}
 volumes:
     {{- range . }} 
-      {{- /* Add the prefix to the claimName if the claim is in the persistence dict and is enabled */}}
+      {{- /* Add the prefix to the persistentVolumes if from this chart */}}
       {{- if (hasKey . "persistentVolumeClaim") -}}
         {{- if (hasKey .persistentVolumeClaim "claimName") -}}
-          {{- if and (hasKey $.Values.persistence .persistentVolumeClaim.claimName) (get (get $.Values.persistence .persistentVolumeClaim.claimName) "enabled") -}}
-            {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName | trimAll "-") }}
+          {{- if (hasKey $.Values.persistence .persistentVolumeClaim.claimName) }}
+            {{- $globalVolume := get (get $.Values.persistence .persistentVolumeClaim.claimName) "persistentVolumeClaim" }}
+            {{- if and (hasKey $globalVolume "existingClaim") $globalVolume.existingClaim -}}
+              {{- /* Volume is an existing claim use that name */}}
+              {{- $_ := set .persistentVolumeClaim "claimName" $globalVolume.existingClaim }}
+            {{- else }}
+              {{- /* Append the prefix */}}
+              {{- $_ := set .persistentVolumeClaim "claimName" (printf "%s-%s" (include "replicated-library.names.prefix" $) .persistentVolumeClaim.claimName | trimAll "-") }}
+            {{- end }}
           {{- end }}
-        {{- end -}}
+        {{- end }}
+      {{- end }}
+      {{- /* Add the prefix to configMaps if from this chart */}}
+      {{- if (hasKey . "configMap") -}}
+        {{- if (hasKey .configMap "name") -}}
+          {{- if and (hasKey $.Values.configmaps .configMap.name) (get (get $.Values.configmaps .configMap.name) "enabled") -}}
+            {{- $_ := set .configMap "name" (printf "%s-%s" (include "replicated-library.names.prefix" $) .configMap.name | trimAll "-") }}
+          {{- end }}
+        {{- end }}
       {{- end }}
     {{- end }}
   {{- toYaml . | nindent 2}}

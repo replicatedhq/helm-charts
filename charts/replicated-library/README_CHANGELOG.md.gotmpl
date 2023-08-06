@@ -12,6 +12,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Unreleased]
 
+### [0.13.9]
+
+#### Fixed
+
+- 110 - Fix examples for existingClaim and implement it in containers
+- 109 - Trim "-" from serviceName
+- 91 - cleaned up white spaces in Statefulset spec
+- fixes serviceName not being set on Statefulsets
+
+#### Added
+
+Adds prefixes to configmaps in volumes like persistentVolumes
+Use existingClaim in pods when set on persistence
+
+### [0.13.8]
+
+#### Fixed
+
+- Fixed the README
+- Clean up some whitespace formatting on deployments
+- Updated the labels used for Troubleshoot secrets to match the new naming convention from v0.66.0
+
+### [0.13.7]
+
+#### Added
+
+- Remove unused app.serviceAccount
+- Setup app.serviceAccountName to configure which serviceAccount an app uses
+
+### [0.13.5]
+
+#### Added
+
+- Adding support for native Kubernetes syntax for container environment variables. Supported formats are now:
+    -  string in values.yaml example: 
+       foo: bar 
+    -  map in values.yaml with value example: 
+        - name: foo
+          value: bar 
+    -  map in values.yaml with valueFrom example: 
+        - name: MYSQL_ROOT_PASSWORD  # Renders & installs statefulset with said environment variable.
+          valueFrom:
+            secretKeyRef:
+              name: mysql-auth
+              key: MYSQL_ROOT_PASSWORD
+
 ### [0.13.4]
 
 #### Added

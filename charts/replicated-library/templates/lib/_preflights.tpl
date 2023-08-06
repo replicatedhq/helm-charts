@@ -15,7 +15,7 @@ metadata:
   name: {{ include "replicated-library.names.prefix" . }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
     {{- include "replicated-library.labels" $ | nindent 4 }}
-    troubleshoot.io/kind: preflight
+    troubleshoot.sh/kind: preflight
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
@@ -46,7 +46,6 @@ metadata:
   name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
     {{- include "replicated-library.labels" $ | nindent 4 }}
-    troubleshoot.io/kind: preflight
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
@@ -61,7 +60,6 @@ metadata:
   name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
     {{- include "replicated-library.labels" $ | nindent 4 }}
-    troubleshoot.io/kind: preflight
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
@@ -123,7 +121,6 @@ metadata:
   name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   labels:
     {{- include "replicated-library.labels" $ | nindent 4 }}
-    troubleshoot.io/kind: preflight
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-6"
@@ -145,7 +142,6 @@ metadata:
   name: {{ $.Release.Name }}-preflight-check
   labels:
     {{- include "replicated-library.labels" $ | nindent 4 }}
-    troubleshoot.io/kind: preflight
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/show-output": "true"

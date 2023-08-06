@@ -3,15 +3,17 @@ Renders the Persistent Volume Claim objects required by the chart.
 */}}
 {{- define "replicated-library.pvc" -}}
   {{- /* Generate pvc as required */ -}}
-  {{- range $name, $persistenceValues := .Values.persistence }}
-    {{- if and $persistenceValues.enabled (eq (default "persistentVolumeClaim" $persistenceValues.type) "persistentVolumeClaim") (not $persistenceValues.persistentVolumeClaim.existingClaim) -}}
-      {{- $_ := set $.ContextNames "persistence" $name -}}
-      {{- $_ := set $.ContextValues "persistence" $persistenceValues -}}
+  {{- range $name, $values := .Values.persistence -}}
+    {{- if $values.enabled  -}}
+      {{- if and (eq (default "persistentVolumeClaim" $values.type) "persistentVolumeClaim") (not $values.persistentVolumeClaim.existingClaim) -}}
+        {{- $_ := set $.ContextNames "persistence" $name -}}
+        {{- $_ := set $.ContextValues "persistence" $values -}}
 
-      {{- include "replicated-library.classes.pvc" $ | nindent 0 -}}
+        {{- include "replicated-library.classes.pvc" $ | nindent 0 -}}
 
-      {{- $_ := unset $.ContextNames "persistence"  -}}
-      {{- $_ := unset $.ContextValues "persistence"  -}}
+        {{- $_ := unset $.ContextNames "persistence"  -}}
+        {{- $_ := unset $.ContextValues "persistence"  -}}
+      {{- end }}
     {{- end }}
   {{- end }}
 {{- end }}

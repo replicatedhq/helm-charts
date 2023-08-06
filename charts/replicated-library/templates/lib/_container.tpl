@@ -6,8 +6,8 @@
   {{- else -}}
     {{- fail "_container.tpl requires the 'app' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
-{{- range $containerName, $containerValues := $values.containers -}}
+  {{- $_ := set $.ContextValues "names" (dict "context" "app") }}
+{{- range $containerName, $containerValues := $values.containers }}
 - name: {{ printf "%s" $containerName | trunc 63 | trimAll "-" }}
   image: {{ printf "%s:%s" $containerValues.image.repository (default $.Chart.AppVersion ($containerValues.image.tag | toString)) | quote }}
   imagePullPolicy: {{ default $.Values.defaults.image.pullPolicy $containerValues.image.pullPolicy }}
@@ -16,7 +16,7 @@
     {{- if kindIs "string" . }}
     - {{ . }}
     {{- else }}
-      {{ toYaml . | nindent 4 }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
   {{- with $containerValues.args }}
@@ -24,7 +24,7 @@
     {{- if kindIs "string" . }}
     - {{ . }}
     {{- else }}
-    {{ toYaml . | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
   {{- with $containerValues.securityContext }}
@@ -45,7 +45,7 @@
 {{- end }}
   {{- with $containerValues.env }}
   env:
-    {{- get (fromYaml (include "replicated-library.env_vars" .)) "env" | toYaml | nindent 4 -}}
+       {{- get (fromYaml (include "replicated-library.env_vars" .)) "env" | toYaml | nindent 4 }}
   {{- end }}
   {{- if or $containerValues.envFrom $containerValues.secret }}
   envFrom:
@@ -65,41 +65,41 @@
   resources:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- if $containerValues.livenessProbe -}}
+  {{- if $containerValues.livenessProbe }}
   {{- with (mergeOverwrite $.Values.defaults.probes.livenessProbe $containerValues.livenessProbe) }}
   livenessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- else if and (hasKey $containerValues "ports") $containerValues.ports -}}
-    {{ $firstPort := first $containerValues.ports }}
-    {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort -}}
+  {{- else if and (hasKey $containerValues "ports") $containerValues.ports }}
+    {{- $firstPort := first $containerValues.ports }}
+    {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort }}
       {{- $_ := set $.Values.defaults.probes.livenessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
       {{- with $.Values.defaults.probes.livenessProbe }}
   livenessProbe:
       {{- toYaml . | nindent 4 }}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-  {{- if $containerValues.readinessProbe -}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if $containerValues.readinessProbe }}
   {{- with (mergeOverwrite $.Values.defaults.probes.readinessProbe $containerValues.readinessProbe) }}
   readinessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- else if and (hasKey $containerValues "ports") $containerValues.ports -}}
-    {{ $firstPort := first $containerValues.ports }}
-    {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort -}}
+  {{- else if and (hasKey $containerValues "ports") $containerValues.ports }}
+    {{- $firstPort := first $containerValues.ports }}
+    {{- if and (hasKey $firstPort "containerPort") $firstPort.containerPort }}
       {{- $_ := set $.Values.defaults.probes.readinessProbe "tcpSocket" (dict "port" (first $containerValues.ports).containerPort) }}
       {{- with $.Values.defaults.probes.readinessProbe }}
   readinessProbe:
       {{- toYaml . | nindent 4 }}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-  {{- if $containerValues.startupProbe -}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if $containerValues.startupProbe }}
   {{- with (mergeOverwrite $.Values.defaults.probes.startupProbe $containerValues.startupProbe) }}
   startupProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- end -}}
+  {{- end }}
 {{- end }}
-{{- end -}}
+{{- end }}

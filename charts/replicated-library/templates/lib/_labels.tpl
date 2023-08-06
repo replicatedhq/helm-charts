@@ -19,6 +19,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "replicated-library.labels.selectorLabels" -}}
 {{- $_ := set $.ContextValues "names" (dict "context" "app") -}}
 app.kubernetes.io/name: {{ include "replicated-library.names.appname" . }}
+{{- $_ := unset $.ContextValues "names" }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- define "replicated-library.labels.serviceSelectorLabels" -}}
@@ -28,7 +29,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   {{- else -}}
     {{- fail "_labels.tpl requires the 'service' ContextValues to be set" -}}
   {{- end -}}
-  {{- $_ := set $.ContextValues "names" (dict "context" "service") -}}
   {{- if $values.selector -}}
 {{ toYaml $values.selector }}
   {{- else -}}
