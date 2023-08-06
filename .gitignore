@@ -39,3 +39,6 @@ Session.vim
 **/charts/*.tgz
 
 .history
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out

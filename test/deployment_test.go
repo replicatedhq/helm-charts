@@ -12,8 +12,8 @@ import (
 	testclient "k8s.io/client-go/kubernetes/fake"
 )
 
-func TestDeployment_ExpectedContainers(t *testing.T) {
-	t.Parallel()
+func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
+	//t.Parallel()
 
 	tests := []struct {
 		name               string
@@ -84,5 +84,60 @@ func TestDeployment_ExpectedContainers(t *testing.T) {
 			totalContainers = totalContainers + len(deployment.Spec.Template.Spec.Containers)
 		}
 		require.Equal(t, tt.expectedContainers, totalContainers)
+	}
+}
+
+func TestDeployment_ExpectedImages(t *testing.T) {
+	//t.Parallel()
+
+	tests := []struct {
+		name          string
+		values        map[string]string
+		expectedImage string
+	}{
+		{
+			name: "nginx latest",
+			values: map[string]string{
+				"apps.example.enabled":                             "true",
+				"apps.example.type":                                "deployment",
+				"apps.example.containers.example.image.repository": "nginx",
+				"apps.example.containers.example.image.tag":        "latest",
+			},
+			expectedImage: "nginx:latest",
+		},
+		{
+			name: "nginx 9.9.9",
+			values: map[string]string{
+				"apps.example.enabled":                             "true",
+				"apps.example.type":                                "deployment",
+				"apps.example.containers.example.image.repository": "nginx",
+				"apps.example.containers.example.image.tag":        "9.9.9",
+			},
+			expectedImage: "nginx:9.9.9",
+		},
+	}
+
+	helmChartPath, err := filepath.Abs("../charts/test")
+	releaseName := "release-name"
+
+	for _, tt := range tests {
+		options := &helm.Options{
+			SetValues:         tt.values,
+			BuildDependencies: true,
+		}
+
+		output := helm.RenderTemplate(t, options, helmChartPath, releaseName, []string{"templates/replicated-library.yaml"})
+
+		ctx := context.Background()
+		client := testclient.NewSimpleClientset()
+
+		err = k8sApply(ctx, client, []byte(output))
+		require.NoError(t, err)
+
+		deployment, err := client.AppsV1().Deployments("default").Get(ctx, "release-name-test-example", metav1.GetOptions{})
+		require.NoError(t, err)
+
+		actualImage := deployment.Spec.Template.Spec.Containers[0].Image
+		require.Equal(t, tt.expectedImage, actualImage)
 	}
 }
