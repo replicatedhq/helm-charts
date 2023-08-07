@@ -1,4 +1,4 @@
-name: lint-replicated-library-chart
+name: test-replicated-library
 
 on:
   pull_request:
