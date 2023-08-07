@@ -5,7 +5,7 @@ version: 0.0.0
 description: Empty test chart
 dependencies:
   - name: replicated-library
-    repository: file://../replicated-library
+    repository: file://../../charts/replicated-library
     version: "*"
 home: https://github.com/replicatedhq/replicated-starter-helm/charts/tree/main/
 kubeVersion: ">=1.20.0-0"
