@@ -88,7 +88,7 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 }
 
 func TestDeployment_ExpectedImages(t *testing.T) {
-	//t.Parallel()
+	t.Parallel()
 
 	tests := []struct {
 		name          string
