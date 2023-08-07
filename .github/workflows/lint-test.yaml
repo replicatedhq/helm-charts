@@ -1,4 +1,4 @@
-name: lint-replicated-library-chart
+name: test-replicated-library
 
 on:
   pull_request:
@@ -9,9 +9,12 @@ on:
       - ready_for_review
     branches:
       - main
+  push:
+    branches:
+      - "main"
 
 jobs:
-  lint-test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,3 +37,20 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: ct lint --charts ./charts/replicated-library
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
+
+      - name: setup env
+        run: |
+          echo "GOPATH=$(go env GOPATH)" >> $GITHUB_ENV
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        shell: bash
+
+      - uses: actions/checkout@v3
+
+      - run: make test
