@@ -1,6 +1,6 @@
 # Helm resources
-charts/*/Chart.lock
-charts/*/charts
+**/Chart.lock
+**/*/charts
 
 # General files for the project
 pkg/*

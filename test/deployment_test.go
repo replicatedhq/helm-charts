@@ -56,7 +56,7 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 		},
 	}
 
-	testChartPath, err := filepath.Abs("../charts/test")
+	testChartPath, err := filepath.Abs("../test/test-chart")
 	releaseName := "release-name"
 
 	for _, tt := range tests {
@@ -112,7 +112,7 @@ func TestDeployment_ExpectedImages(t *testing.T) {
 		},
 	}
 
-	testChartPath, err := filepath.Abs("../charts/test")
+	testChartPath, err := filepath.Abs("../test/test-chart")
 	releaseName := "release-name"
 
 	for _, tt := range tests {
