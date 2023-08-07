@@ -13,8 +13,6 @@ import (
 )
 
 func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
-	t.Parallel()
-
 	tests := []struct {
 		name               string
 		values             map[string]string
@@ -58,16 +56,15 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 		},
 	}
 
-	helmChartPath, err := filepath.Abs("../charts/test")
+	testChartPath, err := filepath.Abs("../charts/test")
 	releaseName := "release-name"
 
 	for _, tt := range tests {
 		options := &helm.Options{
 			SetValues:         tt.values,
-			BuildDependencies: false,
+			BuildDependencies: buildChartDependencies(testChartPath),
 		}
-
-		output := helm.RenderTemplate(t, options, helmChartPath, releaseName, []string{"templates/replicated-library.yaml"})
+		output := helm.RenderTemplate(t, options, testChartPath, releaseName, []string{"templates/replicated-library.yaml"})
 
 		ctx := context.Background()
 		client := testclient.NewSimpleClientset()
@@ -88,8 +85,6 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 }
 
 func TestDeployment_ExpectedImages(t *testing.T) {
-	t.Parallel()
-
 	tests := []struct {
 		name          string
 		values        map[string]string
@@ -117,16 +112,15 @@ func TestDeployment_ExpectedImages(t *testing.T) {
 		},
 	}
 
-	helmChartPath, err := filepath.Abs("../charts/test")
+	testChartPath, err := filepath.Abs("../charts/test")
 	releaseName := "release-name"
 
 	for _, tt := range tests {
 		options := &helm.Options{
 			SetValues:         tt.values,
-			BuildDependencies: false,
+			BuildDependencies: buildChartDependencies(testChartPath),
 		}
-
-		output := helm.RenderTemplate(t, options, helmChartPath, releaseName, []string{"templates/replicated-library.yaml"})
+		output := helm.RenderTemplate(t, options, testChartPath, releaseName, []string{"templates/replicated-library.yaml"})
 
 		ctx := context.Background()
 		client := testclient.NewSimpleClientset()

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"path/filepath"
 
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -42,4 +43,16 @@ func k8sApply(ctx context.Context, client kubernetes.Interface, yaml []byte) err
 		}
 	}
 	return nil
+}
+
+func buildChartDependencies(testChartPath string) bool {
+	buildDependencies := false
+
+	libraryChart, _ := filepath.Glob(filepath.Join(testChartPath, "charts", "replicated-library-*.tgz"))
+
+	if libraryChart == nil {
+		buildDependencies = true
+	}
+
+	return buildDependencies
 }
