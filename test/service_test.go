@@ -24,6 +24,10 @@ func TestService_MatchApp(t *testing.T) {
 				"apps.example.type":                                "deployment",
 				"apps.example.containers.example.image.repository": "nginx",
 				"apps.example.containers.example.image.tag":        "latest",
+				"services.example.enabled":                         "true",
+				"services.example.appName[0]":                      "example",
+				"services.example.ports.http.enabled":              "true",
+				"services.example.ports.http.port":                 "8080",
 			},
 		},
 	}
@@ -50,17 +54,26 @@ func TestService_MatchApp(t *testing.T) {
 		services, err := client.CoreV1().Services("default").List(ctx, metav1.ListOptions{})
 		require.NoError(t, err)
 
+		t.Log(deployments)
+		t.Log(services)
+
 		missingServices := 0
 
 		for _, deployment := range deployments.Items {
+			found := false
+			//t.Log(deployment.Spec.Template.Labels)
 			for _, service := range services.Items {
-				if service.Spec.Selector["app.kubernetes.io/name"] == deployment.Labels["app.kubernetes.io/name"] {
-					continue
+				t.Log(service)
+				if service.Spec.Selector["app.kubernetes.io/name"] == deployment.Spec.Template.Labels["app.kubernetes.io/name"] {
+					found = true
+					break
 				}
-				missingServices = missingServices + 1
+			}
+			if !found {
+				missingServices++
 			}
 		}
 
-		require.Equal(t, missingServices, 0)
+		require.Equal(t, 0, missingServices)
 	}
 }
