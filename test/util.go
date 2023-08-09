@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
@@ -37,6 +38,11 @@ func k8sApply(ctx context.Context, client kubernetes.Interface, yaml []byte) err
 		switch o := obj.(type) {
 		case *appsv1.Deployment:
 			_, err := client.AppsV1().Deployments(namespace).Create(ctx, o, metav1.CreateOptions{})
+			if err != nil {
+				return err
+			}
+		case *corev1.Service:
+			_, err := client.CoreV1().Services(namespace).Create(ctx, o, metav1.CreateOptions{})
 			if err != nil {
 				return err
 			}

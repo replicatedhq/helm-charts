@@ -54,9 +54,6 @@ func TestService_MatchApp(t *testing.T) {
 		services, err := client.CoreV1().Services("default").List(ctx, metav1.ListOptions{})
 		require.NoError(t, err)
 
-		t.Log(deployments)
-		t.Log(services)
-
 		missingServices := 0
 
 		for _, deployment := range deployments.Items {
