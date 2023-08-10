@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/kubectl/pkg/scheme"
 	testclient "k8s.io/client-go/kubernetes/fake"
+	"k8s.io/kubectl/pkg/scheme"
 )
 
 func k8sDecode(data []byte) (runtime.Object, error) {
@@ -33,7 +33,7 @@ func fakeCluster(yaml []byte) *testclient.Clientset {
 
 		//namespace := "default"
 
-		objects = append(objects,obj)
+		objects = append(objects, obj)
 
 	}
 
