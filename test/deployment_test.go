@@ -14,7 +14,6 @@ import (
 func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 	tests := []struct {
 		name               string
-		values             map[string]string
 		valuesFiles        []string
 		expectedContainers int
 	}{
@@ -25,12 +24,12 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 		},
 		{
 			name: "single app with multiple containers",
-			valuesFiles: []string{"single_app_with_multiple_containers.yaml"},
+			valuesFiles: []string{"test-values/single_app_with_multiple_containers.yaml"},
 			expectedContainers: 2,
 		},
 		{
 			name: "multiple apps with a single container",
-			valuesFiles: []string{"multiple_apps_with_single_container.yaml"},
+			valuesFiles: []string{"test-values/multiple_apps_with_single_container.yaml"},
 			expectedContainers: 2,
 		},
 	}
@@ -42,7 +41,7 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 
 	for _, tt := range tests {
 		options := &helm.Options{
-			SetValues:         tt.values,
+			ValuesFiles:         tt.valuesFiles,
 			BuildDependencies: buildChartDependencies(testChartPath),
 		}
 		output := helm.RenderTemplate(t, options, testChartPath, releaseName, []string{"templates/replicated-library.yaml"})
