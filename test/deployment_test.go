@@ -65,24 +65,18 @@ func TestDeployment_ExpectedImages(t *testing.T) {
 	tests := []struct {
 		name          string
 		values        map[string]string
+		valuesFiles []string
 		expectedImage string
 	}{
 		{
 			name: "nginx latest",
-			values: map[string]string{
-				"apps.example.enabled":                             "true",
-				"apps.example.type":                                "deployment",
-				"apps.example.containers.example.image.repository": "nginx",
-				"apps.example.containers.example.image.tag":        "latest",
-			},
+			valuesFiles: []string{"test-values/single_app_with_single_container.yaml"},
 			expectedImage: "nginx:latest",
 		},
 		{
 			name: "nginx 9.9.9",
+			valuesFiles: []string{"test-values/single_app_with_single_container.yaml"},
 			values: map[string]string{
-				"apps.example.enabled":                             "true",
-				"apps.example.type":                                "deployment",
-				"apps.example.containers.example.image.repository": "nginx",
 				"apps.example.containers.example.image.tag":        "9.9.9",
 			},
 			expectedImage: "nginx:9.9.9",
@@ -94,6 +88,7 @@ func TestDeployment_ExpectedImages(t *testing.T) {
 
 	for _, tt := range tests {
 		options := &helm.Options{
+			ValuesFiles: tt.valuesFiles,
 			SetValues:         tt.values,
 			BuildDependencies: buildChartDependencies(testChartPath),
 		}
