@@ -9,7 +9,6 @@ import (
 
 	"github.com/gruntwork-io/terratest/modules/helm"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	testclient "k8s.io/client-go/kubernetes/fake"
 )
 
 func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
@@ -57,6 +56,8 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 	}
 
 	testChartPath, err := filepath.Abs("../test/test-chart")
+	require.NoError(t, err)
+
 	releaseName := "release-name"
 
 	for _, tt := range tests {
@@ -67,12 +68,9 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 		output := helm.RenderTemplate(t, options, testChartPath, releaseName, []string{"templates/replicated-library.yaml"})
 
 		ctx := context.Background()
-		client := testclient.NewSimpleClientset()
+		client := fakeCluster([]byte(output))
 
-		err = k8sApply(ctx, client, []byte(output))
-		require.NoError(t, err)
-
-		deployments, err := client.AppsV1().Deployments("default").List(ctx, metav1.ListOptions{})
+		deployments, err := client.AppsV1().Deployments("").List(ctx, metav1.ListOptions{})
 		require.NoError(t, err)
 
 		totalContainers := 0
@@ -123,12 +121,10 @@ func TestDeployment_ExpectedImages(t *testing.T) {
 		output := helm.RenderTemplate(t, options, testChartPath, releaseName, []string{"templates/replicated-library.yaml"})
 
 		ctx := context.Background()
-		client := testclient.NewSimpleClientset()
-
-		err = k8sApply(ctx, client, []byte(output))
+		client := fakeCluster([]byte(output))
 		require.NoError(t, err)
 
-		deployment, err := client.AppsV1().Deployments("default").Get(ctx, "release-name-test-example", metav1.GetOptions{})
+		deployment, err := client.AppsV1().Deployments("").Get(ctx, "release-name-test-example", metav1.GetOptions{})
 		require.NoError(t, err)
 
 		actualImage := deployment.Spec.Template.Spec.Containers[0].Image
