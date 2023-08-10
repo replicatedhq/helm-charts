@@ -15,42 +15,22 @@ func TestDeployment_ExpectedNumOfContainers(t *testing.T) {
 	tests := []struct {
 		name               string
 		values             map[string]string
+		valuesFiles        []string
 		expectedContainers int
 	}{
 		{
 			name: "single app with single container",
-			values: map[string]string{
-				"apps.example.enabled":                             "true",
-				"apps.example.type":                                "deployment",
-				"apps.example.containers.example.image.repository": "nginx",
-				"apps.example.containers.example.image.tag":        "latest",
-			},
+			valuesFiles: []string{"test-values/single_app_with_single_container.yaml"},
 			expectedContainers: 1,
 		},
 		{
 			name: "single app with multiple containers",
-			values: map[string]string{
-				"apps.example.enabled":                              "true",
-				"apps.example.type":                                 "deployment",
-				"apps.example.containers.example.image.repository":  "nginx",
-				"apps.example.containers.example.image.tag":         "latest",
-				"apps.example.containers.example2.image.repository": "nginx",
-				"apps.example.containers.example2.image.tag":        "9.9.9",
-			},
+			valuesFiles: []string{"single_app_with_multiple_containers.yaml"},
 			expectedContainers: 2,
 		},
 		{
 			name: "multiple apps with a single container",
-			values: map[string]string{
-				"apps.example.enabled":                              "true",
-				"apps.example.type":                                 "deployment",
-				"apps.example.containers.example.image.repository":  "nginx",
-				"apps.example.containers.example.image.tag":         "latest",
-				"apps.example2.enabled":                             "true",
-				"apps.example2.type":                                "deployment",
-				"apps.example2.containers.example.image.repository": "nginx",
-				"apps.example2.containers.example.image.tag":        "9.9.9",
-			},
+			valuesFiles: []string{"multiple_apps_with_single_container.yaml"},
 			expectedContainers: 2,
 		},
 	}

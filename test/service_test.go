@@ -13,21 +13,12 @@ import (
 
 func TestService_MatchApp(t *testing.T) {
 	tests := []struct {
-		name   string
-		values map[string]string
+		name        string
+		valuesFiles []string
 	}{
 		{
-			name: "single app with single container",
-			values: map[string]string{
-				"apps.example.enabled":                             "true",
-				"apps.example.type":                                "deployment",
-				"apps.example.containers.example.image.repository": "nginx",
-				"apps.example.containers.example.image.tag":        "latest",
-				"services.example.enabled":                         "true",
-				"services.example.appName[0]":                      "example",
-				"services.example.ports.http.enabled":              "true",
-				"services.example.ports.http.port":                 "8080",
-			},
+			name:        "single app with single container",
+			valuesFiles: []string{"test-values/single_app_with_service.yaml"},
 		},
 	}
 
@@ -38,7 +29,7 @@ func TestService_MatchApp(t *testing.T) {
 
 	for _, tt := range tests {
 		options := &helm.Options{
-			SetValues:         tt.values,
+			ValuesFiles:       tt.valuesFiles,
 			BuildDependencies: buildChartDependencies(testChartPath),
 		}
 		output := helm.RenderTemplate(t, options, testChartPath, releaseName, []string{"templates/replicated-library.yaml"})
