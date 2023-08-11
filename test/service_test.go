@@ -17,7 +17,7 @@ func TestService_MatchApp(t *testing.T) {
 		valuesFiles []string
 	}{
 		{
-			name:        "single app with single container",
+			name:        "single app with single service",
 			valuesFiles: []string{"test-values/single_app_with_service.yaml"},
 		},
 	}
