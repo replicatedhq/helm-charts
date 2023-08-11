@@ -1,0 +1,9 @@
+apps:
+  example:
+    enabled: true
+    type: deployment
+    containers:
+      example:
+        image:
+          repository: nginx
+          tag: latest

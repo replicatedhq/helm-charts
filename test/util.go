@@ -2,14 +2,11 @@ package test
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"path/filepath"
 
-	appsv1 "k8s.io/api/apps/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/client-go/kubernetes"
+	testclient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/kubectl/pkg/scheme"
 )
 
@@ -19,8 +16,10 @@ func k8sDecode(data []byte) (runtime.Object, error) {
 	return obj, err
 }
 
-func k8sApply(ctx context.Context, client kubernetes.Interface, yaml []byte) error {
+func fakeCluster(yaml []byte) *testclient.Clientset {
 	yamlFiles := bytes.Split(yaml, []byte("---"))
+	objects := []runtime.Object{}
+
 	for _, f := range yamlFiles {
 		if len(f) == 0 || string(f) == "\n" {
 			continue
@@ -32,17 +31,14 @@ func k8sApply(ctx context.Context, client kubernetes.Interface, yaml []byte) err
 			continue
 		}
 
-		namespace := "default"
+		//namespace := "default"
 
-		switch o := obj.(type) {
-		case *appsv1.Deployment:
-			_, err := client.AppsV1().Deployments(namespace).Create(ctx, o, metav1.CreateOptions{})
-			if err != nil {
-				return err
-			}
-		}
+		objects = append(objects, obj)
+
 	}
-	return nil
+
+	return testclient.NewSimpleClientset(objects...)
+
 }
 
 func buildChartDependencies(testChartPath string) bool {
