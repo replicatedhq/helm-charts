@@ -32,8 +32,10 @@ apps:
     replicas: 1
 
     # -- Specify one or more image pull secrets for the app
+    # Syntax: 
+    #  - name: SECRET_NAME
     imagePullSecrets: []
-
+    
     # -- Specify any initContainers here as dictionary items. Each initContainer should have its own key.
     containers:
       example:
