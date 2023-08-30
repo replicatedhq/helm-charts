@@ -1,0 +1,56 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: SupportBundle
+metadata:
+  name: release-name-test-support-bundle-replicated
+spec:
+  collectors:
+    - clusterInfo: {}
+    - clusterResources: {}
+    - ceph: {}
+    - longhorn: {}
+    - exec:
+        collectorName: weave-status
+        command:
+          - /home/weave/weave
+        args:
+          - --local
+          - status
+        containerName: weave
+        exclude: ""
+        name: kots/kurl/weave
+        namespace: kube-system
+        selector:
+          - name=weave-net
+        timeout: 10s
+    - exec:
+        collectorName: weave-report
+        command:
+          - /home/weave/weave
+        args:
+          - --local
+          - report
+        containerName: weave
+        exclude: ""
+        name: kots/kurl/weave
+        namespace: kube-system
+        selector:
+          - name=weave-net
+        timeout: 10s
+    - logs:
+        selector:
+          - name=weave-net
+        collectorName: weave-net
+        name: kots/kurl/weave
+        namespace: kube-system
+    - logs:
+        selector:
+          - app=flannel
+        collectorName: kube-flannel
+        name: kots/kurl/flannel
+        namespace: kube-flannel
+    - collectd:
+        hostPath: /var/lib/collectd/rrd
+        image: alpine
+        collectorName: collectd
+        timeout: 5m
+        imagePullPolicy: IfNotPresent
