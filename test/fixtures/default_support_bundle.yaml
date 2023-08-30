@@ -10,31 +10,29 @@ spec:
     - longhorn: {}
     - exec:
         collectorName: weave-status
+        name: kots/kurl/weave
+        selector:
+          - name=weave-net
         command:
           - /home/weave/weave
         args:
           - --local
           - status
         containerName: weave
-        exclude: ""
-        name: kots/kurl/weave
         namespace: kube-system
-        selector:
-          - name=weave-net
         timeout: 10s
     - exec:
         collectorName: weave-report
+        name: kots/kurl/weave
+        selector:
+          - name=weave-net
         command:
           - /home/weave/weave
         args:
           - --local
           - report
         containerName: weave
-        exclude: ""
-        name: kots/kurl/weave
         namespace: kube-system
-        selector:
-          - name=weave-net
         timeout: 10s
     - logs:
         selector:
