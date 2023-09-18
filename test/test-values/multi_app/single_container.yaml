@@ -6,8 +6,12 @@ apps:
       example:
         image:
           repository: nginx
-          image.tag: latest
-      example2:
+          tag: latest
+  example2:
+    enabled:  true
+    type: deployment
+    containers:
+      example:
         image:
           repository: nginx
           tag: 9.9.9

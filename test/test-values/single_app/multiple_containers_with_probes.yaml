@@ -1,0 +1,27 @@
+apps:
+  example:
+    enabled: true
+    type: deployment
+    containers:
+      example:
+        image:
+          repository: nginx
+          tag: latest
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+      example2:
+        image:
+          repository: nginx
+          tag: 9.9.9
+        readinessProbe:
+          tcpSocket:
+            port: 80
+        livenessProbe:
+          tcpSocket:
+            port: 80
