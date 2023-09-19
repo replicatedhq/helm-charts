@@ -134,7 +134,7 @@ roleRef:
   name: {{ $.Release.Name }}-preflight-{{ .ContextNames.troubleshoot }}
   apiGroup: rbac.authorization.k8s.io
 
-{{- end -}}
+{{- end }}
 ---
 apiVersion: v1
 kind: Pod
