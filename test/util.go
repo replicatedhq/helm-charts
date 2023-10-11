@@ -3,11 +3,15 @@ package test
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"path/filepath"
+	"testing"
 
+	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/runtime"
 	testclient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/kubectl/pkg/scheme"
+	"sigs.k8s.io/yaml"
 )
 
 func k8sDecode(data []byte) (runtime.Object, error) {
@@ -51,4 +55,25 @@ func buildChartDependencies(testChartPath string) bool {
 	}
 
 	return buildDependencies
+}
+
+func testFixtureData(t *testing.T, name string) []byte {
+	t.Helper()
+
+	path, err := filepath.Abs(filepath.Join("../test/fixtures", name))
+	require.NoError(t, err)
+
+	dat, err := os.ReadFile(path)
+	require.NoError(t, err)
+
+	return dat
+}
+
+func AsYAML(t *testing.T, v interface{}) string {
+	t.Helper()
+
+	yaml, err := yaml.Marshal(v)
+	require.NoError(t, err)
+
+	return string(yaml)
 }

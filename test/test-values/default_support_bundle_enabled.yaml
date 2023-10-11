@@ -1,0 +1,7 @@
+# Troubleshoot
+troubleshoot:
+  support-bundles:
+    # Replicated supplied default support bundle spec
+    replicated:
+      # -- Enables or disables the Replicated default support bundle
+      enabled: true
