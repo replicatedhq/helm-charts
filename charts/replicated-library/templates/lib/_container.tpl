@@ -66,7 +66,7 @@
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- if $containerValues.livenessProbe }}
-  {{- with (mergeOverwrite $.Values.defaults.probes.livenessProbe $containerValues.livenessProbe) }}
+  {{- with (mergeOverwrite (mustDeepCopy $.Values.defaults.probes.livenessProbe) $containerValues.livenessProbe) }}
   livenessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -81,7 +81,7 @@
     {{- end }}
   {{- end }}
   {{- if $containerValues.readinessProbe }}
-  {{- with (mergeOverwrite $.Values.defaults.probes.readinessProbe $containerValues.readinessProbe) }}
+  {{- with (mergeOverwrite (mustDeepCopy $.Values.defaults.probes.readinessProbe) $containerValues.readinessProbe) }}
   readinessProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -96,7 +96,7 @@
     {{- end }}
   {{- end }}
   {{- if $containerValues.startupProbe }}
-  {{- with (mergeOverwrite $.Values.defaults.probes.startupProbe $containerValues.startupProbe) }}
+  {{- with (mergeOverwrite (mustDeepCopy $.Values.defaults.probes.startupProbe) $containerValues.startupProbe) }}
   startupProbe:
     {{- toYaml . | nindent 4 }}
   {{- end }}
