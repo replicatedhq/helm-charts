@@ -12,12 +12,18 @@
   {{- end }}
 
   {{- $configMapsFound := false -}}
+  {{- $secretsFound := false -}}
   {{- range $name, $configmap := .Values.configmaps -}}
     {{- if $configmap.enabled -}}
       {{- $configMapsFound = true -}}
     {{- end -}}
   {{- end -}}
-  {{- if $configMapsFound -}}
+    {{- range $name, $secret := .Values.secrets -}}
+    {{- if $secret.enabled -}}
+      {{- $secretsFound = true -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if or $configMapsFound $secretsFound -}}
     {{- include ("replicated-library.podAnnotations.shaAnnotations") . -}}
   {{- end -}}
 {{- end -}}
